@@ -4,22 +4,74 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>Hello APP</title>
+		<title>河南地税分发index</title>
+		<script src="./script/H.js" type="text/javascript"></script>
 	</head>
-	<script type="text/javascript" src="./script/api.js"></script>
-	<script type="text/javascript">
-		apiready = function() {
-			var delay = 0;
-			if (api.systemType != 'ios')
-				delay = 200;
-			api.openWin({
-				name : 'main',
-				url : './html/main.html',
-				bounces : false,
-				delay : 0,
-				slidBackEnabled : true,
-				vScrollBarEnabled : false
-			});
-		};
-	</script>
+	<body>
+		<script type="text/javascript">
+			var systemtype = null;
+			//1、设备准备完毕后
+			apiready = function() {
+				systemtype = api.systemType;
+				//判断沉浸式
+				if ("ios" == systemtype) {
+					api.setStatusBarStyle({
+						style : 'light',
+						color : '#000000'
+					});
+				}
+				//判断是否已经登录
+				api.getPrefs({
+					sync : false,
+					key : 'islogin'
+				}, function(ret, err) {
+					if (ret && ret.value == "1") {
+						//1.5、关闭当前页面跳转主页面
+						$xy.openWin('main', './html/main/main.html', false, api.pageParam, {
+							slidBackEnabled : false
+						});
+						//						api.openWin({
+						//							name : 'main',
+						//							url : './html/main.html',
+						//							bounces : false,
+						//							delay : 0,
+						//							scaleEnabled : false,
+						//							slidBackEnabled : false,
+						//							vScrollBarEnabled : false,
+						//							hScrollBarEnabled : false,
+						//							animation : {
+						//								type : "none", //动画类型（详见动画类型常量）
+						//								duration : 0 //动画过渡时间，默认300毫秒
+						//							}
+						//						});
+					} else if (ret && ret.value == "2") {
+						//1.5、关闭当前页面跳转主页面
+						$xy.openWin('main', './html/main/main.html', false, api.pageParam, {
+							slidBackEnabled : false
+						});
+					} else {
+						//1.6、关闭当前页面跳转登陆页面
+						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
+							slidBackEnabled : false
+						});
+						//						api.openWin({
+						//							name : 'login_body',
+						//							url : './html/login/login_body.html',
+						//							bounces : false,
+						//							delay : 0,
+						//							scaleEnabled : false,
+						//							slidBackEnabled : false,
+						//							vScrollBarEnabled : false,
+						//							hScrollBarEnabled : false,
+						//							animation : {
+						//								type : "none", //动画类型（详见动画类型常量）
+						//								//subType : "from_right", //动画子类型（详见动画子类型常量）
+						//								duration : 0 //动画过渡时间，默认300毫秒
+						//							}
+						//						});
+					}
+				});
+			}
+		</script>
+	</body>
 </html>

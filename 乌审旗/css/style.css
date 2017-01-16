@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+.b_header_bg {
+	background: -webkit-gradient(linear, left top, left bottom, from(#0565b1), to(#10a0d2));
+}
+.me_header_bg {
+	background: -webkit-gradient(linear, left top, left bottom, from(#0565b1), to(#0c70bc));
+}
+.xy_font_color {
+	color: #555555;
+}
+.kongxian {
+	color: #03aafe;
+}
+.xyzt {
+	color: #ff6600;
+}
+.beizhanyong {
+	color: #999999;
+}
+.xy_login_btn {
+	background-color: #0c9fff !important;
+	background-size: cover;
+	border-radius: 50px !important;
+	-webkit-border-radius: 50px !important;
+}
+.xy_login_btn:active {
+	background-color: #408CBB !important;
+}
+.xy_confirm_btn {
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffaf05), to(#ff7201)) !important;
+	background-size: cover;
+	border-radius: 8px !important;
+	-webkit-border-radius: 8px !important;
+}
+.xy_confirm_btn:active {
+	background-color: #eb6912 !important;
+}
+.zhifubao-bg-color {
+	background-color: #119ed1;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+}
+.weixin-bg-color {
+	background-color: #29c210;
+	height: 30px;
+	width: 30px;
+	border-radius: 50%;
+}
+.header_bg {
+	background: -webkit-gradient(linear, left top, left bottom, from(#0977bc), to(#10a0d2));
+}
+.head_bg {
+	background: -webkit-gradient(linear, left top, left bottom, from(#0565b1), to(#0977bc));
+}
