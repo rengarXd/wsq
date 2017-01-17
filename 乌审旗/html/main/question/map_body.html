@@ -201,16 +201,6 @@
 			//			});
 		}
 
-		//设置中心点
-		function setCenter(info) {
-			bMap.setCenter({
-				coords : eval("(" + info + ")"),
-				animation : true
-			});
-			getCenter();
-		}
-
-
 		//由经纬度获取地址信息
 		function getAddress(lon, lat) {
 			bMap.getNameFromCoords({
