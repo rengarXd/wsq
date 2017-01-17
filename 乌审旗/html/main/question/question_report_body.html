@@ -39,7 +39,7 @@
 			<div class=" H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
 				选择位置
 			</div>
-			<span class=" H-vertical-middle H-flex-item H-border-none"><i class="iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i></span>
+			<span tapmode="H-touch-active" onclick="map();" class=" H-vertical-middle H-flex-item H-border-none"><i class="iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i></span>
 		</div>
 		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
 			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
@@ -82,6 +82,10 @@
 		};
 		// 初始化页面
 		function initPage() {
+		}
+
+		function map() {
+			$xy.openWin('map_head', 'map_head.html', false, api.pageParam);
 		}
 
 		//上传
