@@ -30,17 +30,13 @@
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 	<script type="text/javascript">
-		var bMap = null;
+		var bMap = null, infos = null;
 		apiready = function() {
-			initPage();
 			initModel();
 			//4.地图初始化
 			initMap();
 		};
-		// 初始化页面
-		function initPage() {
-		}
-
+		//初始化地图
 		function initMap() {
 			//延时打开百度地图 ok
 			setTimeout("openMap();", 10);
@@ -52,6 +48,17 @@
 		}
 
 		function shangbao() {
+			if (infos == null) {
+				alert('您还未选择相应位置');
+			} else {
+				api.sendEvent({
+					name : 'maplocation',
+					extra : infos
+				});
+				api.closeToWin({
+					name : 'question_report_head'
+				});
+			}
 		}
 
 		//打开地图
@@ -116,9 +123,9 @@
 					bMap.open({
 						rect : {
 							x : 0,
-							y : 35,
+							y : 37,
 							w : api.winWidth,
-							h : api.frameHeight - 35
+							h : api.frameHeight - 37
 						},
 						center : {
 							lon : ret.lon,
@@ -134,9 +141,13 @@
 							//bMap.setTraffic({
 							//    traffic : true
 							//});
-							var info = '{"lon":' + location_data.lon + ',"lat":' + location_data.lat + '}';
-							//设置中心
-							setCenter(info);
+							//设置指南针位置
+							bMap.setCompass({
+								position : {
+									x : 50,
+									y : 50
+								}
+							});
 							//处理地理位置的变更
 							addEvent();
 						}
@@ -150,14 +161,44 @@
 		//处理地理位置的变更
 		function addEvent() {
 			bMap.addEventListener({
-				name : 'viewChange'
+				name : 'click'
 			}, function(ret) {
-				//                              console.log(JSON.stringify(ret));
 				if (ret.status) {
-					//获取中心点坐标
-					getCenter();
+					//alert("click==" + JSON.stringify(ret));
+					var info = '{"lon":' + ret.lon + ',"lat":' + ret.lat + '}';
+					//给点击点添加标注
+					addnote(info);
 				}
 			});
+		}
+
+		//添加标注
+		function addnote(info) {
+			infos = eval('(' + info + ')');
+			bMap.addAnnotations({
+				annotations : [{
+					id : 1,
+					lon : infos.lon,
+					lat : infos.lat
+				}],
+				draggable : false
+			}, function(ret) {
+				alert(JSON.stringify(infos));
+			});
+			//			bMap.annotationExist({
+			//				id : 1
+			//			}, function(ret) {
+			//				if (ret.status) {
+			//					api.alert({
+			//						msg : '存在'
+			//					});
+			//					bMap.removeAnnotations({
+			//						ids : [1]
+			//					});
+			//				} else {
+			//
+			//				}
+			//			});
 		}
 
 		//设置中心点
@@ -169,21 +210,6 @@
 			getCenter();
 		}
 
-		//获取中心点
-		function getCenter() {
-			bMap.getCenter(function(ret, err) {
-				//              console.log("getCenter==" + JSON.stringify(ret));
-				if (ret) {
-					console.log("getCenter==" + JSON.stringify(ret));
-					//地址
-					getAddress(ret.lon, ret.lat);
-				} else {
-					api.toast({
-						msg : '连接错误，请检查网络或者请求配置是否正确'
-					});
-				}
-			});
-		}
 
 		//由经纬度获取地址信息
 		function getAddress(lon, lat) {

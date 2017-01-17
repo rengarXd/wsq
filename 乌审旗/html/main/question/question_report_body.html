@@ -36,11 +36,26 @@
 			</div>
 		</div>
 		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-			<div class=" H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
+			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
 				选择位置
 			</div>
-			<span tapmode="H-touch-active" onclick="map();" class=" H-vertical-middle H-flex-item H-border-none"><i class="iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i></span>
+			<div id="maplocal"  class="H-textbox H-text-show-row-3 H-vertical-middle H-flex-item H-padding-5"></div>
+			<span tapmode="H-touch-active" onclick="map();" class="H-float-right H-padding-horizontal-right-25"><i class=" iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i></span>
 		</div>
+		<!--<div class="H-flexbox-horizontal H-border-vertical-bottom-after">
+		<div class="H-flex-item H-flexbox-horizontal H-padding-10">
+		<span class="H-flex-item H-font-weight-normal font-weight-500 H-font-size-16">选择位置</span>
+		<span class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 " id="maplocal"> 一切从简，只为了更懒！Hui是新生帝个人开发， </span>
+		</div>
+		<div class="H-padding-vertical-both-10">
+		<i class="H-float-right iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i>
+		</div>
+		</div>-->
+		<!--<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
+		<div class="H-flex-item H-vertical-middle H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
+		选择位置 <span tapmode="H-touch-active" onclick="map();" class=" H-vertical-middle "><span ></span></span>
+		</div>
+		</div>-->
 		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
 			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
 				同步事件
@@ -82,6 +97,14 @@
 		};
 		// 初始化页面
 		function initPage() {
+			api.addEventListener({
+				name : 'maplocation'
+			}, function(ret, err) {
+				//alert(JSON.stringify(ret));
+				if (ret && ret.value) {
+					$("#maplocal").html(ret.value.lon + ',' + ret.value.lat);
+				}
+			});
 		}
 
 		function map() {
