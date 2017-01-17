@@ -90,16 +90,21 @@
 			api.addEventListener({
 				name : 'offline'
 			}, function(ret, err) {
-				$("#nonetwork").show();
+				api.toast({
+					msg : '未连接网络'
+				});
 			});
 			api.addEventListener({
 				name : 'online'
 			}, function(ret, err) {
-				$("#nonetwork").hide();
 				api.toast({
-					msg : '已连接到网络'
+					msg : '已连接网络'
 				});
 			});
+		}
+
+		function checkCode(){
+			$xy.openWin('index_head_1','../main/index_head_1.html',false,api.pageParam);
 		}
 
 		//点击获取验证码

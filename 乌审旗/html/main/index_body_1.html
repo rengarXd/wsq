@@ -38,11 +38,11 @@
 	<body>
 		<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-both-10">
 			<div class="H-flex-item">
-				<span class="H-icon H-center-all lishishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-gongwenbaoxian H-font-size-24 H-theme-font-color-white"></i></span>
+				<span tapmode onclick="openWinn('history_report_head','./history/histor_report_head.html');" class="H-icon H-center-all lishishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-gongwenbaoxian H-font-size-24 H-theme-font-color-white"></i></span>
 				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">历史上报</label>
 			</div>
 			<div class="H-flex-item">
-				<span class="H-icon H-center-all wentishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-shangchuanyunduan H-font-size-30 H-theme-font-color-white"></i></span>
+				<span tapmode onclick="openWinn('question_report_head','./question/question_report_head.html');" class="H-icon H-center-all wentishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-shangchuanyunduan H-font-size-30 H-theme-font-color-white"></i></span>
 				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">问题上报</label>
 			</div>
 			<div class="H-flex-item">
@@ -75,6 +75,11 @@
 		};
 		// 初始化页面
 		function initPage() {
+			api.parseTapmode();
+		}
+
+		function openWinn(name, url) {
+			$xy.openWin(name, url, false, api.pageParam);
 		}
 	</script>
 </html>
