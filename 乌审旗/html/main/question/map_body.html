@@ -41,7 +41,7 @@
 		function initPage() {
 		}
 
-		function initmap() {
+		function initMap() {
 			//延时打开百度地图 ok
 			setTimeout("openMap();", 10);
 		}
@@ -116,9 +116,9 @@
 					bMap.open({
 						rect : {
 							x : 0,
-							y : 0,
+							y : 35,
 							w : api.winWidth,
-							h : api.frameHeight - 60
+							h : api.frameHeight - 35
 						},
 						center : {
 							lon : ret.lon,
