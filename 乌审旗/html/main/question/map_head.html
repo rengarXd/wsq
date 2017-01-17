@@ -7,31 +7,16 @@
 		<title>头部标题header</title>
 		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
 		<link rel="stylesheet" href="../../../css/style.css" />
-		<link rel="stylesheet" href="../../../css/fonts/iconfont.css" />
-		<style>
-			.brige {
-				background: -webkit-gradient(linear, left top, left bottom, from(#00bde0), to(#0063bc)) !important;
-				border-radius: 50%;
-				-webkit-border-radius: 50%;
-				padding: 2px 3px 2px 3px;
-				margin-left: 10px;
-				font-size: 18px;
-				text-align: center;
-				color: #0f527d;
-				z-index: 1000;
-			}
-		</style>
+
+		
 	</head>
-	<body class="H-flexbox-vertical">
+	<body>
 		<header class="H-header b_header_bg" id="header">
 			<span tapmode="" onclick="api.closeWin();" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="H-iconfont H-icon-arrow-left H-font-size-18 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15">返回</label></span>
 			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
 				上报位置选择
 			</div>
 		</header>
-		<div class="H-text-align-center  H-padding-5 H-theme-background-color-eee">
-			<span class="H-font-size-13" style="color: #6d6d6d">在地图上进行位置选择，点击对勾提交！</span><span class="brige H-touch-active" tapmode onclick="shangbao();"><i class="iconfont icon-duihao"></i></span>
-		</div>
 	</body>
 	<script type="text/javascript" src="../../../script/api.js"></script>
 	<script type="text/javascript">
@@ -54,7 +39,6 @@
 				}
 			})
 		};
-		function shangbao() {
-		}
+
 	</script>
 </html>
