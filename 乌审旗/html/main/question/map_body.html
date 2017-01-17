@@ -30,14 +30,178 @@
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 	<script type="text/javascript">
+		var bMap = null;
 		apiready = function() {
 			initPage();
+			initModel();
+			//4.地图初始化
+			initMap();
 		};
 		// 初始化页面
 		function initPage() {
 		}
 
+		function initmap() {
+			//延时打开百度地图 ok
+			setTimeout("openMap();", 10);
+		}
+
+		//2.初始化模块
+		function initModel() {
+			bMap = api.require('bMap');
+			dialogBox = api.require('dialogBox');
+		}
+
 		function shangbao() {
+		}
+
+		//打开地图
+		function openMap() {
+			var mySettingInfo = api.require('mySettingInfo');
+			//获取定位是否开启，及当前 app 获取的定位权限
+			bMap.getLocationServices(function(ret, err) {
+				//              console.log(JSON.stringify(ret));
+				if (ret.enable) {
+					if ('ios' == api.systemType) {
+						switch(ret.authorizationStatus) {
+							case "denied":
+								api.confirm({
+									title : '温馨提示',
+									msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+									buttons : ['确定', '取消']
+								}, function(ret, err) {
+									var index = ret.buttonIndex;
+									switch(index) {
+										case 1:
+											//ios中未开启GPS
+											api.openApp({
+												iosUrl : 'app-settings:',
+												androidPkg : ''
+											}, function(ret, err) {
+												//coding...
+											});
+											break;
+									}
+								});
+								break;
+						}
+					}
+					//                    console.log(JSON.stringify(ret));
+				} else {
+					api.confirm({
+						title : '温馨提示',
+						msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+						buttons : ['确定', '取消']
+					}, function(ret, err) {
+						var index = ret.buttonIndex;
+						switch(index) {
+							case 1:
+								var mySettingInfo = api.require('mySettingInfo');
+								mySettingInfo.settingInt({
+									'index' : 2
+								}, function(ret, err) {
+									//alert(JSON.stringify(ret));
+								});
+								break;
+						}
+					});
+				}
+			});
+			bMap.getLocation({
+				accuracy : '30m',
+				autoStop : true,
+				filter : 30
+			}, function(ret, err) {
+				if (ret.status) {
+					var location_data = ret;
+					bMap.open({
+						rect : {
+							x : 0,
+							y : 0,
+							w : api.winWidth,
+							h : api.frameHeight - 60
+						},
+						center : {
+							lon : ret.lon,
+							lat : ret.lat
+						},
+						zoomLevel : 17,
+						showUserLocation : true,
+						fixedOn : api.frameName,
+						fixed : true
+					}, function(ret) {
+						if (ret.status) {
+							//显示交通图
+							//bMap.setTraffic({
+							//    traffic : true
+							//});
+							var info = '{"lon":' + location_data.lon + ',"lat":' + location_data.lat + '}';
+							//设置中心
+							setCenter(info);
+							//处理地理位置的变更
+							addEvent();
+						}
+					});
+				} else {
+					//alert(err.code);
+				}
+			});
+		}
+
+		//处理地理位置的变更
+		function addEvent() {
+			bMap.addEventListener({
+				name : 'viewChange'
+			}, function(ret) {
+				//                              console.log(JSON.stringify(ret));
+				if (ret.status) {
+					//获取中心点坐标
+					getCenter();
+				}
+			});
+		}
+
+		//设置中心点
+		function setCenter(info) {
+			bMap.setCenter({
+				coords : eval("(" + info + ")"),
+				animation : true
+			});
+			getCenter();
+		}
+
+		//获取中心点
+		function getCenter() {
+			bMap.getCenter(function(ret, err) {
+				//              console.log("getCenter==" + JSON.stringify(ret));
+				if (ret) {
+					console.log("getCenter==" + JSON.stringify(ret));
+					//地址
+					getAddress(ret.lon, ret.lat);
+				} else {
+					api.toast({
+						msg : '连接错误，请检查网络或者请求配置是否正确'
+					});
+				}
+			});
+		}
+
+		//由经纬度获取地址信息
+		function getAddress(lon, lat) {
+			bMap.getNameFromCoords({
+				lon : lon,
+				lat : lat
+			}, function(ret, err) {
+				//              console.log("当前位置信息===" + JSON.stringify(ret));
+				if (ret.status) {
+					//获取当前用户所属城市
+					alert(JSON.stringify(ret));
+				} else {
+					api.toast({
+						msg : '连接错误，请检查网络或者请求配置是否正确'
+					});
+				}
+			});
 		}
 	</script>
 </html>
