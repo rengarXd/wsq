@@ -226,7 +226,7 @@
 				}
 			});
 		},
-		openWin : function(name, url, bounces, winPageParam) {
+		openWin : function(winName, winUrl, bounces, winPageParam, options) {
 			var that = this;
 			var o = {};
 			o.name = winName;
@@ -235,7 +235,7 @@
 			"ios" == api.systemType ? o.delay = 0 : o.delay = 200;
 			o.pageParam = that.isObject(winPageParam) ? winPageParam : {};
 			options = options || {};
-			var opt = that.extendObj(o,openWin_CONFIG, options);
+			var opt = that.extendObj(o, that.DEFAULT_CONFIG.openWin_CONFIG, options);
 			api.openWin(opt);
 		},
 		fixIos7Bar : function(cssSelectorOrElement) {

@@ -28,7 +28,7 @@
 			api.openFrame({
 				name : 'index_body_1',
 				url : 'index_body_1.html',
-				bounces : true,
+				bounces : false,
 				rect : {
 					x : 0,
 					y : headerPos.h,
@@ -37,5 +37,18 @@
 				}
 			})
 		};
+		function closeToMain() {
+			api.closeWidget({
+				id : 'A6939088270619',
+				retData : {
+					name : 'closeWidget'
+				},
+				animation : {
+					type : 'flip',
+					subType : 'from_bottom',
+					duration : 500
+				}
+			});
+		}
 	</script>
 </html>
