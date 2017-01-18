@@ -18,76 +18,43 @@
 		</style>
 	</head>
 	<body>
-		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
-				事件类型
+		<div tapmode onclick="shijian();" class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
+				事件类型<span class="H-margin-horizontal-left-25" id="shijian">aaa</span>
 			</div>
-			<div id="phone_number" class=" H-textbox H-vertical-middle H-flex-item H-border-none H-outline-none H-padding-5">
-				街道保洁
-			</div>
+			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
-		<!--<div class="xy_border"></div>-->
-		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
-				上报科室
+		<div tapmode onclick="keshi();" class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
+				上报科室<span class="H-margin-horizontal-left-25" id="keshi">aaa</span>
 			</div>
-			<div id="phone_number" class="H-textbox H-vertical-middle H-flex-item H-border-none H-outline-none H-padding-5">
-				办公室
-			</div>
+			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
-		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
+		<div tapmode="H-touch-active" onclick="map();" class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class=" H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
 				选择位置
 			</div>
-			<div id="maplocal"  class="H-textbox H-text-show-row-3 H-vertical-middle H-flex-item H-padding-5"></div>
-			<span tapmode="H-touch-active" onclick="map();" class="H-float-right H-padding-horizontal-right-25"><i class=" iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i></span>
+			<span class="H-padding-horizontal-left-15 H-text-show-row-1" id="maplon"></span><span class=" H-text-show-row-1" id="maplat"></span>
+			<span  class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-dingwei H-theme-font-color-999 H-font-size-20 H-vertical-middle"></i></span>
 		</div>
-		<!--<div class="H-flexbox-horizontal H-border-vertical-bottom-after">
-		<div class="H-flex-item H-flexbox-horizontal H-padding-10">
-		<span class="H-flex-item H-font-weight-normal font-weight-500 H-font-size-16">选择位置</span>
-		<span class="H-font-size-14 H-theme-font-color-999 H-text-show-row-2 " id="maplocal"> 一切从简，只为了更懒！Hui是新生帝个人开发， </span>
-		</div>
-		<div class="H-padding-vertical-both-10">
-		<i class="H-float-right iconfont icon-dingwei H-font-size-20 H-theme-font-color-999"></i>
-		</div>
-		</div>-->
-		<!--<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-		<div class="H-flex-item H-vertical-middle H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
-		选择位置 <span tapmode="H-touch-active" onclick="map();" class=" H-vertical-middle "><span ></span></span>
-		</div>
-		</div>-->
-		<div class="H-padding-10 H-border-vertical-bottom-after H-flexbox-horizontal H-font-size-14">
-			<div class="H-center-all H-padding-horizontal-right-20 H-theme-font-color-999" id="" style="">
+		<div class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
 				同步事件
 			</div>
-			<div id="phone_number" class="H-flexbox-horizontal H-textbox H-vertical-middle H-flex-item H-border-none H-outline-none H-padding-5">
+			<!--<span tapmode="H-touch-active" onclick="map();" class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-dingwei H-theme-font-color-999 H-font-size-20 H-vertical-middle"></i></span>-->
+			<div id="phone_number" class="H-flex-item H-padding-horizontal-left-15">
 				<input type="radio" name="v" class="H-radio H-radio-null H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle">
 				<span class="H-margin-horizontal-left-8 H-margin-horizontal-right-20">是</span>
 				<input type="radio" name="v" checked="checked" class="H-radio H-radio-null H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle">
 				<span class="H-margin-horizontal-left-8">否</span>
 			</div>
 		</div>
-		<!--		<div class="H-margin-vertical-both-12 H-margin-horizontal-both-10 H-flexbox-horizontal H-font-size-14">
-		<div class="H-center-all H-padding-horizontal-right-5">
-		故障类别：
-		</div>
-		<select id="select" name="cars" class=" H-vertical-middle  H-border-none H-outline-none H-padding-5" style="background-color: white; width: 100px;">
-		<option value="1">设备故障</option>
-		<option value="2">订单金额</option>
-		<option value="3">其他问题</option>
-		</select>
-		</div>-->
 		<div class="H-margin-horizontal-both-10 H-font-size-14" style="border-color:#555555; ">
 			<div class="H-padding-horizontal-right-20 H-padding-vertical-both-10 H-theme-font-color-999" id="" style="">
 				事件描述
 			</div>
 			<textarea id="textarea" class=" H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box  H-outline-none H-padding-12" style="width: 100%;border-radius: 5px; color:#999999;" placeholder="请尽量详细描述问题"></textarea>
 		</div>
-		<!--<div class=" H-margin-horizontal-both-20 H-padding-vertical-both-15">
-		<button class="xy_confirm_btn H-margin-vertical-top-2 H-font-size-16 H-button H-padding-vertical-both-10 H-border-none H-width-100-percent   H-theme-font-color-white" tapmode="H-touch-active" onclick="_ajax();">
-		确&nbsp;&nbsp;&nbsp;定
-		</button>
-		</div>-->
 	</body>
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
@@ -102,13 +69,44 @@
 			}, function(ret, err) {
 				//alert(JSON.stringify(ret));
 				if (ret && ret.value) {
-					$("#maplocal").html(ret.value.lon + ',' + ret.value.lat);
+					//$("#maplocal").html(ret.value.lon + ',' + ret.value.lat);
+					$("#maplon").html(ret.value.lon + '，');
+					$("#maplat").html(ret.value.lat);
 				}
 			});
 		}
 
 		function map() {
 			$xy.openWin('map_head', 'map_head.html', false, api.pageParam);
+		}
+
+		function shijian() {
+		}
+
+		function keshi() {
+			api.showProgress();
+			$xy.ajax(function(ret, err) {
+				api.hideProgress();
+				if (ret && ret.success) {
+					var dept = new Array();
+					for (var i = 0, len = ret.data.length; i < len; i++) {
+						dept.push(ret.data[i].dept_name);
+					};
+					var retdata = ret.data;
+					api.actionSheet({
+						title : '上报科室',
+						cancelTitle : '取消',
+						buttons : dept
+					}, function(ret, err) {
+						var index = ret.buttonIndex;
+						$("#keshi").html(retdata[parseInt(index) - 1].dept_name);
+					});
+				} else {
+					api.toast({
+						msg : ret.message
+					});
+				}
+			}, 'selDept&funid=sys_dept');
 		}
 
 		//上传
