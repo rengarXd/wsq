@@ -31,6 +31,8 @@
 				url : 'question_report_body.html',
 				pageParam : api.pageParam,
 				bounces : false,
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false,
 				rect : {
 					x : 0,
 					y : headerPos.h,
@@ -39,11 +41,11 @@
 				}
 			})
 		};
-		function uploadP(){
+		function uploadP() {
 			api.execScript({
-				frameName:'question_report_body',
-	            script: 'uploadb();'
-            });
+				frameName : 'question_report_body',
+				script : 'uploadb();'
+			});
 		}
 	</script>
 </html>
