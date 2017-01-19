@@ -71,20 +71,20 @@
 			<div class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
 			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">事件类型：</span><span>{{ d[i].problem_type }}</span>
+			<span class="H-theme-font-color-999">事件类型：</span>{{ d[i].problem_type }}
 			</div>
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">上报科室：</span><span>{{ d[i].dept_name }}</span>
+			<span class="H-theme-font-color-999">上报科室：</span>{{ d[i].dept_name }}
 			</div>
 			</div>
 			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address">河南省国家大学科技园东区18号楼河</span>
+			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address"></span>
 			</div>
 			</div>
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			{{ d[i].problem_text }}
+			<span class="H-theme-font-color-999">事件描述：</span>{{ d[i].problem_text }}
 			<p class="H-font-size-12 H-theme-font-color-999">
 			{{ d[i].add_date }}
 			</p>
@@ -103,13 +103,17 @@
 			// 初始化页面
 			function initPage() {
 				bMap = api.require('bMap');
+				//设置下拉刷新
+				$xy.setRefreshHeaderInfo(function() {
+					location.reload();
+				});
 				api.getPrefs({
 					sync : false,
 					key : 'userinfo'
 				}, function(ret, err) {
 					user = eval('(' + ret.value + ')');
 					$xy.ajax(function(ret, err) {
-						api.hideProgress();
+						api.refreshHeaderLoadDone();
 						if (ret && ret.success) {
 							//console.log(JSON.stringify(ret));
 							if (ret.data.length == 0) {
