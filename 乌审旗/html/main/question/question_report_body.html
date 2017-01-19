@@ -154,31 +154,35 @@
 			var problem_lng = maplon;
 			var problem_lat = maplat;
 			var problem_text = $("#textarea").val();
-			api.showProgress({
-				title : '上传中'
-			});
-			$xy.ajax(function(ret, err) {
-				api.hideProgress();
-				api.toast({
-					msg : ret.message
+			if (problem_type && dept_id && is_synchro && problem_lng && problem_lat && problem_text) {
+				api.showProgress({
+					title : '上传中'
 				});
-				if (ret && ret.success) {
-					setTimeout(function() {
-						api.closeWin();
-					}, 800);
-				}
-			}, 'addProblem&funid=report_problem', 'post', {
-				values : {
-					user_id : userdata[0].user_id,
-					uuid : userdata[0].uuid,
-					problem_type : problem_type,
-					dept_id : dept_id,
-					is_synchro : is_synchro,
-					problem_lng : problem_lng,
-					problem_lat : problem_lat,
-					problem_text : problem_text
-				}
-			});
+				$xy.ajax(function(ret, err) {
+					api.hideProgress();
+					api.toast({
+						msg : ret.message
+					});
+					if (ret && ret.success) {
+						setTimeout(function() {
+							api.closeWin();
+						}, 800);
+					}
+				}, 'addProblem&funid=report_problem', 'post', {
+					values : {
+						user_id : userdata[0].user_id,
+						uuid : userdata[0].uuid,
+						problem_type : problem_type,
+						dept_id : dept_id,
+						is_synchro : is_synchro,
+						problem_lng : problem_lng,
+						problem_lat : problem_lat,
+						problem_text : problem_text
+					}
+				});
+			} else {
+				alert('您还有未填项');
+			}
 		}
 	</script>
 </html>
