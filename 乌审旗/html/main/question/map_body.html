@@ -168,6 +168,8 @@
 					var info = '{"lon":' + ret.lon + ',"lat":' + ret.lat + '}';
 					//给点击点添加标注
 					addnote(info);
+					//获取地址信息
+					getAddress(ret.lon, ret.lat);
 				}
 			});
 		}
@@ -201,22 +203,6 @@
 			//			});
 		}
 
-		//由经纬度获取地址信息
-		function getAddress(lon, lat) {
-			bMap.getNameFromCoords({
-				lon : lon,
-				lat : lat
-			}, function(ret, err) {
-				//              console.log("当前位置信息===" + JSON.stringify(ret));
-				if (ret.status) {
-					//获取当前用户所属城市
-					alert(JSON.stringify(ret));
-				} else {
-					api.toast({
-						msg : '连接错误，请检查网络或者请求配置是否正确'
-					});
-				}
-			});
-		}
+
 	</script>
 </html>
