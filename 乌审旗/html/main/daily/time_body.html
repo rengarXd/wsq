@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>body</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
+		<link rel="stylesheet" href="../../../css/style.css" />
+		<link rel="stylesheet" href="../../../css/fonts/iconfont.css" />
+		<style>
+			.f_menu {
+				height: 56px;
+				background: #ffffff;
+				color: #000;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+			.confirm_btn {
+				background: -webkit-gradient(linear, left top, left bottom, from(#00b3ff), to(#10a0d3)) !important;
+				background-size: cover;
+				border-radius: 8px !important;
+				-webkit-border-radius: 8px !important;
+			}
+			.confirm_btn:active {
+				background-color: #109fd4 !important;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="H-flexbox-horizontal f_menu">
+			<div class="H-flex-item H-center-all H-vertical-middle">
+				<button class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+					签到
+				</button>
+			</div>
+			<div class="H-flex-item H-center-all H-vertical-middle">
+				<button class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+					签退
+				</button>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../script/wsq.js"></script>
+	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		var bMap = null, infos = null;
+		apiready = function() {
+			initModel();
+			//4.地图初始化
+			initMap();
+		};
+		//初始化地图
+		function initMap() {
+			//延时打开百度地图 ok
+			setTimeout("openMap();", 10);
+		}
+
+		//2.初始化模块
+		function initModel() {
+			bMap = api.require('bMap');
+		}
+
+		//打开地图
+		function openMap() {
+			var mySettingInfo = api.require('mySettingInfo');
+			//获取定位是否开启，及当前 app 获取的定位权限
+			bMap.getLocationServices(function(ret, err) {
+				//              console.log(JSON.stringify(ret));
+				if (ret.enable) {
+					if ('ios' == api.systemType) {
+						switch(ret.authorizationStatus) {
+							case "denied":
+								api.confirm({
+									title : '温馨提示',
+									msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+									buttons : ['确定', '取消']
+								}, function(ret, err) {
+									var index = ret.buttonIndex;
+									switch(index) {
+										case 1:
+											//ios中未开启GPS
+											api.openApp({
+												iosUrl : 'app-settings:',
+												androidPkg : ''
+											}, function(ret, err) {
+												//coding...
+											});
+											break;
+									}
+								});
+								break;
+						}
+					}
+					//                    console.log(JSON.stringify(ret));
+				} else {
+					api.confirm({
+						title : '温馨提示',
+						msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+						buttons : ['确定', '取消']
+					}, function(ret, err) {
+						var index = ret.buttonIndex;
+						switch(index) {
+							case 1:
+								var mySettingInfo = api.require('mySettingInfo');
+								mySettingInfo.settingInt({
+									'index' : 2
+								}, function(ret, err) {
+									//alert(JSON.stringify(ret));
+								});
+								break;
+						}
+					});
+				}
+			});
+			bMap.getLocation({
+				accuracy : '30m',
+				autoStop : true,
+				filter : 30
+			}, function(ret, err) {
+				if (ret.status) {
+					var location_data = ret;
+					bMap.open({
+						rect : {
+							x : 0,
+							y : 0,
+							w : api.winWidth,
+							h : api.frameHeight - 56
+						},
+						center : {
+							lon : ret.lon,
+							lat : ret.lat
+						},
+						zoomLevel : 17,
+						showUserLocation : true,
+						fixedOn : api.frameName,
+						fixed : true
+					}, function(ret) {
+						if (ret.status) {
+							//显示交通图
+							//bMap.setTraffic({
+							//    traffic : true
+							//});
+							//设置指南针位置
+							bMap.setCompass({
+								position : {
+									x : 50,
+									y : 50
+								}
+							});
+						}
+					});
+				} else {
+					//alert(err.code);
+				}
+			});
+		}
+	</script>
+</html>
