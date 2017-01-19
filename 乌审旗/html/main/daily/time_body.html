@@ -31,12 +31,12 @@
 	<body>
 		<div class="H-flexbox-horizontal f_menu">
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="arrive();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					签到
 				</button>
 			</div>
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="exit();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					签退
 				</button>
 			</div>
@@ -55,6 +55,50 @@
 		function initMap() {
 			//延时打开百度地图 ok
 			setTimeout("openMap();", 10);
+		}
+
+		//签到方法
+		function arrive() {
+			bMap.getLocation({
+				accuracy : '10m',
+				autoStop : true,
+				filter : 30
+			}, function(ret, err) {
+				if (ret.status) {
+					var location_data = ret;
+					console.log(JSON.stringify(location_data));
+					api.toast({
+						msg : JSON.stringify(location_data) + format(location_data.timestamp)
+					});
+				} else {
+					//alert(err.code);
+				}
+			});
+		}
+
+		//js时间戳转换
+		function format(shijianchuo) {
+			//shijianchuo是整数，否则要parseInt转换
+			var time = new Date(parseInt(shijianchuo) * 1000);
+			var y = time.getFullYear();
+			var m = time.getMonth() + 1;
+			var d = time.getDate();
+			var h = time.getHours();
+			var mm = time.getMinutes();
+			var s = time.getSeconds();
+			return y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s);
+			//alert(y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s));
+		}
+
+		//月份处理
+		function add0(m) {
+			return m < 10 ? '0' + m : m
+		}
+
+		function exit() {
+			api.toast({
+				msg : '签退成功'
+			});
 		}
 
 		//2.初始化模块
@@ -115,7 +159,7 @@
 				}
 			});
 			bMap.getLocation({
-				accuracy : '30m',
+				accuracy : '10m',
 				autoStop : true,
 				filter : 30
 			}, function(ret, err) {

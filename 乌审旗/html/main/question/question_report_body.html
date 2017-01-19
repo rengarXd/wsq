@@ -20,13 +20,13 @@
 	<body>
 		<div tapmode onclick="shijian();" class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
-				事件类型<span class="H-margin-horizontal-left-25 H-theme-font-color-black" id="shijian">aaa</span>
+				事件类型<span class="H-margin-horizontal-left-25 H-theme-font-color-black" id="shijian"></span>
 			</div>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
 		<div tapmode onclick="keshi();" class="H-text-list H-flexbox-horizontal H-font-size-14  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-padding-vertical-both-12">
-				上报科室<span class="H-margin-horizontal-left-25 H-theme-font-color-black" id="keshi">aaa</span>
+				上报科室<span class="H-margin-horizontal-left-25 H-theme-font-color-black" id="keshi"></span>
 			</div>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
@@ -167,7 +167,7 @@
 					if (ret && ret.body.success) {
 						setTimeout(function() {
 							api.closeWin();
-						}, 800);
+						}, 500);
 					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
