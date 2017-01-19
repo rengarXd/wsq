@@ -59,7 +59,7 @@
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 	<script type="text/javascript">
-		var userdata = null;
+		var userdata = null, maplon = null, maplat = null;
 		apiready = function() {
 			initPage();
 		};
@@ -160,10 +160,11 @@
 				});
 				$xy.ajax(function(ret, err) {
 					api.hideProgress();
+					//alert(JSON.stringify(ret));
 					api.toast({
-						msg : ret.message
+						msg : ret.body.message
 					});
-					if (ret && ret.success) {
+					if (ret && ret.body.success) {
 						setTimeout(function() {
 							api.closeWin();
 						}, 800);
