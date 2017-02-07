@@ -6,8 +6,8 @@
 ;! function(window) {
 	window.serverUrl = "http://117.158.216.74:8080/wshuanwei/fileAction.do?pagetype=grid&nousercheck=1&eventcode=";
 	window.ImgWebUrl = 'http://117.158.216.74:8080/wshuanwei/fileAction.do?';
-//	window.wxPayurl = 'http://117.158.216.74:8080/wshuanwei/payNotifyUrl.jsp';
-//	window.aliPayurl = 'http://x.jiyoukeji.cn/wash/notify_url.jsp';
+	//	window.wxPayurl = 'http://117.158.216.74:8080/wshuanwei/payNotifyUrl.jsp';
+	//	window.aliPayurl = 'http://x.jiyoukeji.cn/wash/notify_url.jsp';
 	//	var isAndroid = (/android/gi).test(navigator.appVersion);
 	//	var uzStorage = function() {
 	//		var ls = window.localStorage;
@@ -160,6 +160,20 @@
 				};
 			}
 		},
+		setRefreshHeaderInfo : function(callback) {
+			var that = this;
+			var opt = {
+				visible : true,
+				bgColor : '#fff',
+				textColor : '#666666',
+				textDown : '下拉刷新...',
+				textUp : '松开刷新...',
+				showTime : true
+			};
+			//下拉刷新
+			api.setRefreshHeaderInfo(opt, callback);
+		},
+
 		ajax : function(callback, url, method, data, options) {
 			var that = this;
 			var o = {};
