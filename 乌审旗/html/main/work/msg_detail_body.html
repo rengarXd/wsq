@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>消息详情body</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/animate/animate.min.css" />
+		<style>
+			html, body {
+				background-color: white;
+			}
+			.xy_border {
+				border-bottom: 1px solid #d8d8d8;
+				margin-left: 20px;
+				margin-right: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<!--消息头显示与隐藏-->
+		<header class="H-header header_bg animated" style="display:none; width:100%;position: fixed;top:0;z-index: 1000;" id="header">
+			<span tapmode="H-theme-font-color-444" tapmode="" onclick="closeWIN();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
+			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
+				消息详情
+			</div>
+		</header>
+		<div id="pos" style="height: 44px;display:none;"></div>
+		<!--消息头显示与隐藏-->
+		<div id="message_html"></div>
+		<!--<div class="H-padding-vertical-top-15 H-text-align-center H-font-size-32">
+		消息详情
+		</div>
+		<div class="H-flexbox-horizontal">
+		<div class="H-theme-font-color-999 H-font-size-13 H-padding-horizontal-both-25 H-padding-vertical-both-5  H-vertical-middle">
+		时间：<span class="H-theme-font-color-b5cb85clack">2016-10-11</span>
+		</div>
+		<div class="H-flex-item ">
+		<img src="../../image/logo.png" width="120" class="H-vertical-middle H-float-right H-padding-horizontal-both-20"/>
+		</div>
+		</div>
+		<div class="xy_border"></div>
+		<div></div>-->
+		<!--<div class="H-timeline-item H-z-index-100 H-theme-background-color-white H-margin-vertical-top-15 H-border-both-after H-animate-scale-big">
+		<div class="H-timeline-header H-text-show-row-1 H-font-size-14 H-padding-10 H-line-height-normal H-theme-background-color-white H-border-vertical-bottom-after">
+		Hui 官方公告
+		<span class="H-float-right H-padding-horizontal-right-25 H-font-size-13 kongxian">未读</span>
+		</div>
+		<div class="H-timeline-container H-padding-10 H-font-size-15">
+		一切从简，只为了更懒！Hui是新生帝个人开发，版权所有为中山赢友网络科技有限公司，Hui基于最新的HTML5，CSS3，ECMAScript开发，并且是一款非常棒的开源项目。
+		</div>
+		<div class="H-timeline-footer H-line-height-normal H-padding-10 H-font-size-14">
+		查看详情
+		</div>
+		</div>-->
+		<script type="text/html" id="message_data">
+			<div class="H-padding-vertical-both-15 H-text-align-center H-font-size-30">
+			{{ d.news_tital }}
+			</div>
+			<div class="H-flexbox-horizontal">
+			<div class="H-theme-font-color-999 H-font-size-13 H-padding-horizontal-both-25 H-padding-vertical-both-5  H-vertical-middle">
+			时间：<span class="H-theme-font-color-b5cb85clack">{{ d.publish_time }}</span>
+			</div>
+			<div class="H-flex-item ">
+			<img src="../../image/logo.png" width="120" class="H-vertical-middle H-float-right H-padding-horizontal-both-20"/>
+			</div>
+			</div>
+			<div class="xy_border"></div>
+			<div class="H-font-size-14 H-theme-font-color-666 H-text-indent H-padding-horizontal-both-25 H-padding-vertical-top-15">{{ d.news_content }}</div>
+		</script>
+	</body>
+	<script type="text/javascript" src="../../script/xy.js"></script>
+	<script type="text/javascript" src="../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../script/tools/laytpl.js"></script>
+	<script type="text/javascript">
+		var news_id = null;
+		apiready = function() {
+			swipe();
+			news_id = api.pageParam.data;
+			initPage();
+		};
+		function swipe() {
+			document.getElementById('pos').style.display = "";
+			document.getElementById('header').style.display = "";
+			api.addEventListener({
+				name : 'swipedown'
+			}, function(ret, err) {
+				//alert('向下轻扫');
+				$("#header").removeClass('fadeOutUp');
+				$("#header").addClass('fadeInDown');
+				document.getElementById('header').style.display = "";
+				document.getElementById('pos').style.display = "";
+				//$("#header").hide();
+			});
+			api.addEventListener({
+				name : 'swipeup'
+			}, function(ret, err) {
+				//alert('向上轻扫');
+				$("#header").removeClass('fadeInDown');
+				$("#header").addClass('fadeOutUp');
+				setTimeout(function() {
+					document.getElementById('header').style.display = "none";
+					document.getElementById('pos').style.display = "none";
+				}, 300);
+			});
+		}
+
+		// 初始化页面
+		function initPage() {
+			api.getPrefs({
+				key : 'userinfo'
+			}, function(ret, err) {
+				if (ret && ret.value) {
+					var user = eval('(' + ret.value + ')');
+					$xy.ajax(function(ret, err) {
+						//api.hideProgress();
+						if (ret.success) {
+							//console.log(JSON.stringify(ret));
+							//						api.toast({
+							//							msg : '已读'
+							//						});
+							if (ret.data.length == 0) {
+								//当没有订单时的处理
+								api.refreshHeaderLoadDone();
+								var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录</div></div></div>';
+								document.getElementById('message_html').innerHTML = htmls;
+							} else {
+								//console.log(JSON.stringify(ret));
+								api.refreshHeaderLoadDone();
+								var tpl = document.getElementById('message_data').innerHTML;
+								//读取模版
+								//方式一：异步渲染（推荐）
+								laytpl(tpl).render(ret.data[0], function(render) {
+									//api.hideProgress();
+									document.getElementById('message_html').innerHTML = render;
+								});
+							}
+						} else {
+							//console.log(JSON.stringify(ret));
+							api.toast({
+								msg : ret.message
+							});
+						}
+					}, 'appNewsInfo&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&news_id=' + news_id);
+				} else {
+					var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">请先登录</div></div></div>';
+					document.getElementById('message_html').innerHTML = htmls;
+				}
+			});
+		}
+
+		function closeWIN() {
+			api.execScript({
+				name : 'msg_head',
+				frameName : 'msg_body',
+				script : 'loreload();'
+			});
+			api.closeWin();
+		}
+	</script>
+</html>
