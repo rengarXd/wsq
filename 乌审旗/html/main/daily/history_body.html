@@ -6,25 +6,95 @@
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 		<title>body</title>
 		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/fonts/iconfont.css" />
 		<link rel="stylesheet" href="../../../css/style.css" />
 	</head>
-	<body></body>
-	<script type="text/javascript" src="../../../script/wsq.js"></script>
-	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
-	<script type="text/javascript">
-		var db = null;
-		apiready = function() {
-			db = api.require('db');
-			initPage();
-		};
-		// 初始化页面
-		function initPage() {
-			var data = db.selectSqlSync({
-				name : 'wsqDB',
-				sql : 'SELECT * FROM historylocation'
-			});
-			alert(JSON.stringify(data));
-			console.log('inserthistorylocation==' + JSON.stringify(data));
-		}
-	</script>
+	<body>
+		<div id="text_html">
+			<div class="H-position-absolute H-position-center-all" id="statuss">
+				<div class="H-font-size-14 H-text-align-center">
+					<i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i>
+					<div class="H-theme-font-color-999" id="jiazai">
+						加载中
+					</div>
+				</div>
+			</div>
+		</div>
+		<script  type="text/html" id="text_data">
+			{{# for (var i=0,l = d.length; i<l;i++) { }}
+			<div class="H-margin-vertical-bottom-5 H-flexbox-horizontal H-theme-background-color-white H-padding-vertical-top-15 H-padding-vertical-bottom-5">
+			<span class="H-padding-horizontal-both-10 "><i class="iconfont icon-shebeidingwei H-font-size-20 xy_font_color"></i></span>
+			<div class="H-flex-item xy_font_color">
+			<span id="device_name">{{ d[i].Class_name }}</span>
+			<span class="H-float-right H-padding-horizontal-right-10 ">
+			{{# if( d[i].Islate == 1) { }}
+			在岗
+			{{# }else{ }}
+			<span class="H-theme-font-color-ccc">脱岗</span>
+			{{# } }}
+			</span>
+			<div class="H-theme-font-color-999 H-font-size-15 H-padding-vertical-both-5">
+			{{ format(d[i].Time) }}
+			</div>
+			</div>
+			</div>
+			{{# } }}
+		</script>
+		<script type="text/javascript" src="../../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
+		<script type="text/javascript">
+			var db = null;
+			apiready = function() {
+				db = api.require('db');
+				initPage();
+				//下拉刷新
+				api.setRefreshHeaderInfo({
+					visible : true,
+					bgColor : '#fff',
+					textColor : '#666666',
+					textDown : '下拉刷新...',
+					textUp : '松开刷新...',
+					showTime : true
+				}, function(ret, err) {
+					location.reload();
+				});
+			};
+			// 初始化页面
+			function initPage() {
+				var dbdata = db.selectSqlSync({
+					name : 'wsqDB',
+					sql : 'SELECT * FROM historylocation ORDER BY Id DESC'
+				});
+				var tpl = document.getElementById('text_data').innerHTML;
+				laytpl(tpl).render(dbdata.data, function(render) {
+					api.refreshHeaderLoadDone();
+					if (dbdata.data.length == 0) {
+						document.getElementById('jiazai').innerHTML = '暂无数据';
+					} else {
+						document.getElementById('text_html').innerHTML = render;
+					}
+				});
+				console.log('inserthistorylocation==' + JSON.stringify(dbdata));
+			}
+
+			//js时间戳转换
+			function format(shijianchuo) {
+				//shijianchuo是整数，否则要parseInt转换
+				var time = new Date(parseInt(shijianchuo));
+				var y = time.getFullYear();
+				var m = time.getMonth() + 1;
+				var d = time.getDate();
+				var h = time.getHours();
+				var mm = time.getMinutes();
+				var s = time.getSeconds();
+				return y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s);
+				//alert(y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s));
+			}
+
+			//月份处理
+			function add0(m) {
+				return m < 10 ? '0' + m : m
+			}
+		</script>
+	</body>
 </html>
