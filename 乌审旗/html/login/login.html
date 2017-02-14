@@ -78,6 +78,16 @@
 			//$("#top_position").css('height', api.frameHeight * 2 / 5);
 			$("#top_part").css('height', api.frameHeight / 2);
 			$xy.dblclickToCloseApp();
+//			alert(addArrayElements([1, 2]));
+		}
+
+		var addArrayElements = splat(function(x, y) {
+			return x + y
+		});
+		function splat(fun) {
+			return function(array) {
+				return fun.apply(null, array);
+			}
 		}
 
 		Zepto(function($) {

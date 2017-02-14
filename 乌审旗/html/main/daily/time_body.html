@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>body</title>
+		<title>我的考勤</title>
 		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
 		<link rel="stylesheet" href="../../../css/style.css" />
 		<link rel="stylesheet" href="../../../css/fonts/iconfont.css" />
@@ -31,12 +31,12 @@
 	<body>
 		<div class="H-flexbox-horizontal f_menu">
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button tapmode="" onclick="arrive();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="location.reload();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					签到
 				</button>
 			</div>
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button tapmode="" onclick="exit();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="cleanCycle();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					签退
 				</button>
 			</div>
@@ -45,7 +45,7 @@
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 	<script type="text/javascript">
-		var bMap = null, infos = null;
+		var bMap = null, infos = null, user = null, retdata = null, cycle = null;
 		apiready = function() {
 			initModel();
 			//4.地图初始化
@@ -57,27 +57,194 @@
 			setTimeout("openMap();", 10);
 		}
 
-		//签到方法
-		function arrive() {
-			bMap.getLocation({
-				accuracy : '10m',
-				autoStop : true,
-				filter : 30
+		function initinfo() {
+			api.getPrefs({
+				key : 'userinfo'
 			}, function(ret, err) {
-				if (ret.status) {
-					var location_data = ret;
-					console.log(JSON.stringify(location_data));
-					api.toast({
-						msg : JSON.stringify(location_data) + format(location_data.timestamp)
+				if (ret && ret.value) {
+					user = eval('(' + ret.value + ')');
+					_workAjax(function() {
+						$xy.ajax(function(ret, err) {
+							//api.hideProgress();
+							if (ret.success) {
+								//console.log(JSON.stringify(ret.data[0].locale_coordinate));
+								console.log(JSON.stringify(retdata));
+								addPoly(ret.data[0].locale_coordinate);
+								isPoint(ret.data[0].locale_coordinate);
+								cycle = setInterval('isPoint(' + '"' + ret.data[0].locale_coordinate + '"' + ')', 5000);
+							} else if (ret) {
+								api.toast({
+									msg : ret.message
+								});
+							} else {
+								api.toast({
+									msg : err.body
+								});
+							}
+						}, 'AppUserRegion&funid=hw_locale1&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
 					});
+					//console.log(JSON.stringify(retdata));
 				} else {
-					//alert(err.code);
 				}
 			});
 		}
 
-		//js时间戳转换
-		function format(shijianchuo) {
+		function cleanCycle() {
+			clearInterval(cycle);
+		}
+
+		function isPoint(locale_coordinate) {
+			bMap.getLocation({
+				accuracy : '10m',
+				autoStop : true
+			}, function(ret, err) {
+				if (ret.status) {
+					//alert(JSON.stringify(ret));
+					var lonn = ret.lon;
+					var latt = ret.lat;
+					var stamp = ret.timestamp;
+					var rett = ret;
+					bMap.isPolygonContantsPoint({
+						point : {
+							lon : lonn,
+							lat : latt
+						},
+						points : locale_coordinate
+					}, function(ret) {
+						outmap(rett, ret);
+						upwork(lonn, latt, stamp);
+					});
+				} else {
+					alert(err.code);
+				}
+			});
+		}
+
+		function upwork(lon, lat, timestamp) {
+			$xy.ajax(function(ret, err) {
+				//api.hideProgress();
+				if (ret.success) {
+					console.log(JSON.stringify(ret));
+					//					api.toast({
+					//						msg : ret.message
+					//					});
+				} else {
+					api.toast({
+						msg : err.body
+					});
+					cleanCycle();
+				}
+			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp));
+		}
+
+		//添加多边形
+		function addPoly(locale_coordinate) {
+			bMap.addPolygon({
+				id : 2,
+				styles : {
+					borderColor : '#FF0000',
+					borderWidth : 3,
+					fillColor : '#0000ff'
+				},
+				points : locale_coordinate
+			});
+		}
+
+		//签到方法
+		//		function inmap(timestamp) {
+		//			var nowtime = Date.parse(new Date());
+		//			for (var i = 0, l = retdata.length; i < l; i++) {
+		//				var intime = retdata[i].in_time;
+		//				var outtime = retdata[i].out_time;
+		//				if (nowtime < parseFloat(outtime) && nowtime > parseFloat(intime)) {
+		//					api.toast({
+		//						msg : '在岗'
+		//					});
+		//				} else {
+		//					api.getPrefs({
+		//						sync : false,
+		//						key : 'times'
+		//					}, function(ret, err) {
+		//						if (ret && ret.value) {
+		//							setTimeout("uptime();", 60000);
+		//						} else {
+		//							api.setPrefs({
+		//								key : 'times',
+		//								value : true
+		//							});
+		//						}
+		//					});
+		//				}
+		//			}
+		//		}
+		//签退方法
+		function outmap(ret, rets) {
+			var nowtime = ret.timestamp;
+			for (var i = 0, l = retdata.length; i < l; i++) {
+				var intime = retdata[i].in_time;
+				var outtime = retdata[i].out_time;
+				api.sendEvent({
+					name : 'datas',
+					extra : {
+						lon : ret.lon,
+						lat : ret.lat,
+						timestamp : ret.timestamp,
+						status : rets.status
+					}
+				});
+				if ((parseInt(outtime) * 1000 > parseInt(nowtime)) && (parseInt(nowtime)) > (parseInt(intime) * 1000)) {
+					//alert(format1000(intime) +format1000(outtime)+ JSON.stringify(retdata[i]));
+					if (rets.status) {
+						api.toast({
+							msg : '在岗'
+						});
+					} else {
+						api.toast({
+							msg : "已脱岗，下班时间：" + format1000(outtime)
+						});
+					}
+				} else {
+					api.toast({
+						msg : '已下班'
+					});
+				}
+				//				if (parseInt(nowtime) <= parseInt(outtime) && parseInt(nowtime) >= parseInt(intime)) {
+				//
+				//				} else {
+				//				}
+			}
+		}
+
+		//获取班组
+		function _workAjax(callback) {
+			$xy.ajax(function(ret, err) {
+				//api.hideProgress();
+				if (ret.success) {
+					retdata = ret.data;
+					callback();
+				}
+			}, 'AppUserScheduling&funid=hw_automa&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
+		}
+
+		//		function arrive() {
+		//			bMap.getLocation({
+		//				accuracy : '10m',
+		//				autoStop : true,
+		//				filter : 30
+		//			}, function(ret, err) {
+		//				if (ret.status) {
+		//					var location_data = ret;
+		//					console.log(JSON.stringify(location_data));
+		//					api.toast({
+		//						msg : JSON.stringify(location_data) + format(location_data.timestamp)
+		//					});
+		//				} else {
+		//					//alert(err.code);
+		//				}
+		//			});
+		//		}
+		//js时间戳转换*1000
+		function format1000(shijianchuo) {
 			//shijianchuo是整数，否则要parseInt转换
 			var time = new Date(parseInt(shijianchuo) * 1000);
 			var y = time.getFullYear();
@@ -93,6 +260,30 @@
 		//月份处理
 		function add0(m) {
 			return m < 10 ? '0' + m : m
+		}
+
+		//js时间戳转换
+		function format(shijianchuo) {
+			//shijianchuo是整数，否则要parseInt转换
+			var time = new Date(parseInt(shijianchuo));
+			var y = time.getFullYear();
+			var m = time.getMonth() + 1;
+			var d = time.getDate();
+			var h = time.getHours();
+			var mm = time.getMinutes();
+			var s = time.getSeconds();
+			return y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s);
+			//alert(y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s));
+		}
+
+		function worktime(hours) {
+			//shijianchuo是整数，否则要parseInt转换
+			var time = new Date();
+			var y = time.getFullYear();
+			var m = time.getMonth() + 1;
+			var d = time.getDate();
+			return y + '-' + add0(m) + '-' + add0(d) + ' ' + hours;
+			//alert(y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s));
 		}
 
 		function exit() {
@@ -193,6 +384,8 @@
 									y : 50
 								}
 							});
+							//初始化信息
+							initinfo();
 						}
 					});
 				} else {
