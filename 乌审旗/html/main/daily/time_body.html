@@ -32,12 +32,12 @@
 		<div class="H-flexbox-horizontal f_menu">
 			<div class="H-flex-item H-center-all H-vertical-middle">
 				<button tapmode="" onclick="location.reload();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
-					签到
+					重置考勤
 				</button>
 			</div>
 			<div class="H-flex-item H-center-all H-vertical-middle">
 				<button tapmode="" onclick="cleanCycle();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
-					签退
+					终止考勤
 				</button>
 			</div>
 		</div>
@@ -57,6 +57,11 @@
 			setTimeout("openMap();", 10);
 		}
 
+		//2.初始化模块
+		function initModel() {
+			bMap = api.require('bMap');
+		}
+
 		function initinfo() {
 			api.getPrefs({
 				key : 'userinfo'
@@ -71,7 +76,9 @@
 								console.log(JSON.stringify(retdata));
 								addPoly(ret.data[0].locale_coordinate);
 								isPoint(ret.data[0].locale_coordinate);
-								cycle = setInterval('isPoint(' + '"' + ret.data[0].locale_coordinate + '"' + ')', 5000);
+								if (!cycle) {
+									cycle = setInterval('isPoint(' + '"' + ret.data[0].locale_coordinate + '"' + ')', 5000);
+								}
 							} else if (ret) {
 								api.toast({
 									msg : ret.message
@@ -90,6 +97,12 @@
 		}
 
 		function cleanCycle() {
+			api.toast({
+				msg : '终止考勤'
+			});
+			api.sendEvent({
+				name : 'delet_datas'
+			});
 			clearInterval(cycle);
 		}
 
@@ -112,7 +125,16 @@
 						points : locale_coordinate
 					}, function(ret) {
 						outmap(rett, ret);
-						upwork(lonn, latt, stamp);
+						upwork(lonn, latt, stamp, ret.status);
+						//						if (ret.status) {
+						//							api.toast({
+						//								msg : '进入考勤范围'
+						//							});
+						//						} else {
+						//							api.toast({
+						//								msg : "脱离考勤范围"
+						//							});
+						//						}
 					});
 				} else {
 					alert(err.code);
@@ -120,7 +142,8 @@
 			});
 		}
 
-		function upwork(lon, lat, timestamp) {
+		function upwork(lon, lat, timestamp, status) {
+			status ? status = 1 : status = 0;
 			$xy.ajax(function(ret, err) {
 				//api.hideProgress();
 				if (ret.success) {
@@ -134,7 +157,7 @@
 					});
 					cleanCycle();
 				}
-			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp));
+			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp) + '&status=' + status);
 		}
 
 		//添加多边形
@@ -183,35 +206,42 @@
 			for (var i = 0, l = retdata.length; i < l; i++) {
 				var intime = retdata[i].in_time;
 				var outtime = retdata[i].out_time;
-				api.sendEvent({
-					name : 'datas',
-					extra : {
-						lon : ret.lon,
-						lat : ret.lat,
-						timestamp : ret.timestamp,
-						status : rets.status
-					}
-				});
 				if ((parseInt(outtime) * 1000 > parseInt(nowtime)) && (parseInt(nowtime)) > (parseInt(intime) * 1000)) {
 					//alert(format1000(intime) +format1000(outtime)+ JSON.stringify(retdata[i]));
+					api.sendEvent({
+						name : 'datas',
+						extra : {
+							class_name : retdata[i].class_name,
+							timestamp : ret.timestamp,
+							status : rets.status,
+							intime : 1,
+							uid : user[0].uuid
+						}
+					});
 					if (rets.status) {
 						api.toast({
 							msg : '在岗'
 						});
 					} else {
 						api.toast({
-							msg : "已脱岗，下班时间：" + format1000(outtime)
+							msg : "进入上班时间，已脱岗，下班时间：" + format1000(outtime)
 						});
 					}
 				} else {
+					//					api.sendEvent({
+					//						name : 'datas',
+					//						extra : {
+					//							class_name : retdata[i].class_name,
+					//							timestamp : ret.timestamp,
+					//							status : rets.status,
+					//							intime : 0,
+					//							uid : user[0].uuid
+					//						}
+					//					});
 					api.toast({
-						msg : '已下班'
+						msg : "非上班时间"
 					});
 				}
-				//				if (parseInt(nowtime) <= parseInt(outtime) && parseInt(nowtime) >= parseInt(intime)) {
-				//
-				//				} else {
-				//				}
 			}
 		}
 
@@ -284,17 +314,6 @@
 			var d = time.getDate();
 			return y + '-' + add0(m) + '-' + add0(d) + ' ' + hours;
 			//alert(y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s));
-		}
-
-		function exit() {
-			api.toast({
-				msg : '签退成功'
-			});
-		}
-
-		//2.初始化模块
-		function initModel() {
-			bMap = api.require('bMap');
 		}
 
 		//打开地图
