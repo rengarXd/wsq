@@ -20,7 +20,9 @@
 						style : 'light',
 						color : '#000000'
 					});
-				}
+				};
+				//初始化数据库
+				initDB();
 				//判断是否已经登录
 				api.getPrefs({
 					sync : false,
@@ -35,6 +37,39 @@
 						//1.6、关闭当前页面跳转登陆页面
 						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
 							slidBackEnabled : false
+						});
+					}
+				});
+			}
+			//初始化DB
+			function initDB() {
+				var db = api.require('db');
+				//创建bddb数据库
+				var ret = db.openDatabaseSync({
+					name : 'wsqDB'
+				});
+				api.getPrefs({
+					key : 'ishistorydb'
+				}, function(ret, err) {
+					if (ret && ret.value) {
+						var data = db.executeSqlSync({
+							name : 'wsqDB',
+							sql : 'alter table historylocation add islate int(4)'
+						});
+						//						var data2 = db.executeSqlSync({
+						//							name : 'wsqDB',
+						//							sql : 'alter table historylocation add AddressId varchar(255)'
+						//						});
+					} else {
+						//新增表(第一次初始化表)
+						var data = db.executeSqlSync({
+							name : 'wsqDB',
+							sql : 'CREATE TABLE historylocation(Id int auto_increment, islate int(4), time varchar(255), lon varchar(255), Lat varchar(255), primary key(Id))'
+						});
+						//alert(JSON.stringify(data));
+						api.setPrefs({
+							key : 'ishistorydb',
+							value : true
 						});
 					}
 				});
