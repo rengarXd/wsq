@@ -66,6 +66,13 @@
 		//2.初始化模块
 		function initModel() {
 			bMap = api.require('bMap');
+			//应用返回前台
+			api.addEventListener({
+				name : 'resume'
+			}, function(ret, err) {
+				//alert('应用回到后台');
+				reload();
+			});
 		}
 
 		//初始化主程序
@@ -191,33 +198,6 @@
 			});
 		}
 
-		//签到方法
-		//		function inmap(timestamp) {
-		//			var nowtime = Date.parse(new Date());
-		//			for (var i = 0, l = retdata.length; i < l; i++) {
-		//				var intime = retdata[i].in_time;
-		//				var outtime = retdata[i].out_time;
-		//				if (nowtime < parseFloat(outtime) && nowtime > parseFloat(intime)) {
-		//					api.toast({
-		//						msg : '在岗'
-		//					});
-		//				} else {
-		//					api.getPrefs({
-		//						sync : false,
-		//						key : 'times'
-		//					}, function(ret, err) {
-		//						if (ret && ret.value) {
-		//							setTimeout("uptime();", 60000);
-		//						} else {
-		//							api.setPrefs({
-		//								key : 'times',
-		//								value : true
-		//							});
-		//						}
-		//					});
-		//				}
-		//			}
-		//		}
 		//考勤方法
 		function outmap(ret, status) {
 			var nowtime = ret.timestamp;
@@ -266,23 +246,6 @@
 			}, 'AppUserScheduling&funid=hw_automa&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
 		}
 
-		//		function arrive() {
-		//			bMap.getLocation({
-		//				accuracy : '10m',
-		//				autoStop : true,
-		//				filter : 30
-		//			}, function(ret, err) {
-		//				if (ret.status) {
-		//					var location_data = ret;
-		//					console.log(JSON.stringify(location_data));
-		//					api.toast({
-		//						msg : JSON.stringify(location_data) + format(location_data.timestamp)
-		//					});
-		//				} else {
-		//					//alert(err.code);
-		//				}
-		//			});
-		//		}
 		//js时间戳转换*1000
 		function format1000(shijianchuo) {
 			//shijianchuo是整数，否则要parseInt转换
