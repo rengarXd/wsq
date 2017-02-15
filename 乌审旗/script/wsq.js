@@ -6,16 +6,6 @@
 ;! function(window) {
 	window.serverUrl = "http://117.158.216.74:8081/wshuanwei/fileAction.do?pagetype=grid&nousercheck=1&eventcode=";
 	window.ImgWebUrl = 'http://117.158.216.74:8081/wshuanwei/fileAction.do?';
-	//	window.wxPayurl = 'http://117.158.216.74:8080/wshuanwei/payNotifyUrl.jsp';
-	//	window.aliPayurl = 'http://x.jiyoukeji.cn/wash/notify_url.jsp';
-	//	var isAndroid = (/android/gi).test(navigator.appVersion);
-	//	var uzStorage = function() {
-	//		var ls = window.localStorage;
-	//		if (isAndroid) {
-	//			ls = os.localStorage();
-	//		}
-	//		return ls;
-	//	};
 	var u = {
 		DEFAULT_CONFIG : {
 			openWin_CONFIG : {

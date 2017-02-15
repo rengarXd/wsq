@@ -64,11 +64,11 @@
 						name : 'wsqDB',
 						sql : "SELECT * FROM historylocation"
 					});
-					console.log(dateret.data.length);
-					if (dateret && dateret.data.length > 10) {
+					//console.log(dateret.data.length);
+					if (dateret && dateret.data.length > 20) {
 						var data = db.executeSqlSync({
 							name : 'wsqDB',
-							sql : "DELETE FROM historylocation WHERE Id < '" + (dateret.data.length - 10) + "'"
+							sql : "DELETE FROM historylocation WHERE Id < '" + (dateret.data.length - 20) + "'"
 						});
 					} else {
 						api.toast({
