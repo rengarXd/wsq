@@ -31,7 +31,7 @@
 	<body>
 		<div class="H-flexbox-horizontal f_menu">
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button tapmode="" onclick="" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="reload()" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					重置考勤
 				</button>
 			</div>
@@ -57,9 +57,10 @@
 			setTimeout("openMap();", 10);
 		}
 
-		function reload(){
+		//重新加载当前页
+		function reload() {
 			bMap.close();
-			location.reload();
+			window.location.reload();
 		}
 
 		//2.初始化模块
@@ -67,6 +68,7 @@
 			bMap = api.require('bMap');
 		}
 
+		//初始化主程序
 		function initinfo() {
 			api.getPrefs({
 				key : 'userinfo'
@@ -78,11 +80,21 @@
 							//api.hideProgress();
 							if (ret.success) {
 								//console.log(JSON.stringify(ret.data[0].locale_coordinate));
-								console.log(JSON.stringify(retdata));
-								addPoly(ret.data[0].locale_coordinate);
-								isPoint(ret.data[0].locale_coordinate);
+								//console.log(JSON.stringify(retdata));
+								locale_coordinatedata = ret.data[0].locale_coordinate;
+								//绘制多边形
+								addPoly(locale_coordinatedata);
+								//判断当前点是否在多边形的范围内
+								isPoint(locale_coordinatedata);
+								//设置定时上报
 								if (!cycle) {
-									cycle = setInterval('isPoint(' + '"' + ret.data[0].locale_coordinate + '"' + ')', 5000);
+									var arr = [];
+									for (var i = 0, l = locale_coordinatedata.length; i < l; i++) {
+										arr.push(JSON.stringify(locale_coordinatedata[i]));
+									}
+									//转换Json格式
+									var point = '[' + arr + ']';
+									cycle = setInterval('isPoint(' + point + ')', 5000);
 								}
 							} else if (ret) {
 								api.toast({
@@ -101,6 +113,7 @@
 			});
 		}
 
+		//终止考勤
 		function cleanCycle() {
 			api.toast({
 				msg : '终止考勤'
@@ -109,19 +122,25 @@
 				name : 'delet_datas'
 			});
 			clearInterval(cycle);
+			cycle = null;
 		}
 
+		//判断当前点是否在多边形的范围内方法
 		function isPoint(locale_coordinate) {
+			//console.log(JSON.stringify(locale_coordinate));
+			//$xy.isString(locale_coordinate) ? points = JSON.parse(locale_coordinate) : points = locale_coordinate;
+			//百度模块：定位
 			bMap.getLocation({
 				accuracy : '10m',
 				autoStop : true
 			}, function(ret, err) {
 				if (ret.status) {
-					//alert(JSON.stringify(ret));
+					//console.log(JSON.stringify(points));
 					var lonn = ret.lon;
 					var latt = ret.lat;
 					var stamp = ret.timestamp;
 					var rett = ret;
+					//百度模块：是否在多边形的范围内方法
 					bMap.isPolygonContantsPoint({
 						point : {
 							lon : lonn,
@@ -129,17 +148,10 @@
 						},
 						points : locale_coordinate
 					}, function(ret) {
+						//考勤方法
 						outmap(rett, ret);
+						//定时上报
 						upwork(lonn, latt, stamp, ret.status);
-						//						if (ret.status) {
-						//							api.toast({
-						//								msg : '进入考勤范围'
-						//							});
-						//						} else {
-						//							api.toast({
-						//								msg : "脱离考勤范围"
-						//							});
-						//						}
 					});
 				} else {
 					alert(err.code);
@@ -147,12 +159,13 @@
 			});
 		}
 
+		//定时上报
 		function upwork(lon, lat, timestamp, status) {
 			status ? status = 1 : status = 0;
 			$xy.ajax(function(ret, err) {
 				//api.hideProgress();
 				if (ret.success) {
-					console.log(JSON.stringify(ret));
+					//console.log(JSON.stringify(ret));
 					//					api.toast({
 					//						msg : ret.message
 					//					});
@@ -205,9 +218,10 @@
 		//				}
 		//			}
 		//		}
-		//签退方法
-		function outmap(ret, rets) {
+		//考勤方法
+		function outmap(ret, status) {
 			var nowtime = ret.timestamp;
+			//var nowstatus = status;
 			for (var i = 0, l = retdata.length; i < l; i++) {
 				var intime = retdata[i].in_time;
 				var outtime = retdata[i].out_time;
@@ -218,31 +232,22 @@
 						extra : {
 							class_name : retdata[i].class_name,
 							timestamp : ret.timestamp,
-							status : rets.status,
+							status : status.status,
 							intime : 1,
 							uid : user[0].uuid
 						}
 					});
-					if (rets.status) {
+					if (status.status) {
 						api.toast({
-							msg : '在岗'
+							msg : '进入考勤范围，在岗'
 						});
 					} else {
 						api.toast({
-							msg : "进入上班时间，已脱岗，下班时间：" + format1000(outtime)
+							msg : "脱离考勤范围，脱岗，下班时间：" + format1000(outtime)
 						});
 					}
+					return;
 				} else {
-					//					api.sendEvent({
-					//						name : 'datas',
-					//						extra : {
-					//							class_name : retdata[i].class_name,
-					//							timestamp : ret.timestamp,
-					//							status : rets.status,
-					//							intime : 0,
-					//							uid : user[0].uuid
-					//						}
-					//					});
 					api.toast({
 						msg : "非上班时间"
 					});
@@ -398,9 +403,9 @@
 					}, function(ret) {
 						if (ret.status) {
 							//显示交通图
-							//bMap.setTraffic({
-							//    traffic : true
-							//});
+							bMap.setTraffic({
+								traffic : true
+							});
 							//设置指南针位置
 							bMap.setCompass({
 								position : {
