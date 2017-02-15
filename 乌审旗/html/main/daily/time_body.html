@@ -31,7 +31,7 @@
 	<body>
 		<div class="H-flexbox-horizontal f_menu">
 			<div class="H-flex-item H-center-all H-vertical-middle">
-				<button tapmode="" onclick="location.reload();" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
+				<button tapmode="" onclick="" class="confirm_btn H-touch-active H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-8 H-padding-horizontal-both-15  H-theme-font-color-white ">
 					重置考勤
 				</button>
 			</div>
@@ -55,6 +55,11 @@
 		function initMap() {
 			//延时打开百度地图 ok
 			setTimeout("openMap();", 10);
+		}
+
+		function reload(){
+			bMap.close();
+			location.reload();
 		}
 
 		//2.初始化模块
@@ -157,7 +162,7 @@
 					});
 					cleanCycle();
 				}
-			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp) + '&status=' + status);
+			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp) + '&isinpoly=' + status);
 		}
 
 		//添加多边形
