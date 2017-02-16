@@ -180,8 +180,8 @@
 					if (systemType == "ios") {
 						var rets = eval('(' + err.body + ')');
 						if (rets.message == "登录验证失败!") {
-							var ajpush = api.require('ajpush');
-							ajpush.removeListener();
+//							var ajpush = api.require('ajpush');
+//							ajpush.removeListener();
 							api.removePrefs({
 								key : 'userinfo'
 							});
