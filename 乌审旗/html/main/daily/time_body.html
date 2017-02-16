@@ -136,61 +136,34 @@
 		function isPoint(locale_coordinate) {
 			//console.log(JSON.stringify(locale_coordinate));
 			//$xy.isString(locale_coordinate) ? points = JSON.parse(locale_coordinate) : points = locale_coordinate;
-			if (api.systemType == "ios") {
-				api.getLocation(function(ret, err) {
-					if (ret && ret.status) {
-						//获取位置信息成功
-						var lonn = ret.longitude;
-						var latt = ret.latitude;
-						var stamp = ret.timestamp;
-						var rett = ret;
-						//百度模块：是否在多边形的范围内方法
-						bMap.isPolygonContantsPoint({
-							point : {
-								lon : lonn,
-								lat : latt
-							},
-							points : locale_coordinate
-						}, function(ret) {
-							//考勤方法
-							outmap(rett, ret);
-							//定时上报
-							upwork(lonn, latt, stamp, ret.status);
-						});
-					} else {
-						alert(JSON.stringify(err));
-					}
-				});
-			} else {
-				//百度模块：定位
-				bMap.getLocation({
-					accuracy : '10m',
-					autoStop : true
-				}, function(ret, err) {
-					if (ret.status) {
-						//console.log(JSON.stringify(points));
-						var lonn = ret.lon;
-						var latt = ret.lat;
-						var stamp = ret.timestamp;
-						var rett = ret;
-						//百度模块：是否在多边形的范围内方法
-						bMap.isPolygonContantsPoint({
-							point : {
-								lon : lonn,
-								lat : latt
-							},
-							points : locale_coordinate
-						}, function(ret) {
-							//考勤方法
-							outmap(rett, ret);
-							//定时上报
-							upwork(lonn, latt, stamp, ret.status);
-						});
-					} else {
-						alert(err.code);
-					}
-				});
-			}
+			//百度模块：定位
+			bMap.getLocation({
+				accuracy : '10m',
+				autoStop : true
+			}, function(ret, err) {
+				if (ret.status) {
+					//console.log(JSON.stringify(points));
+					var lonn = ret.lon;
+					var latt = ret.lat;
+					var stamp = ret.timestamp;
+					var rett = ret;
+					//百度模块：是否在多边形的范围内方法
+					bMap.isPolygonContantsPoint({
+						point : {
+							lon : lonn,
+							lat : latt
+						},
+						points : locale_coordinate
+					}, function(ret) {
+						//考勤方法
+						outmap(rett, ret);
+						//定时上报
+						upwork(lonn, latt, stamp, ret.status);
+					});
+				} else {
+					alert(err.code);
+				}
+			});
 		}
 
 		//定时上报
