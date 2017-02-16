@@ -176,6 +176,7 @@
 			var opt = that.extendObj(that.DEFAULT_CONFIG.ajax_CONFIG, o, options);
 			if ( typeof callback == 'function') {
 				api.ajax(opt, function(ret, err) {
+					console.log("wsq.js=="+JSON.stringify(ret));
 					var systemType = api.systemType;
 					if (systemType == "ios") {
 						var rets = eval('(' + err.body + ')');
@@ -189,8 +190,8 @@
 						callback(rets, err);
 					} else {
 						if (ret.message == "登录验证失败!") {
-							var ajpush = api.require('ajpush');
-							ajpush.removeListener();
+//							var ajpush = api.require('ajpush');
+//							ajpush.removeListener();
 							api.removePrefs({
 								key : 'userinfo'
 							});
