@@ -22,14 +22,6 @@
 	</head>
 	<body>
 		<!--消息头显示与隐藏-->
-		<header class="H-header header_bg animated" style="display:none; width:100%;position: fixed;top:0;z-index: 1000;" id="header">
-			<span tapmode="H-theme-font-color-444" tapmode="" onclick="closeWIN();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
-			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				消息详情
-			</div>
-		</header>
-		<div id="pos" style="height: 44px;display:none;"></div>
-		<!--消息头显示与隐藏-->
 		<div id="message_html"></div>
 		<!--<div class="H-padding-vertical-top-15 H-text-align-center H-font-size-32">
 		消息详情
@@ -57,57 +49,63 @@
 		</div>
 		</div>-->
 		<script type="text/html" id="message_data">
-			<div class="H-padding-vertical-both-15 H-text-align-center H-font-size-30">
-			{{ d.news_tital }}
-			</div>
-			<div class="H-flexbox-horizontal">
-			<div class="H-theme-font-color-999 H-font-size-13 H-padding-horizontal-both-25 H-padding-vertical-both-5  H-vertical-middle">
-			时间：<span class="H-theme-font-color-b5cb85clack">{{ d.publish_time }}</span>
-			</div>
-			<div class="H-flex-item ">
-			<img src="../../image/logo.png" width="120" class="H-vertical-middle H-float-right H-padding-horizontal-both-20"/>
+			<div class="H-padding-vertical-both-5"></div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			处理人： <span id="order_condition">{{ d.deal_user }}</span>
 			</div>
 			</div>
-			<div class="xy_border"></div>
-			<div class="H-font-size-14 H-theme-font-color-666 H-text-indent H-padding-horizontal-both-25 H-padding-vertical-top-15">{{ d.news_content }}</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			处理人意见：<span id="pay_num">{{ d.deal_content }}</span>元
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			派遣用户：<span id="pay_way">{{ d.send_user }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			状态：<span id="device_name">{{ d.problem_audit }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			事件类型：<span id="washloca_name">{{ d.problem_type }}</span>
+			</div>
+			</div>
+			<div class="H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color  H-padding-horizontal-left-15 H-font-size-14 H-padding-vertical-both-12">
+			处理时间：<span id="washloca_name">{{ d.deal_time }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			上报时间：<span id="reader_time">{{ d.problem_time }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			上报位置：<span id="order_id">{{ d.problem_location }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			事件描述：<span id="order_id">{{ d.problem_text }}</span>
+			</div>
+			</div>
 		</script>
 	</body>
 	<script type="text/javascript" src="../../script/xy.js"></script>
 	<script type="text/javascript" src="../../script/zepto.min.js"></script>
 	<script type="text/javascript" src="../../script/tools/laytpl.js"></script>
 	<script type="text/javascript">
-		var news_id = null;
+		var news_id = null, problem_id = null;
 		apiready = function() {
-			swipe();
-			news_id = api.pageParam.data;
+			problem_id = api.pageParam.data;
 			initPage();
 		};
-		function swipe() {
-			document.getElementById('pos').style.display = "";
-			document.getElementById('header').style.display = "";
-			api.addEventListener({
-				name : 'swipedown'
-			}, function(ret, err) {
-				//alert('向下轻扫');
-				$("#header").removeClass('fadeOutUp');
-				$("#header").addClass('fadeInDown');
-				document.getElementById('header').style.display = "";
-				document.getElementById('pos').style.display = "";
-				//$("#header").hide();
-			});
-			api.addEventListener({
-				name : 'swipeup'
-			}, function(ret, err) {
-				//alert('向上轻扫');
-				$("#header").removeClass('fadeInDown');
-				$("#header").addClass('fadeOutUp');
-				setTimeout(function() {
-					document.getElementById('header').style.display = "none";
-					document.getElementById('pos').style.display = "none";
-				}, 300);
-			});
-		}
-
 		// 初始化页面
 		function initPage() {
 			api.getPrefs({
@@ -144,7 +142,7 @@
 								msg : ret.message
 							});
 						}
-					}, 'appNewsInfo&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&news_id=' + news_id);
+					}, 'sel_problemdetail&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&news_id=' + problem_id);
 				} else {
 					var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">请先登录</div></div></div>';
 					document.getElementById('message_html').innerHTML = htmls;
