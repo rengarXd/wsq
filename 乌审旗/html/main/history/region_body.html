@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title>税区选择</title>
+		<link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
+		<link href="../../../css/fonts/iconfont.css" rel="stylesheet" type="text/css" />
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="H-padding-vertical-bottom-10"></div>
+		<div class="H-margin-horizontal-both-8 H-border-both-after">
+			<div class="H-flexbox-horizontal">
+				<span class="H-vertical-middle H-padding-horizontal-left-10 H-theme-background-color-white H-font-size-16"><img src="../../../image/common_map.png" width="20" style="margin-top:4px" /></span>
+				<input type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="输入想要搜索的地址" id="serach_value">
+				<span tapmode="" onclick="$('#serach_value').val('');" class="H-icon H-vertical-middle H-padding-horizontal-right-10 H-theme-background-color-white"><img src="../../../image/common_del.png" width="20" style="margin-top: 4px"></img></span>
+			</div>
+		</div>
+		<div class="H-padding-vertical-both-8 H-padding-horizontal-both-15 H-font-size-12 H-theme-font-color-999">
+			您可以直接从以下列表中选或者在上面搜索框中搜索
+		</div>
+		<div id="diqu"></div>
+		<script type="text/html" id="fenqu_data">
+			{{# for(var i=0,l=d.length;i<l;i++){ }}
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active" tapmode onclick="selectd(this);">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12" xqdm="{{ d[i].user_id }}">
+			{{ d[i].user_name }}
+			</div>
+			<input type="radio" name="types"  class="H-radio H-radio-null H-display-block H-vertical-align-middle H-font-size-18 H-theme-font-color4 H-border-radius-circle H-margin-horizontal-right-10">
+			</div>
+			{{# } }}
+		</script>
+		<script type="text/javascript" src="../../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../../script/tools/laytpl.js" ></script>
+		<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+		<script type="text/javascript">
+			var user = null, nums = null, keywords = null;
+			apiready = function() {
+				api.parseTapmode();
+				send_user_list();
+				//搜索框
+				document.getElementById("serach_value").addEventListener('input', function() {
+					//alert(this.value);
+					_ajax(this.value);
+				});
+			}
+			function send_user_list() {
+				api.getPrefs({
+					key : 'userinfo'
+				}, function(ret, err) {
+					if (ret && ret.value) {
+						user = eval('(' + ret.value + ')');
+						_ajax();
+					} else {
+					}
+				});
+			}
+
+			function _ajax() {
+				//搜索词判断
+				//keyword ? keywords = keyword : keywords = "";
+				$xy.ajax(function(ret, err) {
+					//api.hideProgress();
+					if (ret.success) {
+						console.log(JSON.stringify(ret));
+						var tpl = document.getElementById('fenqu_data').innerHTML;
+						//读取模版
+						//方式一：异步渲染（推荐）
+						laytpl(tpl).render(ret.data, function(render) {
+							api.hideProgress();
+							document.getElementById('diqu').innerHTML = render;
+						});
+					} else if (ret) {
+						api.toast({
+							msg : ret.message
+						});
+					} else {
+						api.toast({
+							msg : err.body
+						});
+					}
+				}, 'selUserList&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&person_type=' + 1 );
+			}
+
+			function selectd(obj) {
+				$(obj).find('input').attr('checked', 'checked');
+				var xqnm = $(obj).find(".H-flex-item").html();
+				var xqdm = $(obj).find(".H-flex-item").attr("xqdm");
+				api.sendEvent({
+					name : 'region',
+					extra : {
+						send_userid : xqdm,
+						send_user : xqnm
+					}
+				});
+				api.closeWin();
+			}
+		</script>
+	</body>
+</html>

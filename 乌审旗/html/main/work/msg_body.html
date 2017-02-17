@@ -28,13 +28,13 @@
 	</head>
 	<body>
 		<!--消息头显示与隐藏-->
-		<header class="H-header header_bg animated " style="display:none; width:100%;position: fixed;top:0;z-index: 1000;" id="header">
+		<!--<header class="H-header header_bg animated " style="display:none; width:100%;position: fixed;top:0;z-index: 1000;" id="header">
 			<span tapmode="H-theme-font-color-444" tapmode="" onclick="closeMsg();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
 			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				消息中心
+				我的工作
 			</div>
-		</header>
-		<div id="pos" style="height: 44px;display:none;"></div>
+		</header>-->
+		<!--<div id="pos" style="height: 44px;display:none;"></div>-->
 		<!--消息头显示与隐藏-->
 		<div class="H-theme-background-color-white H-font-size-12 H-padding-horizontal-left-10 H-padding-vertical-both-5 H-margin-vertical-bottom-5">
 			<span class="H-font-size-14 H-theme-font-color-999">消息状态：</span>
@@ -43,7 +43,7 @@
 				<span style="background-color: #ff7200;" >&nbsp;</span><span class=" H-padding-horizontal-left-8">未读</span>
 			</div>
 		</div>
-		<div id="message_html">
+		<div id="history_html">
 			<div class="H-position-absolute H-position-center-all" id="statuss">
 				<div class="H-font-size-14 H-text-align-center">
 					<i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i>
@@ -58,28 +58,29 @@
 			<img src="../../../image/loading01.gif" id="show" style="width: 45px;" />&nbsp;&nbsp;加载中...
 		</div>
 		<!--loading-->
-		<script type="text/html" id="message_data">
+		<script type="text/html" id="history_data">
 			{{# for(var i=0,len=d.length;i<len;i++) { }}
-			{{# var strtime = d[i].publish_time }}
-			<!--{{# var start_time = Date.parse(new Date(strtime))/1000; }}-->
-			<div class="animated fadeIn H-text-align-center H-theme-font-color-999 H-font-size-12 H-margin-horizontal-both-12 H-padding-vertical-top-15 H-padding-vertical-bottom-5">{{ $xy.jsDateDiff(strtime)}}</div>
-			<div class="animated fadeIn H-theme-background-color-white H-border-both-after H-border-radius-15 H-margin-horizontal-both-12 H-margin-vertical-bottom-8" tapmode="H-touch-active" onclick="openOrder('{{ d[i].news_id }}');">
-			<div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle" >
-			{{# if (d[i].is_read == '0'){ }}
-			<div style="background-color: #ff7200;" class="H-channel-line H-padding-vertical-top-15 H-padding-horizontal-left-3 H-margin-horizontal-left-10"></div>
-			{{# }else{ }}
-			<div style="background-color: #03aafe;" class="H-channel-line H-padding-vertical-top-15 H-padding-horizontal-left-3 H-margin-horizontal-left-10"></div>
-			{{# } }}
-			<div class="H-channel-text H-theme-font-color4 H-flex-item H-font-size-16 H-theme-font-color-black H-padding-10 H-text-show-row-1 chense">
-			{{ d[i].news_tital }}
+			<div tapmode onclick="openOrder('{{ d[i].problem_id }}');" class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">事件类型：</span>{{ d[i].problem_type }}
+			</div>
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">上报科室：</span>{{ d[i].dept_name }}
 			</div>
 			</div>
-			<div class="H-theme-font-color-999 H-font-size-13" style="padding:0px 20px 10px 20px;">
-			{{ d[i].news_content }}
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address"></span>
 			</div>
-			<div class="xy_border"></div>
-			<div class="H-theme-font-color-999 H-font-size-15" style="padding: 5px 0px 5px 20px">
-			查看详情
+			</div>
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">事件描述：</span>{{ d[i].problem_text }}
+			<p class="H-font-size-12 H-theme-font-color-999">
+			{{ d[i].add_date }}
+			</p>
+			</div>
 			</div>
 			</div>
 			{{# } }}
@@ -88,11 +89,10 @@
 		<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 		<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
 		<script type="text/javascript">
-			var user = null, loadLock = false, page = 1;
+			var user = null, loadLock = false, page = 1, bMap = null;
 			apiready = function() {
-
-				//页面头部动画
-				swipe();
+				bMap = api.require('bMap');
+				
 				intuser();
 				//下拉刷新
 				api.setRefreshHeaderInfo({
@@ -107,34 +107,6 @@
 				});
 				api.parseTapmode();
 			};
-			function swipe() {
-				document.getElementById('header').style.display = "";
-				document.getElementById('pos').style.display = "";
-				//				setTimeout(function() {
-				//					document.getElementById('pos').style.display = "";
-				//				}, 300);
-				api.addEventListener({
-					name : 'swipedown'
-				}, function(ret, err) {
-					//alert('向下轻扫');
-					$("#header").removeClass('fadeOutUp');
-					$("#header").addClass('fadeInDown');
-					document.getElementById('pos').style.display = "";
-					document.getElementById('header').style.display = "";
-					//$("#header").hide();
-				});
-				api.addEventListener({
-					name : 'swipeup'
-				}, function(ret, err) {
-					//alert('向上轻扫');
-					$("#header").removeClass('fadeInDown');
-					$("#header").addClass('fadeOutUp');
-					setTimeout(function() {
-						document.getElementById('header').style.display = "none";
-						document.getElementById('pos').style.display = "none";
-					}, 300);
-				});
-			}
 
 			//初始化偏好值
 			function intuser() {
@@ -143,10 +115,54 @@
 				}, function(ret, err) {
 					if (ret && ret.value) {
 						user = eval('(' + ret.value + ')');
-						
+						$xy.ajax(function(ret, err) {
+							api.refreshHeaderLoadDone();
+							console.log(JSON.stringify(ret));
+							if (ret && ret.success) {
+								//console.log(JSON.stringify(ret));
+								if (ret.data.length == 0) {
+									//当没有订单时的处理
+									var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无记录</div></div></div>';
+									document.getElementById('history_html').innerHTML = htmls;
+								} else {
+									//console.log(JSON.stringify(ret));
+									var retdata = ret.data;
+									var tpl = document.getElementById('history_data').innerHTML;
+									//读取模版
+									//方式一：异步渲染（推荐）
+									laytpl(tpl).render(retdata, function(render) {
+										document.getElementById('history_html').innerHTML = render;
+										getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
+									});
+								}
+							} else {
+								var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">' + ret.message + '</div></div></div>';
+								document.getElementById('history_html').innerHTML = htmls;
+							}
+						}, 'selProblem&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&type=' + 2);
 					} else {
 						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">请先登录</div></div></div>';
 						document.getElementById('message_html').innerHTML = htmls;
+					}
+				});
+			}
+
+			//由经纬度获取地址信息
+			function getAddress(lon, lat) {
+				bMap.getNameFromCoords({
+					lon : lon,
+					lat : lat
+				}, function(ret, err) {
+					//              console.log("当前位置信息===" + JSON.stringify(ret));
+					if (ret.status) {
+						//获取当前用户所属城市
+						//console.log("当前位置信息===" + JSON.stringify(ret));
+						//ret.province + ret.city + ret.district + ret.streetName + ret.streetNumber +
+						document.getElementById('address').innerHTML = ret.address;
+					} else {
+						api.toast({
+							msg : '连接错误，请检查网络或者请求配置是否正确'
+						});
 					}
 				});
 			}
@@ -170,65 +186,65 @@
 			}
 
 			//初始化页面渲染
-			function initpage() {
-				loadLock = true;
-				$xy.ajax(function(ret, err) {
-					//api.hideProgress();
-					if (ret.success) {
-						//console.log(JSON.stringify(ret));
-						if (ret.data.length == 0) {
-							//当没有订单时的处理
-							api.refreshHeaderLoadDone();
-							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录，轻触屏幕刷新</div></div></div>';
-							document.getElementById('message_html').innerHTML = htmls;
-							api.addEventListener({
-								name : 'tap'
-							}, function(ret, err) {
-								location.reload();
-							});
-						} else {
-							//console.log(JSON.stringify(ret));
-							api.refreshHeaderLoadDone();
-							var tpl = document.getElementById('message_data').innerHTML;
-							//读取模版
-							//方式一：异步渲染（推荐）
-							laytpl(tpl).render(ret.data, function(render) {
-								//api.hideProgress();
-								//document.getElementById('message_html').innerHTML = render;
-								api.removeEventListener({
-									name : 'tap'
-								});
-								if (page == 1) {
-									document.getElementById('message_html').innerHTML = render;
-								} else {
-									//向后渲染
-									$("#message_html").append(render);
-									$("#loading").hide();
-								}
-								datacount = parseInt(ret.message);
-								initEventLinster();
-								//懒加载
-								if (parseInt(ret.message) == page) {
-									loadLock = true;
-								} else {
-									page++;
-									loadLock = false;
-								}
-							});
-						}
-					} else {
-						api.refreshHeaderLoadDone();
-						//console.log(JSON.stringify(ret));
-						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">连接失败，轻触屏幕刷新</div></div></div>';
-						document.getElementById('message_html').innerHTML = htmls;
-						api.addEventListener({
-							name : 'tap'
-						}, function(ret, err) {
-							location.reload();
-						});
-					}
-				}, 'appUserNews&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&page=' + page);
-			}
+//			function initpage() {
+//				loadLock = true;
+//				$xy.ajax(function(ret, err) {
+//					//api.hideProgress();
+//					if (ret.success) {
+//						//console.log(JSON.stringify(ret));
+//						if (ret.data.length == 0) {
+//							//当没有订单时的处理
+//							api.refreshHeaderLoadDone();
+//							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录，轻触屏幕刷新</div></div></div>';
+//							document.getElementById('message_html').innerHTML = htmls;
+//							api.addEventListener({
+//								name : 'tap'
+//							}, function(ret, err) {
+//								location.reload();
+//							});
+//						} else {
+//							//console.log(JSON.stringify(ret));
+//							api.refreshHeaderLoadDone();
+//							var tpl = document.getElementById('message_data').innerHTML;
+//							//读取模版
+//							//方式一：异步渲染（推荐）
+//							laytpl(tpl).render(ret.data, function(render) {
+//								//api.hideProgress();
+//								//document.getElementById('message_html').innerHTML = render;
+//								api.removeEventListener({
+//									name : 'tap'
+//								});
+//								if (page == 1) {
+//									document.getElementById('message_html').innerHTML = render;
+//								} else {
+//									//向后渲染
+//									$("#message_html").append(render);
+//									$("#loading").hide();
+//								}
+//								datacount = parseInt(ret.message);
+//								initEventLinster();
+//								//懒加载
+//								if (parseInt(ret.message) == page) {
+//									loadLock = true;
+//								} else {
+//									page++;
+//									loadLock = false;
+//								}
+//							});
+//						}
+//					} else {
+//						api.refreshHeaderLoadDone();
+//						//console.log(JSON.stringify(ret));
+//						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">连接失败，轻触屏幕刷新</div></div></div>';
+//						document.getElementById('message_html').innerHTML = htmls;
+//						api.addEventListener({
+//							name : 'tap'
+//						}, function(ret, err) {
+//							location.reload();
+//						});
+//					}
+//				}, 'appUserNews&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&page=' + page);
+//			}
 
 			//懒加载事件监听
 			function initEventLinster() {
@@ -251,12 +267,6 @@
 				}
 			}
 
-			function closeMsg() {
-				api.execScript({
-					name : 'msg_head',
-					script : 'closeMsgWin();'
-				});
-			}
 
 			function loreload() {
 				location.reload();

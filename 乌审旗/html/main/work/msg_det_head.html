@@ -10,13 +10,12 @@
 		<link rel="stylesheet" href="../../../css/style.css" />
 	</head>
 	<body class="H-flexbox-vertical">
-		<div class="head_bg" id="header"></div>
-		<!--<header class="H-header b_header_bg" id="header">
+		<header class="H-header b_header_bg" id="header">
 		<span tapmode="H-theme-font-color-444" tapmode="" onclick="api.closeWin();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
 		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-		消息详情
+		工作详情
 		</div>
-		</header>-->
+		</header>
 	</body>
 	<script type="text/javascript" src="../../../script/api.js"></script>
 	<script type="text/javascript">
@@ -29,7 +28,7 @@
 			api.openFrame({
 				name : 'msg_detail_body',
 				url : 'msg_detail_body.html',
-				bounces : false,
+				bounces : true,
 				pageParam : api.pageParam,
 				rect : {
 					x : 0,
