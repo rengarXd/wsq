@@ -14,7 +14,7 @@
 		<div class="H-margin-horizontal-both-8 H-border-both-after">
 			<div class="H-flexbox-horizontal">
 				<span class="H-vertical-middle H-padding-horizontal-left-10 H-theme-background-color-white H-font-size-16"><img src="../../../image/common_map.png" width="20" style="margin-top:4px" /></span>
-				<input type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="输入想要搜索的地址" id="serach_value">
+				<input type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="输入想要分配的人员" id="serach_value">
 				<span tapmode="" onclick="$('#serach_value').val('');" class="H-icon H-vertical-middle H-padding-horizontal-right-10 H-theme-background-color-white"><img src="../../../image/common_del.png" width="20" style="margin-top: 4px"></img></span>
 			</div>
 		</div>
@@ -39,6 +39,10 @@
 			var user = null, nums = null, keywords = null;
 			apiready = function() {
 				api.parseTapmode();
+				//设置下拉刷新
+				$xy.setRefreshHeaderInfo(function() {
+					location.reload();
+				});
 				send_user_list();
 				//搜索框
 				document.getElementById("serach_value").addEventListener('input', function() {
@@ -58,11 +62,11 @@
 				});
 			}
 
-			function _ajax() {
+			function _ajax(keyword) {
 				//搜索词判断
-				//keyword ? keywords = keyword : keywords = "";
+				keyword ? keywords = keyword : keywords = "";
 				$xy.ajax(function(ret, err) {
-					//api.hideProgress();
+					api.refreshHeaderLoadDone();
 					if (ret.success) {
 						console.log(JSON.stringify(ret));
 						var tpl = document.getElementById('fenqu_data').innerHTML;
@@ -81,7 +85,7 @@
 							msg : err.body
 						});
 					}
-				}, 'selUserList&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&person_type=' + 1 );
+				}, 'selUserList&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&person_type=' + 1 + '&user_name=' + keywords);
 			}
 
 			function selectd(obj) {

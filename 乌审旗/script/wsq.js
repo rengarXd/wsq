@@ -163,7 +163,6 @@
 			//下拉刷新
 			api.setRefreshHeaderInfo(opt, callback);
 		},
-
 		ajax : function(callback, url, method, data, options) {
 			var that = this;
 			var o = {};
@@ -176,13 +175,13 @@
 			var opt = that.extendObj(that.DEFAULT_CONFIG.ajax_CONFIG, o, options);
 			if ( typeof callback == 'function') {
 				api.ajax(opt, function(ret, err) {
-//					console.log("wsq.js=="+JSON.stringify(ret));
+					//					console.log("wsq.js=="+JSON.stringify(ret));
 					var systemType = api.systemType;
 					if (systemType == "ios") {
 						var rets = eval('(' + err.body + ')');
 						if (rets.message == "登录验证失败!") {
-//							var ajpush = api.require('ajpush');
-//							ajpush.removeListener();
+							//							var ajpush = api.require('ajpush');
+							//							ajpush.removeListener();
 							api.removePrefs({
 								key : 'userinfo'
 							});
@@ -190,8 +189,8 @@
 						callback(rets, err);
 					} else {
 						if (ret.message == "登录验证失败!") {
-//							var ajpush = api.require('ajpush');
-//							ajpush.removeListener();
+							//							var ajpush = api.require('ajpush');
+							//							ajpush.removeListener();
 							api.removePrefs({
 								key : 'userinfo'
 							});
@@ -200,6 +199,30 @@
 					}
 				});
 			}
+		},
+		oldAjax : function(callback, url, method, data, dataType, options) {
+			var that = this;
+			var o = {};
+			o.url = url;
+			o.method = method ? method : "get";
+			if (that.isObject(data) && o.method == "post") {
+				o.data = data;
+			}
+			options = options || {};
+			var opt = that.extendObj(that.DEFAULT_CONFIG.ajax_CONFIG, o, options);
+			api.ajax(opt, function(ret, err) {
+				var systemType = api.systemType;
+				if (systemType == "ios") {
+					var rets = eval('(' + err.body + ')');
+					if (that.isFunction(callback)) {
+						callback(rets, err);
+					}
+				} else {
+					if (that.isFunction(callback)) {
+						callback(ret, err);
+					}
+				}
+			});
 		},
 		openTimePick : function(callback) {
 			var that = this;

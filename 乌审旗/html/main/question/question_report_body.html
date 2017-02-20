@@ -59,29 +59,32 @@
 		</div>
 		<div class="aui-form">
 			<div class="aui-input-row aui-input-rows">
-				<textarea class="aui-input" id="pet_text" placeholder="请给您做一个详细的事件描述" style="height: 100px;"></textarea>
+				<textarea class="aui-input H-theme-font-color-999" id="pet_text" placeholder="请您做一个详细的事件描述"></textarea>
 			</div>
 		</div>
 		<!--症状描述-->
 		<!--添加图片-->
-		<div class="aui-content" style="margin-bottom: 68px;">
+		<div class="aui-content">
 			<ul class="aui-list-view aui-grid-view" id="imgslist">
 				<li class="aui-list-view-cell aui-img aui-col-xs-3" id="addpic">
 					<img class="aui-img-object" src="../../../image/add.jpg">
 				</li>
 			</ul>
 		</div>
+		<div class="H-text-align-center H-theme-font-color-ccc H-font-size-12">
+			点击加号添加图片（最多6张），长按图片删除
+		</div>
 	</body>
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 	<script type="text/javascript" src="../../../script/upImg.js"></script>
-	<script type="text/javascript" src="../../../script/tools/hammer.min.js"></script>
 	<script type="text/javascript">
 		var userdata = null, maplon = null, maplat = null;
 		apiready = function() {
 			//初始化模块
 			initModel();
 			initPage();
+			$(".aui-form").css("height", api.frameHeight / 4);
 		};
 		//初始化模块
 		function initModel() {
@@ -119,14 +122,14 @@
 			$xy.openWin('map_head', 'map_head.html', false, api.pageParam);
 		}
 
-		var browerImgs = [];
-		zepto(function($) {
+		Zepto(function($) {
 			// 获取图片宽高
 			var normalW = $("#addpic img").width();
 			// ###############################################################
 			// 为图片添加点击预览功能,排除添加按钮
 			$("#imgslist").on("click", "li:not(#addpic)", function() {
 				// 定义一个数组，存储需要预览的图片
+				var browerImgs = [];
 				$("#imgslist li:not(#addpic)").each(function() {
 					// 将图片追加到数组中
 					browerImgs.push($(this).find("img").attr("src"));
@@ -135,9 +138,9 @@
 				img.openImageBrowser(browerImgs);
 			});
 			$("#imgslist").on("click", "#addpic", function() {
-				if (picnumber >= 8) {
+				if ($("#imgslist img").length >= 7) {
 					api.toast({
-						msg : '抱歉，最多发布8张图片'
+						msg : '抱歉，最多发布7张图片'
 					});
 				} else {
 					api.actionSheet({
@@ -155,7 +158,7 @@
 									encodingType : "jpg",
 									destinationType : "url",
 									mediaValue : "pic",
-									quality : 50,
+									quality : 100,
 									saveToPhotoAlbum : true
 								}, function(ret, err) {
 									if (ret && ret.data) {
@@ -169,18 +172,8 @@
 											// 追加图片
 											$("#addpic").before(showImgHtml);
 											// ########################################  绑定长按事件 ########################
-											$("#imgslist img[src='" + compressImg + "']").mousedown(function() {
-												timeout = setTimeout(function() {
-													removeimg();
-												}, 2000);
-											});
-											$("#imgslist img[src='" + compressImg + "']").mouseup(function() {
-												clearTimeout(timeout);
-												//												$("#mydiv").text("out");
-											});
-											$("#imgslist img[src='" + compressImg + "']").mouseout(function() {
-												clearTimeout(timeout);
-												//												$("#mydiv").text("out");
+											$("#imgslist img[src='" + compressImg + "']").longTap(function() {
+												removeimg($("#imgslist img[src='" + compressImg + "']").parent("li"));
 											});
 										});
 									} else {
@@ -205,24 +198,13 @@
 										var returnUrl = ret.data;
 										// 图片压缩
 										img.imgCompress(returnUrl, 0.5, 0.5, img.getExt(returnUrl), function(compressImg) {
-											// ########################################
 											// ################### 上传图片 #########################
 											var showImgHtml = '<li class="aui-list-view-cell aui-img aui-col-xs-3"><img class="aui-img-object" src="' + compressImg + '" style="width:' + normalW + 'px;height:' + normalW + 'px;"></li>';
 											// 追加图片
 											$("#addpic").before(showImgHtml);
 											// ########################################  绑定长按事件 ########################
-											$("#imgslist img[src='" + compressImg + "']").mousedown(function() {
-												timeout = setTimeout(function() {
-													removeimg();
-												}, 2000);
-											});
-											$("#imgslist img[src='" + compressImg + "']").mouseup(function() {
-												clearTimeout(timeout);
-												//												$("#mydiv").text("out");
-											});
-											$("#imgslist img[src='" + compressImg + "']").mouseout(function() {
-												clearTimeout(timeout);
-												//												$("#mydiv").text("out");
+											$("#imgslist img[src='" + compressImg + "']").longTap(function() {
+												removeimg($("#imgslist img[src='" + compressImg + "']").parent("li"));
 											});
 										});
 									} else {
@@ -237,37 +219,16 @@
 				}
 			});
 		});
-		function removeimg() {
+		//删除图片
+		function removeimg(obj) {
 			api.confirm({
 				title : '温馨提示',
 				msg : '您确定删除这张图片吗？',
 				buttons : ['确定', '取消']
 			}, function(ret, err) {
 				if (ret.buttonIndex == 1) {
-					$("#imgslist img[src='" + compressImg + "']").parent("li").remove();
+					$(obj).remove();
 				}
-			});
-		}
-
-		// 添加长按方法
-		function addPress(obj, index) {
-			// 获取目前长按的对象
-			var hammertime = new Hammer(obj[0]);
-			// 绑定长按对象
-			hammertime.on("press", function(e) {
-				api.confirm({
-					title : '温馨提示',
-					msg : '您确定要删除该图片吗？',
-					buttons : ['确定', '取消']
-				}, function(ret, err) {
-					if (ret.buttonIndex == 1) {
-						// 移除自己
-						$(obj).remove();
-						api.toast({
-							msg : '删除成功！'
-						});
-					}
-				});
 			});
 		}
 
@@ -333,22 +294,28 @@
 			var is_synchro = $("input[type='radio']:checked").val();
 			var problem_lng = maplon;
 			var problem_lat = maplat;
-			var problem_text = $("#textarea").val();
+			var problem_text = $("#pet_text").val();
 			if (problem_type && dept_id && is_synchro && problem_lng && problem_lat && problem_text) {
 				api.showProgress({
 					title : '上传中'
 				});
 				$xy.ajax(function(ret, err) {
-					api.hideProgress();
+					//api.hideProgress();
+					console.log(JSON.stringify(ret));
 					//alert(JSON.stringify(ret));
+					problem_id = ret.body.data[0].problem_id;
 					api.toast({
-						msg : ret.body.message
+						msg : ret.body.data[0].problem_id
 					});
-					if (ret && ret.body.success) {
-						setTimeout(function() {
-							api.closeWin();
-						}, 500);
-					}
+					$("#imgslist li:not(#addpic)").each(function() {
+						// 将图片追加到数组中
+						uploadFile($(this).find("img").attr("src"), problem_id);
+					});
+					//					if (ret && ret.body.success) {
+					//						setTimeout(function() {
+					//							api.closeWin();
+					//						}, 500);
+					//					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
 						user_id : userdata[0].user_id,
@@ -364,6 +331,49 @@
 			} else {
 				alert('您还有未填项');
 			}
+		}
+
+		// 上传图片
+		// url：上传的url地址
+		// data：上传的文件
+		// callback：上传成功返回地址
+		/*
+		 @dataSrc 本地图片路径
+		 @datafunid 数据功能标识（必填）（string）
+		 @dataid 数据id（必填）（string）
+		 */
+		function uploadFile(dataSrc, dataid) {
+			//			api.showProgress({
+			//				title : '上传中..'
+			//			});
+			$xy.oldAjax(function(ret, err) {
+				api.hideProgress();
+				if (ret) {
+					console.log(JSON.stringify(ret));
+					api.toast({
+						msg : ret.message
+					});
+					//ret.success ? callback(ret) : H.toast(ret.message);
+				} else {
+					api.toast({
+						msg : err.body
+					});
+				}
+			}, window.ImgWebUrl, "post", {
+				values : {
+					pagetype : "editgrid",
+					funid : "sys_attach",
+					nousercheck : "1",
+					eventcode : "create",
+					dataType : "byte",
+					datafunid : "report_problem",
+					dataid : dataid,
+					attach_name : dataSrc
+				},
+				files : {
+					attach_path : dataSrc,
+				}
+			});
 		}
 	</script>
 </html>
