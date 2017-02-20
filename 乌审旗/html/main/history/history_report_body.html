@@ -79,7 +79,7 @@
 			</div>
 			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address"></span>
+			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address">{{ getAddress('d[i].problem_lng', 'd[i].problem_lat') }}</span>
 			</div>
 			</div>
 			<div tapmode="H-touch-active" onclick="job();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
@@ -129,14 +129,14 @@
 								var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无记录</div></div></div>';
 								document.getElementById('history_html').innerHTML = htmls;
 							} else {
-								//console.log(JSON.stringify(ret));
+								console.log(JSON.stringify(ret));
 								retdata = ret.data;
 								var tpl = document.getElementById('history_data').innerHTML;
 								//读取模版
 								//方式一：异步渲染（推荐）
 								laytpl(tpl).render(retdata, function(render) {
 									document.getElementById('history_html').innerHTML = render;
-									getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
+//									getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
 								});
 							}
 						} else {
@@ -158,7 +158,7 @@
 						//获取当前用户所属城市
 						//console.log("当前位置信息===" + JSON.stringify(ret));
 						//ret.province + ret.city + ret.district + ret.streetName + ret.streetNumber +
-						document.getElementById('address').innerHTML = ret.address;
+						return ret.address;
 					} else {
 						api.toast({
 							msg : '连接错误，请检查网络或者请求配置是否正确'
