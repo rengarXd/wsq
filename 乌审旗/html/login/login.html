@@ -165,6 +165,7 @@
 			jpush.getRegistrationId(function(ret) {
 				//console.log(JSON.stringify(ret));
 				var registrationId = ret.id;
+				console.log(registrationId);
 				$xy.ajax(function(ret, err) {
 					//console.log("绑定成功！");
 					console.log(JSON.stringify(ret));

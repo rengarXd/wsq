@@ -47,6 +47,8 @@
 					buttons : ['确定', '取消']
 				}, function(ret, err) {
 					if (ret.buttonIndex == 1) {
+						var ajpush = api.require('ajpush');
+						ajpush.removeListener();
 						api.removePrefs({
 							key : 'userinfo'
 						});

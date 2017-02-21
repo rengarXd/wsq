@@ -138,8 +138,8 @@
 					buttons : ['取消', '确定']
 				}, function(ret, err) {
 					if (ret.buttonIndex == 2) {
-						//						var ajpush = api.require('ajpush');
-						//						ajpush.removeListener();
+						var ajpush = api.require('ajpush');
+						ajpush.removeListener();
 						api.removePrefs({
 							key : 'userinfo'
 						});
@@ -151,7 +151,7 @@
 							api.closeToWin({
 								name : 'index'
 							});
-							$xy.openWin('login','../login/login.html',false,api.pageParam);
+							$xy.openWin('login', '../login/login.html', false, api.pageParam);
 						}, 500);
 					}
 				});
