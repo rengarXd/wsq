@@ -73,6 +73,18 @@
 				//alert('应用回到后台');
 				reload();
 			});
+			api.addEventListener({
+				name : 'online'
+			}, function(ret, err) {
+				//alert('已连接到网络');
+				reload();
+			});
+			api.addEventListener({
+				name : 'offline'
+			}, function(ret, err) {
+				//alert('断网了');
+				cleanCycle();
+			});
 		}
 
 		//初始化主程序
