@@ -37,10 +37,10 @@
 		<!--<div id="pos" style="height: 44px;display:none;"></div>-->
 		<!--消息头显示与隐藏-->
 		<div class="H-theme-background-color-white H-font-size-12 H-padding-horizontal-left-10 H-padding-vertical-both-5 H-margin-vertical-bottom-5">
-			<span class="H-font-size-14 H-theme-font-color-999">消息状态：</span>
+			<span class="H-font-size-14 H-theme-font-color-999">工作记录：</span>
 			<div class="H-float-right H-display-inline H-padding-horizontal-right-10">
-				<span style="background-color: #03aafe;" >&nbsp;</span><span class=" H-padding-horizontal-both-8">已读</span>
-				<span style="background-color: #ff7200;" >&nbsp;</span><span class=" H-padding-horizontal-left-8">未读</span>
+				<span class=" H-padding-horizontal-both-8">共</span>
+				<span id="record" style="color: #ff7200;">0</span><span class=" H-padding-horizontal-left-8">条</span>
 			</div>
 		</div>
 		<div id="history_html">
@@ -132,6 +132,7 @@
 									//方式一：异步渲染（推荐）
 									laytpl(tpl).render(retdata, function(render) {
 										document.getElementById('history_html').innerHTML = render;
+										document.getElementById('record').innerHTML = retdata.length;
 										getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
 									});
 								}
