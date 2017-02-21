@@ -28,14 +28,14 @@
 			<span id="user_code" class="H-icon H-font-size-12 H-padding-horizontal-right-20 H-display-block"></span>
 		</div>
 		<div class="H-padding-vertical-bottom-10"></div>
-		<div onclick="changePhoneNum()" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-border-vertical-top-after H-vertical-middle H-touch-active">
+		<div onclick="change();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-border-vertical-top-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				手机号
 			</div>
 			<span id="mob_code" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
-		<div onclick="changePersonNum()" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+		<div onclick="change();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				RFID卡号
 			</div>
@@ -128,6 +128,9 @@
 						});
 					}
 				}, 'appuserinfo&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
+			}
+
+			function change() {
 			}
 
 			//退出登录
