@@ -311,11 +311,6 @@
 						// 将图片追加到数组中
 						uploadFile($(this).find("img").attr("src"), problem_id);
 					});
-					//					if (ret && ret.body.success) {
-					//						setTimeout(function() {
-					//							api.closeWin();
-					//						}, 500);
-					//					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
 						user_id : userdata[0].user_id,
