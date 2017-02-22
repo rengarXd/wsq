@@ -55,6 +55,9 @@
 		function initMap() {
 			//延时打开百度地图 ok
 			setTimeout("openMap();", 10);
+			api.setKeepScreenOn({
+				keepOn : true
+			});
 		}
 
 		//重新加载当前页
