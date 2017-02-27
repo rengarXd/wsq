@@ -175,7 +175,7 @@
 			var opt = that.extendObj(that.DEFAULT_CONFIG.ajax_CONFIG, o, options);
 			if ( typeof callback == 'function') {
 				api.ajax(opt, function(ret, err) {
-//					console.log("wsq.js=="+JSON.stringify(ret));
+					//					console.log("wsq.js=="+JSON.stringify(ret));
 					var systemType = api.systemType;
 					if (systemType == "ios") {
 						var rets = eval('(' + err.body + ')');
@@ -522,6 +522,40 @@
 					}, 300);
 				}
 			});
+		},
+		openTimePick : function(callback) {
+			var that = this;
+
+			api.openPicker({
+				type : 'date',
+				date : "'" + that.getNowDate + "'"
+			}, function(ret, err) {
+				if (ret) {
+					if (that.isFunction(callback)) {
+						callback(ret);
+					}
+				} else {
+					api.toast({
+						msg : '选择时间错误'
+					});
+				}
+			});
+		},
+		getNowDate : function() {
+			var that = this;
+			var date = new Date();
+			var seperator1 = "-";
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var strDate = date.getDate();
+			if (month >= 1 && month <= 9) {
+				month = "0" + month;
+			}
+			if (strDate >= 0 && strDate <= 9) {
+				strDate = "0" + strDate;
+			}
+			var currentdate = year + seperator1 + month + seperator1 + strDate;
+			return currentdate;
 		},
 		// 动态载入js，css，filetype类型就是js,css
 		loadJsOrCssFile : function(filename, filetype) {
