@@ -141,7 +141,7 @@
 									}
 									//转换Json格式
 									var point = '[' + arr + ']';
-									cycle = setInterval('isPoint(' + point + ')', 5000);
+									cycle = setInterval('isPoint(' + point + ')', 10000);
 								}
 							} else if (ret) {
 								api.toast({
@@ -208,21 +208,21 @@
 
 		//定时上报
 		function upwork(lon, lat, timestamp, status) {
-			status ? status = 1 : status = 0;
+			//status ? status = 1 : status = 0;
 			$xy.ajax(function(ret, err) {
 				//api.hideProgress();
 				if (ret.success) {
 					//console.log(JSON.stringify(ret));
-					//					api.toast({
-					//						msg : ret.message
-					//					});
+//					api.toast({
+//						msg : ret.message
+//					});
 				} else {
 					api.toast({
 						msg : err.body
 					});
 					cleanCycle();
 				}
-			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat + '&gps_time=' + format(timestamp) + '&isinpoly=' + status);
+			}, 'report_location&funid=gps_wzsb&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&wzsb_lng=' + lon + '&wzsb_lat=' + lat);
 		}
 
 		//添加多边形

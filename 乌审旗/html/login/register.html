@@ -19,16 +19,19 @@
 				color: #ffffff;
 				font-size: 20px;
 			}
+			.chacha {
+				padding-top: 40px;
+				padding-right: 30px;
+			}
 		</style>
 	</head>
 	<body>
 		<!--无网络登录和获取验证码优化-->
-		<!--<div id="top_position" >
-		<div class="chacha H-text-align-right H-theme-font-color-white">
-		<i tapmode="H-touch-active" onclick="api.closeWin();" class="iconfont H-touch-active icon-chacha H-font-size-20"></i>
+		<div id="top_part" >
+			<div class="chacha H-text-align-right H-theme-font-color-white">
+				<i tapmode="H-touch-active" onclick="api.closeWin();" class="iconfont H-touch-active icon-chacha H-font-size-20"></i>
+			</div>
 		</div>
-		</div>-->
-		<div class="top_part" style="height: 280px;"></div>
 		<div class="H-padding-15">
 			<form id="availdate">
 				<div class="H-border-radius-5 H-flexbox-horizontal H-border-vertical-both-after H-theme-background-color-white">
@@ -43,14 +46,14 @@
 					<input id="pwd_2" value="" style="color:#49b1f4;" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-width-100-percent H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入再输入一次密码...">
 				</div>
 				<!--<div class="H-padding-horizontal-left-10 H-padding-vertical-top-5 H-flexbox-horizontal">
-					<div class="H-flex-item">
-						<input type="radio" name="V" value="3" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color-white">
-						<span class="H-theme-font-color-white H-font-size-16">巡查通</span>
-					</div>
-					<div class="H-flex-item">
-						<input type="radio" name="V" value="4" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color-white">
-						<span class="H-theme-font-color-white H-font-size-16">市民</span>
-					</div>
+				<div class="H-flex-item">
+				<input type="radio" name="V" value="3" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color-white">
+				<span class="H-theme-font-color-white H-font-size-16">巡查通</span>
+				</div>
+				<div class="H-flex-item">
+				<input type="radio" name="V" value="4" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color-white">
+				<span class="H-theme-font-color-white H-font-size-16">市民</span>
+				</div>
 				</div>-->
 			</form>
 			<div class="H-padding-horizontal-both-20 H-padding-vertical-top-10">
@@ -63,6 +66,7 @@
 		<script type="text/javascript" src="../../script/zepto.min.js"></script>
 		<script type="text/javascript">
 			apiready = function() {
+				$("#top_part").css('height', api.frameHeight / 2);
 			}
 			//验证
 			function checkCon() {

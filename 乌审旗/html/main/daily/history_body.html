@@ -10,6 +10,24 @@
 		<link rel="stylesheet" href="../../../css/style.css" />
 	</head>
 	<body>
+		<div id="headinfo" style="display: none" class="H-flexbox-horizontal H-box-sizing-border-box H-theme-background-color-white H-border-vertical-bottom-after H-clear-both H-padding-horizontal-both-10 H-padding-vertical-both-8 ">
+			<!--<div style="width:50px;height:50px;"><img src="../../../image/logo.png" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both">
+			</div>-->
+			<span class="H-padding-horizontal-right-5"><i class="iconfont icon-shebeidingwei H-theme-font-color-ccc H-font-size-22"></i></span>
+			<div class="H-flex-item H-padding-horizontal-both-10 H-vertical-middle H-overflow-hidden">
+				<div class="H-width-100-percent">
+					<strong id="user_name" class="H-font-weight-normal H-display-block H-font-weight-500 H-font-size-16 H-text-show-row-1">李继祥</strong>
+					<div class="H-theme-font-color-999 H-font-size-14 H-padding-vertical-top-3 H-text-show-row-1">
+						考勤组：<span id="dept_name">乌审旗环卫</span>
+					</div>
+				</div>
+			</div>
+			<div class="H-font-size-13 H-vertical-middle H-theme-font-color-999 H-line-height-normal">
+				<button onclick="changeDate();" class="H-button H-outline-none H-theme-background-color-transparent H-padding-5 H-theme-font-color1 H-theme-border-color1 H-theme-border-color1-click H-theme-background-color1-click H-theme-font-color1-click H-border-radius-5">
+					<span id="sign_date">0000-00-00</span><span class="H-badge H-display-inline-block"><label class="H-display-inline-block H-font-size-12 H-margin-horizontal-left-5"><i class="iconfont H-icon-arrow-down"></i></label></span>
+				</button>
+			</div>
+		</div>
 		<div id="text_html">
 			<div class="H-position-absolute H-position-center-all" id="statuss">
 				<div class="H-font-size-14 H-text-align-center">
@@ -21,31 +39,45 @@
 			</div>
 		</div>
 		<script  type="text/html" id="text_data">
-			{{# for (var i=0,l = d.length; i<l;i++) { }}
-			<div class="H-margin-vertical-bottom-5 H-flexbox-horizontal H-theme-background-color-white H-padding-vertical-top-15 H-padding-vertical-bottom-5">
-			<span class="H-padding-horizontal-both-10 "><i class="iconfont icon-shebeidingwei H-font-size-20 xy_font_color"></i></span>
-			<div class="H-flex-item xy_font_color">
-			<span id="device_name">{{ d[i].Class_name }}</span>
-			<span class="H-float-right H-padding-horizontal-right-10 ">
-			{{# if( d[i].Islate == 1) { }}
-			在岗
-			{{# }else{ }}
-			<span class="H-theme-font-color-ccc">脱岗</span>
-			{{# } }}
-			</span>
-			<div class="H-theme-font-color-999 H-font-size-15 H-padding-vertical-both-5">
-			{{ format(d[i].Time) }}
+			<div class="H-timeline H-padding-horizontal-both-10 H-border-horizontal-right-after">
+			{{# for(var i=0,len=d.length;i<len;i++) { }}
+			<div class="H-timeline-item H-z-index-100 H-theme-background-color-white H-margin-vertical-top-15 H-border-both-after H-animate-scale-big">
+			<div class="H-timeline-dotline H-position-absolute H-z-index-1000">
+			<div class="H-timeline-dot H-position-absolute H-z-index-1000 H-border-radius-circle"></div>
+			<div class="H-timeline-line H-position-absolute H-z-index-1000"></div>
+			<div class="H-timeline-bigdot H-center-all H-border-radius-circle H-position-absolute H-z-index-100000 H-theme-background-color-white">
+			<div class="H-timeline-bigdot-child H-border-radius-circle"></div>
+			</div>
+			<div class="H-timeline-dot H-position-absolute H-z-index-1000 H-border-radius-circle"></div>
+			</div>
+			<div class="H-timeline-header  H-text-show-row-1 H-font-size-14 H-padding-10 H-line-height-normal H-theme-background-color-white H-border-vertical-bottom-after">
+			{{ d[i].class_name }}<span style="padding-right: 40px;" class="H-float-right H-theme-font-color-ccc">考勤状态： <span class="H-theme-font-color-black">{{ d[i].sign_audit }}</span></span>
+			</div>
+			<div class="H-timeline-container H-padding-8 H-font-size-15">
+			<div class="H-padding-horizontal-left-10 H-theme-font-color-999 H-font-size-15 H-padding-vertical-bottom-5">
+			签到时间：{{ d[i].signin_time }} <span class="H-float-right H-padding-horizontal-right-20 H-theme-font-color-black">{{ d[i].signin_audit }}</span>
+			</div>
+			<div class="H-theme-font-color-999 H-padding-horizontal-left-25 H-padding-vertical-bottom-5 H-font-size-13">
+			<i class="H-theme-font-color-black iconfont icon-dingwei"></i>{{ d[i].signin_fname }}
+			</div>
+			<div class="H-padding-horizontal-left-10 H-theme-font-color-999 H-font-size-15 H-padding-vertical-both-5">
+			签退时间：{{ d[i].signout_time }} <span class="H-float-right H-padding-horizontal-right-20 H-theme-font-color-black">{{ d[i].signout_audit }}</span>
+			</div>
+			<div class="H-theme-font-color-999 H-padding-horizontal-left-25 H-padding-vertical-bottom-5 H-font-size-13">
+			<i class="H-theme-font-color-black iconfont icon-dingwei"></i>{{ d[i].signout_fname }}
 			</div>
 			</div>
 			</div>
 			{{# } }}
+			</div>
 		</script>
 		<script type="text/javascript" src="../../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 		<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
 		<script type="text/javascript">
-			var db = null;
+			var db = null, user = null;
 			apiready = function() {
-				db = api.require('db');
+				//db = api.require('db');
 				initPage();
 				//下拉刷新
 				api.setRefreshHeaderInfo({
@@ -58,23 +90,92 @@
 				}, function(ret, err) {
 					location.reload();
 				});
+				api.addEventListener({
+					name : 'online'
+				}, function(ret, err) {
+					//$('#headinfo').show();
+					window.location.reload();
+				});
 			};
 			// 初始化页面
 			function initPage() {
-				var dbdata = db.selectSqlSync({
-					name : 'wsqDB',
-					sql : 'SELECT * FROM historylocation ORDER BY Id DESC'
-				});
-				var tpl = document.getElementById('text_data').innerHTML;
-				laytpl(tpl).render(dbdata.data, function(render) {
-					api.refreshHeaderLoadDone();
-					if (dbdata.data.length == 0) {
-						document.getElementById('jiazai').innerHTML = '暂无数据';
+				api.getPrefs({
+					key : 'userinfo'
+				}, function(ret, err) {
+					if (ret && ret.value) {
+						user = eval('(' + ret.value + ')');
+						var dates = $xy.getNowDate();
+						_ajax(dates);
 					} else {
-						document.getElementById('text_html').innerHTML = render;
 					}
 				});
-				console.log('inserthistorylocation==' + JSON.stringify(dbdata));
+				//				var dbdata = db.selectSqlSync({
+				//					name : 'wsqDB',
+				//					sql : 'SELECT * FROM historylocation ORDER BY Id DESC'
+				//				});
+				//				var tpl = document.getElementById('text_data').innerHTML;
+				//				laytpl(tpl).render(dbdata.data, function(render) {
+				//					api.refreshHeaderLoadDone();
+				//					if (dbdata.data.length == 0) {
+				//						document.getElementById('jiazai').innerHTML = '暂无数据';
+				//					} else {
+				//						document.getElementById('text_html').innerHTML = render;
+				//					}
+				//				});
+				//				console.log('inserthistorylocation==' + JSON.stringify(dbdata));
+			}
+
+			function _ajax(date) {
+				$xy.ajax(function(ret, err) {
+					//api.hideProgress();
+					if (ret.success) {
+						console.log(JSON.stringify(ret));
+						var tpl = document.getElementById('text_data').innerHTML;
+						laytpl(tpl).render(ret.data, function(render) {
+							api.refreshHeaderLoadDone();
+							if (ret.data.length == 0) {
+								document.getElementById('text_html').innerHTML = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999" id="jiazai">暂无数据</div></div></div>';
+							} else {
+								//用户信息渲染
+								$("#headinfo").show();
+								document.getElementById('dept_name').innerHTML = ret.data[0].dept_name;
+								document.getElementById('user_name').innerHTML = ret.data[0].user_name;
+								document.getElementById('sign_date').innerHTML = ret.data[0].sign_date;
+								document.getElementById('text_html').innerHTML = render;
+							}
+						});
+					} else if (ret) {
+						api.toast({
+							msg : ret.message
+						});
+					} else {
+						document.getElementById('jiazai').innerHTML = '连接失败，请检查网络';
+						$('#headinfo').hide();
+						api.toast({
+							msg : err.body
+						});
+					}
+				}, 'selAttendetail&funid=attendance_detail&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&seldate=' + date);
+			}
+
+			function changeDate() {
+				$xy.openTimePick(function(ret) {
+					//alert(JSON.stringify(ret));
+					if (ret.month >= 1 && ret.month <= 9) {
+						month = "0" + ret.month;
+					}else{
+						month = ret.month;
+					}
+					if (ret.day >= 0 && ret.day <= 9) {
+						day = "0" + ret.day;
+					}else{
+						day = ret.day;
+					}
+					var date = ret.year + '-' + month + '-' + day;
+					//alert(date);
+					$("#sign_date").html(date);
+					_ajax(date);
+				});
 			}
 
 			//js时间戳转换

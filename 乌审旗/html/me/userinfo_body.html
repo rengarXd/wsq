@@ -21,36 +21,24 @@
 	</head>
 	<body class="H-flexbox-vertical">
 		<div class="H-padding-vertical-bottom-10"></div>
-		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-border-vertical-top-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-				用户名
+		<div  class="H-flexbox-horizontal H-box-sizing-border-box H-theme-background-color-white H-border-vertical-bottom-after H-clear-both H-padding-horizontal-both-10 H-padding-vertical-both-8">
+			<div tapmode="" onclick="setvatar();" style="width:50px;height:50px;"><img onerror="javascript:this.src='../../image/noavatar.gif'" src="../../image/noavatar.gif" id="nopic" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both">
 			</div>
-			<span id="user_code" class="H-icon H-font-size-12 H-padding-horizontal-right-20 H-display-block"></span>
+			<div class="H-flex-item H-padding-horizontal-both-10 H-vertical-middle H-overflow-hidden">
+				<div class="H-width-100-percent">
+					<strong id="user_code" class="H-float-right H-font-weight-normal H-display-block H-font-weight-500 H-font-size-16 H-text-show-row-1">Hui官方</strong>
+				</div>
+			</div>
 		</div>
 		<div class="H-padding-vertical-bottom-10"></div>
-		<div onclick="change();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-border-vertical-top-after H-vertical-middle H-touch-active">
+		<div onclick="change('地址');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-				手机号
+				地址
 			</div>
-			<span id="mob_code" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
+			<span id="person_address" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
-		<div onclick="change();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-				RFID卡号
-			</div>
-			<span id="rfid_code" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
-			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-		</div>
-		<div  class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
-				人员类型
-			</div>
-			<span id="person_type" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
-			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-			<!--<span class="H-padding-horizontal-right-20 H-display-block"></span>-->
-		</div>
-		<div  class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+		<div onclick="change('真实姓名');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				真实姓名
 			</div>
@@ -58,7 +46,7 @@
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 			<!--<span class="H-padding-horizontal-right-20 H-display-block"></span>-->
 		</div>
-		<div  class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+		<div onclick="change('GPS卡号');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				GPS卡号
 			</div>
@@ -71,7 +59,7 @@
 				职务
 			</div>
 			<span id="person_duty" class="H-icon H-font-size-12 H-padding-horizontal-right-5 H-display-block"></span>
-			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
+			<!--<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="iconfont icon-zhankai H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>-->
 			<!--<span class="H-padding-horizontal-right-20 H-display-block"></span>-->
 		</div>
 		<div class="H-padding-20">
@@ -82,8 +70,10 @@
 		<script src="../../script/wsq.js" type="text/javascript"></script>
 		<script src="../../script/zepto.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
-			var user = null;
+			var user = null, imageFilter = null;
 			apiready = function() {
+				// 引入过滤压缩模块
+				imageFilter = api.require("imageFilter");
 				api.getPrefs({
 					key : 'userinfo'
 				}, function(ret, err) {
@@ -98,24 +88,27 @@
 						});
 					}
 				});
+				api.addEventListener({
+					name : 'personNum_hasChanged'
+				}, function(ret, err) {
+					window.location.reload();
+				});
 			}
+			Zepto(function($) {
+			});
 			function _ajax() {
 				$xy.ajax(function(ret, err) {
 					//api.hideProgress();
 					if (ret.success) {
 						console.log(JSON.stringify(ret));
-						//手机号
-						document.getElementById('mob_code').innerHTML = ret.data[0].mob_code;
 						//账号
 						document.getElementById('user_code').innerHTML = ret.data[0].user_code;
-						//人员类型
-						document.getElementById('person_type').innerHTML = ret.data[0].person_type;
+						//地址
+						document.getElementById('person_address').innerHTML = ret.data[0].person_address;
 						//GPS卡号
 						document.getElementById('gps_code').innerHTML = ret.data[0].gps_code;
 						//职务
 						document.getElementById('person_duty').innerHTML = ret.data[0].person_duty;
-						//RFID卡号
-						document.getElementById('rfid_code').innerHTML = ret.data[0].person_num;
 						//姓名
 						document.getElementById('user_name').innerHTML = ret.data[0].user_name;
 					} else if (ret) {
@@ -130,7 +123,10 @@
 				}, 'appuserinfo&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
 			}
 
-			function change() {
+			function change(name) {
+				$xy.openWin('change_message_head', 'change_message_head.html', false, {
+					name : name
+				});
 			}
 
 			//退出登录
@@ -158,6 +154,225 @@
 						}, 500);
 					}
 				});
+			}
+
+			//打开设置头像
+			function setvatar() {
+				api.actionSheet({
+					title : '请选择您要上传头像的方式',
+					cancelTitle : '取消',
+					buttons : ['拍照', '相册']
+				}, function(ret, err) {
+					if (ret) {
+						switch(ret.buttonIndex) {
+							case 1:
+								//拍照处理
+								api.getPicture({
+									sourceType : 'camera',
+									encodingType : 'jpg',
+									mediaValue : 'pic',
+									destinationType : 'url',
+									allowEdit : true,
+									quality : 50,
+									saveToPhotoAlbum : false
+								}, function(ret, err) {
+									if (ret) {
+										var returnUrl = ret.data;
+										//console.log(returnUrl);
+										//$("#nopic").attr("src", returnUrl);
+										//压缩图片
+										imgCompress(returnUrl, 0.5, 0.5, getExt(returnUrl), function(compressImg) {
+											$("#nopic").attr("src", compressImg);
+											//console.log(JSON.stringify(compressImg));
+											attach_name = compressImg;
+											//console.log(JSON.stringify(attach_name));
+											//提交头像到服务器
+											Get_HeadPortrait_ID(attach_name);
+										});
+									} else {
+										//										api.toast({
+										//											msg : JSON.stringify(err)
+										//										});
+									}
+								});
+								break;
+							case 2:
+								api.getPicture({
+									sourceType : 'library',
+									encodingType : 'jpg',
+									mediaValue : 'pic',
+									destinationType : 'url',
+									allowEdit : true,
+									quality : 50,
+									saveToPhotoAlbum : false
+								}, function(ret, err) {
+									if (ret) {
+										var returnUrl = ret.data;
+										//$("#nopic").attr("src", returnUrl);
+										//压缩图片
+										imgCompress(returnUrl, 0.5, 0.5, getExt(returnUrl), function(compressImg) {
+											$("#nopic").attr("src", compressImg);
+											//console.log(JSON.stringify(compressImg));
+											attach_name = compressImg;
+											//console.log(attach_name);
+											Get_HeadPortrait_ID(attach_name);
+										});
+									} else {
+										//										api.toast({
+										//											msg : JSON.stringify(err)
+										//										});
+									}
+								});
+								break;
+						};
+					} else {
+						//						api.toast({
+						//							msg : ''
+						//						});
+					}
+				});
+			}
+
+			// 图片压缩
+			// imgsrc：源图片的路径
+			// quality：图片压缩质量，一般建议0.5
+			// scale：图片压缩比例，也是建议0.5
+			// ext：源图片拓展名
+			// callback：转换成功之后回调函数
+			function imgCompress(imgsrc, quality, scale, ext, callback) {
+				// 压缩文件的保存目录
+				var savePath = api.cacheDir + '/picture/' + getNowFormatDate() + '/';
+				// 压缩文件生成的随机文件名称
+				var savename = NewGuid() + "." + ext;
+				imageFilter.compress({
+					img : imgsrc,
+					quality : quality,
+					scale : quality,
+					save : {
+						album : false,
+						imgPath : savePath,
+						imgName : savename
+					}
+				}, function(ret, err) {
+					if (ret) {
+						callback(savePath + savename);
+					} else {
+						api.toast({
+							msg : JSON.stringify(err)
+						});
+					}
+				});
+			}
+
+			//生成随机文件名
+			function NewGuid() {
+				function S4() {
+					return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+				}
+
+				return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+			}
+
+			//获取当前时间
+			function getNowFormatDate() {
+				var date = new Date();
+				var seperator1 = "-";
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var strDate = date.getDate();
+				if (month >= 1 && month <= 9) {
+					month = "0" + month;
+				}
+				if (strDate >= 0 && strDate <= 9) {
+					strDate = "0" + strDate;
+				}
+				var currentdate = year + seperator1 + month + seperator1 + strDate
+				return currentdate;
+			}
+
+			// 获取文件拓展名
+			function getExt(fileName) {
+				return fileName.substring(fileName.lastIndexOf('.') + 1);
+			}
+
+			//上传头像方法
+			function Get_HeadPortrait_ID(attach_name) {
+				api.showProgress({
+					title : '上传中'
+				});
+				api.ajax({
+					url : window.ImgWebUrl,
+					method : 'post',
+					cache : false,
+					timeout : 20,
+					data : {
+						values : {
+							funid : "sys_attach",
+							pagetype : "editgrid",
+							eventcode : "create",
+							nousercheck : "1",
+							dataType : "byte",
+							datafunid : "person_data_maintain",
+							dataid : user[0].user_id,
+							attach_name : attach_name
+						},
+						files : {
+							attach_path : attach_name
+						}
+					}
+				}, function(ret, err) {
+					api.hideProgress();
+					var errs = eval('(' + err.body + ')');
+					if (api.systemType != "ios") {
+						androidresult(ret, err);
+					} else {
+						iosresult(ret, errs);
+					}
+				});
+			}
+
+			function androidresult(ret, err) {
+				if (ret) {
+					//console.log("ret====" + JSON.stringify(ret));
+					//$("#nonetwork").hide();
+					if (ret.success) {
+						api.toast({
+							msg : '上传成功！'
+						});
+						//console.log(JSON.stringify(ret));
+					} else {
+						api.toast({
+							msg : ret.message
+						});
+					}
+				} else {
+					console.log("err====" + JSON.stringify(err));
+					api.toast({
+						msg : '连接失败，请检查网络配置'
+					});
+				}
+			}
+
+			function iosresult(ret, err) {
+				if (err) {
+					//console.log("ret====" + JSON.stringify(ret));
+					//$("#nonetwork").hide();
+					if (err.success) {
+						api.toast({
+							msg : '上传成功！'
+						});
+						//console.log(JSON.stringify(ret));
+					} else {
+						api.toast({
+							msg : err.message
+						});
+					}
+				} else {
+					console.log("err====" + JSON.stringify(err));
+					api.toast({
+						msg : '连接失败，请检查网络配置'
+					});
+				}
 			}
 		</script>
 	</body>

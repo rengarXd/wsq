@@ -36,21 +36,25 @@
 	</head>
 	<body>
 		<!--无网络登录和获取验证码优化-->
-		<div class="top_part" style="height: 300px;"></div>
+		<div id="top_part" >
+			<div class="chacha H-text-align-right H-theme-font-color-white">
+				<i tapmode="H-touch-active" onclick="api.closeWidget(api.appId, {name : 'closeWidget'});" class="iconfont H-touch-active icon-chacha H-font-size-20"></i>
+			</div>
+		</div>
 		<div class="H-padding-15">
 			<div class="H-border-radius-5 H-flexbox-horizontal H-border-vertical-both-after H-theme-background-color-white">
-				<input style="color:#49b1f4;" value="EMP201701000012" id="user_code" type="text" class="H-textbox H-vertical-align-middle H-width-100-percent H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入用户名...">
+				<input style="color:#49b1f4;" value="SYJ201702000001" id="user_code" type="text" class="H-textbox H-vertical-align-middle H-width-100-percent H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入用户名...">
 			</div>
 			<div class="H-margin-vertical-top-8"></div>
 			<div class="H-border-radius-5 H-flexbox-horizontal H-border-vertical-bottom-after H-theme-background-color-white">
-				<input id="user_pwd" value="15645623453" style="color:#49b1f4;" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-width-100-percent H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入密码...">
+				<input id="user_pwd" value="13437469203" style="color:#49b1f4;" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-width-100-percent H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入密码...">
 			</div>
 			<div class="H-padding-horizontal-both-5 H-padding-vertical-top-10">
 				<!--<input type="checkbox" class="H-checkbox H-checkbox-null H-vertical-align-middle H-font-size-15 H-theme-font-color-black H-border-radius-5">
 				<span class="H-theme-font-color-white H-font-size-16">记住密码</span>-->
 				<span class="H-float-right H-line-height-normal"><i class="H-font-size-20 H-theme-font-color-white iconfont icon-zhuce-copy-copy"></i><span onclick="register();" class="H-padding-horizontal-left-5 H-font-size-16 H-theme-font-color-white">市民注册</span></span>
 			</div>
-			<div class="H-padding-horizontal-both-20 H-padding-vertical-top-10">
+			<div class="H-padding-horizontal-both-20 H-padding-vertical-top-20">
 				<button onclick="password_login();" class="H-touch-active xy_confirm_btn H-margin-vertical-top-10 H-position-static H-button H-width-100-percent  H-font-size-15 H-border-none H-padding-vertical-both-12 H-padding-horizontal-both-20  H-theme-font-color-white">
 					登&nbsp;&nbsp;&nbsp;录
 				</button>
@@ -71,7 +75,8 @@
 			jpush = api.require('ajpush');
 			systemtype = api.systemType;
 			//$("#top_position").css('height', api.frameHeight * 2 / 5);
-			$("#top_part").css('height', api.frameHeight / 2);
+			var topheigth = api.frameHeight / 2;
+			$("#top_part").css('height', topheigth);
 			$xy.dblclickToCloseApp();
 		}
 
