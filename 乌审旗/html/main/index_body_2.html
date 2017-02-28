@@ -7,8 +7,11 @@
 		<title>body</title>
 		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
 		<link rel="stylesheet" href="../../css/style.css" />
-		<link rel="stylesheet" href="../../css/iconfont.css" />
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css" />
 		<style>
+			html,body{
+				background: #FFFFFF;
+			}
 			.lishishangbao {
 				background-color: #ff6738;
 			}
@@ -35,33 +38,21 @@
 	<body>
 		<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-both-10">
 			<div class="H-flex-item">
-				<span class="H-icon H-center-all lishishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-qq H-font-size-24 H-theme-font-color-white"></i></span>
+				<span tapmode onclick="openWinn('history_report_head','./history/history_report_head.html');" class="H-icon H-center-all lishishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-gongwenbaoxian H-font-size-24 H-theme-font-color-white"></i></span>
 				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">历史上报</label>
 			</div>
 			<div class="H-flex-item">
-				<span class="H-icon H-center-all wentishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-weixin H-font-size-24 H-theme-font-color-white"></i></span>
+				<span tapmode onclick="openWinn('question_report_head','./question/question_report_head.html');" class="H-icon H-center-all wentishangbao H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-shangchuanyunduan H-font-size-30 H-theme-font-color-white"></i></span>
 				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">问题上报</label>
 			</div>
 			<div class="H-flex-item">
-				<span class="H-icon H-center-all wodekaoqin H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-weibo H-font-size-24 H-theme-font-color-white"></i></span>
-				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">我的考勤</label>
-			</div>
-			<div class="H-flex-item">
-				<span class="H-icon H-center-all wodegongzuo H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-qzone H-font-size-24 H-theme-font-color-white"></i></span>
-				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">我的工作</label>
-			</div>
-		</div>
-		<div class="H-flexbox-horizontal H-text-align-center H-theme-background-color-white H-padding-vertical-both-10">
-			<div class="H-flex-item">
-				<span class="H-icon H-center-all gerenxinxi H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-qq H-font-size-24 H-theme-font-color-white"></i></span>
-				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">个人信息</label>
-			</div>
-			<div class="H-flex-item">
-				<span class="H-icon H-center-all xiugaimima H-border-radius-9 H-margin-horizontal-auto" style="height: 50px; width: 50px; "><i class="iconfont icon-weixin H-font-size-24 H-theme-font-color-white"></i></span>
+				<span tapmode onclick="openWinn('change_password_head','./password/change_password_head.html');" class="H-icon H-center-all xiugaimima H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-mima H-font-size-22 H-theme-font-color-white"></i></span>
 				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">修改密码</label>
 			</div>
-			<div class="H-flex-item" style="background-color: white;color: white;"></div>
-			<div class="H-flex-item" style="background-color: white;color: white;"></div>
+			<div class="H-flex-item">
+				<span tapmode onclick="openWinn('userinfo_head','../me/userinfo_head.html');" class="H-icon H-center-all gerenxinxi H-border-radius-9 H-margin-horizontal-auto" style="height: 49px; width: 49px; "><i class="iconfont icon-gerenxinxi1 H-font-size-24 H-theme-font-color-white"></i></span>
+				<label class="H-display-block H-font-size-13 H-margin-vertical-top-5">个人信息</label>
+			</div>
 		</div>
 	</body>
 	<script type="text/javascript" src="../../script/wsq.js"></script>
@@ -72,6 +63,9 @@
 		};
 		// 初始化页面
 		function initPage() {
+		}
+		function openWinn(name, url) {
+			$xy.openWin(name, url, false, api.pageParam);
 		}
 	</script>
 </html>

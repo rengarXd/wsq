@@ -43,11 +43,11 @@
 		</div>
 		<div class="H-padding-15">
 			<div class="H-border-radius-5 H-flexbox-horizontal H-border-vertical-both-after H-theme-background-color-white">
-				<input style="color:#49b1f4;" value="" id="user_code" type="text" class="H-textbox H-vertical-align-middle H-width-100-percent H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入用户名...">
+				<input style="color:#49b1f4;" value="SYJ201702000001" id="user_code" type="text" class="H-textbox H-vertical-align-middle H-width-100-percent H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入用户名...">
 			</div>
 			<div class="H-margin-vertical-top-8"></div>
 			<div class="H-border-radius-5 H-flexbox-horizontal H-border-vertical-bottom-after H-theme-background-color-white">
-				<input id="user_pwd" value="" style="color:#49b1f4;" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-width-100-percent H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入密码...">
+				<input id="user_pwd" value="13437469203" style="color:#49b1f4;" type="password" class="H-textbox H-vertical-align-middle H-vertical-middle H-width-100-percent H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12 H-padding-horizontal-left-25" placeholder="请输入密码...">
 			</div>
 			<div class="H-padding-horizontal-both-5 H-padding-vertical-top-10">
 				<!--<input type="checkbox" class="H-checkbox H-checkbox-null H-vertical-align-middle H-font-size-15 H-theme-font-color-black H-border-radius-5">
@@ -104,14 +104,6 @@
 			});
 		}
 
-		function turnMain() {
-			$xy.openWin('index_head_1', '../main/index_head_1.html', false, api.pageParam);
-			//关闭本页
-			setTimeout(function() {
-				api.closeWin();
-			}, 100);
-		}
-
 		function register() {
 			$xy.openWin('register', 'register.html', false, api.pageParam);
 		}
@@ -150,13 +142,25 @@
 						registID(retInfo);
 					}
 					//进入主界面
-					turnMain();
+					turnMain(retInfo);
 				} else {
 					api.toast({
 						msg : ret.message
 					});
 				}
 			}, 'applogin&funid=sys_user&user_code=' + user_code + '&user_pwd=' + user_pwd);
+		}
+
+		function turnMain(userinfo) {
+			//关闭本页
+			setTimeout(function() {
+				api.closeWin();
+			}, 300);
+			if (parseInt(userinfo[0].person_type) == 2) {
+				$xy.openWin('index_head_1', '../main/index_head_1.html', false, api.pageParam);
+			} else {
+				$xy.openWin('index_head_2', '../main/index_head_2.html', false, api.pageParam);
+			}
 		}
 
 		//注册设备

@@ -306,17 +306,20 @@
 					title : '上传中'
 				});
 				$xy.ajax(function(ret, err) {
-					//api.hideProgress();
 					console.log(JSON.stringify(ret));
 					//alert(JSON.stringify(ret));
 					problem_id = ret.body.data[0].problem_id;
 					api.toast({
-						msg : ret.body.data[0].problem_id
+						msg : ret.body.message
 					});
-					$("#imgslist li:not(#addpic)").each(function() {
-						// 将图片追加到数组中
-						uploadFile($(this).find("img").attr("src"), problem_id);
-					});
+					if ($("#imgslist li:not(#addpic)").length > 0) {
+						$("#imgslist li:not(#addpic)").each(function() {
+							// 将图片追加到数组中
+							uploadFile($(this).find("img").attr("src"), problem_id);
+						});
+					} else {
+						api.hideProgress();
+					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
 						user_id : userdata[0].user_id,
@@ -351,14 +354,14 @@
 				api.hideProgress();
 				if (ret) {
 					console.log(JSON.stringify(ret));
-					api.toast({
-						msg : ret.message
-					});
+					//					api.toast({
+					//						msg : ret.message
+					//					});
 					//ret.success ? callback(ret) : H.toast(ret.message);
 				} else {
-					api.toast({
-						msg : err.body
-					});
+					//					api.toast({
+					//						msg : err.body
+					//					});
 				}
 			}, window.ImgWebUrl, "post", {
 				values : {

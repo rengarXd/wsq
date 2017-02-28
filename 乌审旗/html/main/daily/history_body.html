@@ -144,7 +144,7 @@
 								document.getElementById('text_html').innerHTML = render;
 							}
 						});
-					} else if (ret) {
+					} else if (ret && ret.success == false) {
 						api.toast({
 							msg : ret.message
 						});

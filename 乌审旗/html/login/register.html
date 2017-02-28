@@ -73,7 +73,8 @@
 				var user_code = $("#user_code").val();
 				var pwd_1 = $("#pwd_1").val();
 				var pwd_2 = $("#pwd_2").val();
-				var checkOP = $("input[type='radio']:checked").val();
+				var checkOP = 4;
+				//$("input[type='radio']:checked").val();
 				//console.log(user_code + ',' + pwd_1 + ',' + pwd_2 + ',' + checkOP);
 				pwd_1 == pwd_2 ? registerCode(user_code, checkOP, pwd_1) : errorPwd();
 			}
@@ -110,8 +111,7 @@
 			});
 			/*关闭本页*/
 			function gb() {
-				api.closeWin({
-				});
+				api.closeWin();
 			}
 
 			function registerCode(user_code, checkOP, pwd_1) {
@@ -128,7 +128,7 @@
 					if (ret && ret.success) {//请求返回success值为false时
 						setTimeout(function() {
 							api.closeWin();
-						}, 800);
+						}, 600);
 					}
 				}, 'appRegister&funid=sys_user&user_code=' + user_code + '&user_type=' + checkOP + '&user_pwd=' + pwd_1);
 			}

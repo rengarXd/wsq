@@ -22,7 +22,7 @@
 	<body class="H-flexbox-vertical">
 		<div class="H-padding-vertical-bottom-10"></div>
 		<div  class="H-flexbox-horizontal H-box-sizing-border-box H-theme-background-color-white H-border-vertical-bottom-after H-clear-both H-padding-horizontal-both-10 H-padding-vertical-both-8">
-			<div tapmode="" onclick="setvatar();" style="width:50px;height:50px;"><img onerror="javascript:this.src='../../image/noavatar.gif'" src="../../image/noavatar.gif" id="nopic" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both">
+			<div tapmode="" style="width:50px;height:50px;"><img onerror="javascript:this.src='../../image/noavatar.gif'" src="../../image/noavatar.gif" id="nopic" class="H-width-100-percent H-height-100-percent H-display-block H-border-radius-circle H-border-both">
 			</div>
 			<div class="H-flex-item H-padding-horizontal-both-10 H-vertical-middle H-overflow-hidden">
 				<div class="H-width-100-percent">
@@ -69,6 +69,7 @@
 		</div>
 		<script src="../../script/wsq.js" type="text/javascript"></script>
 		<script src="../../script/zepto.min.js" type="text/javascript"></script>
+		<script src="../../script/upImg.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			var user = null, imageFilter = null;
 			apiready = function() {
@@ -95,6 +96,17 @@
 				});
 			}
 			Zepto(function($) {
+				$("#nopic").tap(function() {
+					setvatar();
+				});
+				$("#nopic").longTap(function() {
+					// 定义一个数组，存储需要预览的图片
+					var browerImgs = [];
+					// 将图片追加到数组中
+					browerImgs.push($(this).attr("src"));
+					// 调用图片预览函数
+					img.openImageBrowser(browerImgs);
+				});
 			});
 			function _ajax() {
 				$xy.ajax(function(ret, err) {
