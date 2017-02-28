@@ -36,9 +36,10 @@
 		<script type="text/javascript" src="../../../script/tools/laytpl.js" ></script>
 		<script type="text/javascript" src="../../../script/zepto.min.js"></script>
 		<script type="text/javascript">
-			var user = null, nums = null, keywords = null;
+			var user = null, nums = null, keywords = null, problem_id = null;
 			apiready = function() {
 				api.parseTapmode();
+				problem_id = api.pageParam.problem_id;
 				//设置下拉刷新
 				$xy.setRefreshHeaderInfo(function() {
 					location.reload();
@@ -96,7 +97,8 @@
 					name : 'region',
 					extra : {
 						send_userid : xqdm,
-						send_user : xqnm
+						send_user : xqnm,
+						problem_id : problem_id
 					}
 				});
 				api.closeWin();
