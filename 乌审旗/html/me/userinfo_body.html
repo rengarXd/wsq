@@ -111,6 +111,8 @@
 						document.getElementById('person_duty').innerHTML = ret.data[0].person_duty;
 						//姓名
 						document.getElementById('user_name').innerHTML = ret.data[0].user_name;
+						//头像
+						$("#nopic").attr('src', window.iconUrl + ret.data[0].attach_path);
 					} else if (ret) {
 						api.toast({
 							msg : ret.message

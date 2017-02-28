@@ -6,6 +6,7 @@
 ;! function(window) {
 	window.serverUrl = "http://117.158.216.74:8081/wshuanwei/fileAction.do?pagetype=grid&nousercheck=1&eventcode=";
 	window.ImgWebUrl = 'http://117.158.216.74:8081/wshuanwei/fileAction.do?';
+	window.iconUrl = 'http://117.158.216.74:8081/wshuanwei/'
 	var u = {
 		DEFAULT_CONFIG : {
 			openWin_CONFIG : {
