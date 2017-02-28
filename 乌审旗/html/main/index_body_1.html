@@ -73,10 +73,24 @@
 		var bMap = null, infos = null, user = null, retdata = null, cycle = null;
 		apiready = function() {
 			api.parseTapmode();
+			serviceModule = api.require('serviceModule');
+			api.getPrefs({
+				key : 'userinfo'
+			}, function(ret, err) {
+				if (ret && ret.value) {
+					user = eval('(' + ret.value + ')');
+					serviceModule.initLocation({
+						"url" : "http://117.158.216.74:8081/wshuanwei/fileAction.do?eventcode=report_location&funid=gps_wzsb&pagetype=grid&nousercheck=1&",
+						"uid" : user[0].user_id,
+						"token" : user[0].uuid
+					});
+				} else {
+				}
+			});
 			//初始化模块
-			initModel();
+			//initModel();
 			//初始化主程序
-			initinfo();
+			//initinfo();
 		};
 		function openWinn(name, url) {
 			$xy.openWin(name, url, false, api.pageParam);
@@ -213,9 +227,9 @@
 				//api.hideProgress();
 				if (ret.success) {
 					//console.log(JSON.stringify(ret));
-//					api.toast({
-//						msg : ret.message
-//					});
+					//					api.toast({
+					//						msg : ret.message
+					//					});
 				} else {
 					api.toast({
 						msg : err.body
