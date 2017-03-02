@@ -13,11 +13,12 @@
 		<header class="H-header b_header_bg" id="header">
 			<span tapmode="H-theme-font-color-444" onclick="closeToMain();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100"><i class="iconfont H-font-size-20 icon-tuichu" ></i><span class="H-padding-horizontal-left-5">退出</span></span>
 			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				普通员工
+				普通市民
 			</div>
 		</header>
 	</body>
 	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript" src="../../script/wsq.js"></script>
 	<script type="text/javascript">
 		apiready = function() {
 			api.parseTapmode();
@@ -37,5 +38,40 @@
 				}
 			})
 		};
+		function closeToMain() {
+			api.confirm({
+				title : '温馨提示',
+				msg : '确定要退出登录吗？',
+				buttons : ['确定', '取消']
+			}, function(ret, err) {
+				if (ret.buttonIndex == 1) {
+					//alert('确定');
+					var ajpush = api.require('ajpush');
+					ajpush.removeListener();
+					api.removePrefs({
+						key : 'userinfo'
+					});
+					api.closeToWin({
+						name : 'index'
+					});
+					$xy.openWin('login', '../login/login.html', false, api.pageParam);
+					//关闭本页
+//					setTimeout(function() {
+//						api.closeWin();
+//					}, 100);
+				}
+			});
+			//			api.closeWidget({
+			//				id : 'A6939088270619',
+			//				retData : {
+			//					name : 'closeWidget'
+			//				},
+			//				animation : {
+			//					type : 'flip',
+			//					subType : 'from_bottom',
+			//					duration : 500
+			//				}
+			//			});
+		}
 	</script>
 </html>
