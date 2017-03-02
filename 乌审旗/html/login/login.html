@@ -156,10 +156,10 @@
 			setTimeout(function() {
 				api.closeWin();
 			}, 300);
-			if (parseInt(userinfo[0].person_type) == 2) {
-				$xy.openWin('index_head_1', '../main/index_head_1.html', false, api.pageParam);
-			} else {
+			if (parseInt(userinfo[0].person_type) == 3) {
 				$xy.openWin('index_head_2', '../main/index_head_2.html', false, api.pageParam);
+			} else {
+				$xy.openWin('index_head_1', '../main/index_head_1.html', false, api.pageParam);
 			}
 		}
 

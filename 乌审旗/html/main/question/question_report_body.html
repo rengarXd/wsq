@@ -26,7 +26,7 @@
 		</style>
 	</head>
 	<body>
-		<div tapmode onclick="shijian();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+		<div tapmode onclick="shijianDOM();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item  H-theme-font-color-999 H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				事件类型 <span id="shijian" class="H-padding-horizontal-left-12 H-theme-font-color-black"></span>
 			</div>
@@ -101,6 +101,14 @@
 			}, function(ret, err) {
 				if (ret && ret.value) {
 					userdata = eval('(' + ret.value + ')');
+					shijianAjax(function(ret) {
+						$("#shijian").html(ret.data[ret.data.length - 1].display_data);
+						$("#shijian").attr('shijian', ret.data[ret.data.length - 1].value_data);
+					});
+					keshiAjax(function(ret) {
+						$("#keshi").html(ret.data[0].dept_name);
+						$("#keshi").attr('keshi', ret.data[0].dept_id);
+					});
 				}
 			});
 			api.addEventListener({
@@ -109,14 +117,15 @@
 				//alert(JSON.stringify(ret));
 				if (ret && ret.value) {
 					//$("#maplocal").html(ret.value.lon + ',' + ret.value.lat);
-					maplon = ret.value.lon;
-					maplat = ret.value.lat;
+					var maplon = ret.value.lon;
+					var maplat = ret.value.lat;
 					bMap.getNameFromCoords({
 						lon : maplon,
 						lat : maplat
 					}, function(ret, err) {
 						if (ret.status) {
 							//alert(JSON.stringify(ret));
+							//address = ret.address;
 							$("#address").val(ret.address);
 						}
 					});
@@ -144,9 +153,9 @@
 				img.openImageBrowser(browerImgs);
 			});
 			$("#imgslist").on("click", "#addpic", function() {
-				if ($("#imgslist img").length >= 7) {
+				if ($("#imgslist img").length >= 6) {
 					api.toast({
-						msg : '抱歉，最多发布7张图片'
+						msg : '抱歉，最多发布6张图片'
 					});
 				} else {
 					api.actionSheet({
@@ -238,25 +247,31 @@
 			});
 		}
 
-		function shijian() {
+		function shijianDOM() {
+			shijianAjax(function(ret) {
+				var dept = new Array();
+				for (var i = 0, len = ret.data.length; i < len; i++) {
+					dept.push(ret.data[i].display_data);
+				};
+				var retdata = ret.data;
+				api.actionSheet({
+					title : '事件类型',
+					cancelTitle : '取消',
+					buttons : dept
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					$("#shijian").html(retdata[parseInt(index) - 1].display_data);
+					$("#shijian").attr('shijian', retdata[parseInt(index) - 1].value_data);
+				});
+			});
+		}
+
+		function shijianAjax(callback) {
 			api.showProgress();
 			$xy.ajax(function(ret, err) {
 				api.hideProgress();
 				if (ret && ret.success) {
-					var dept = new Array();
-					for (var i = 0, len = ret.data.length; i < len; i++) {
-						dept.push(ret.data[i].display_data);
-					};
-					var retdata = ret.data;
-					api.actionSheet({
-						title : '事件类型',
-						cancelTitle : '取消',
-						buttons : dept
-					}, function(ret, err) {
-						var index = ret.buttonIndex;
-						$("#shijian").html(retdata[parseInt(index) - 1].display_data);
-						$("#shijian").attr('shijian', retdata[parseInt(index) - 1].value_data);
-					});
+					callback(ret);
 				} else {
 					api.toast({
 						msg : ret.message
@@ -265,25 +280,31 @@
 			}, 'selEventype&funid=report_problem&control=eventype');
 		}
 
-		function keshi() {
+		function keshiDOM() {
+			keshiAjax(function(ret) {
+				var dept = new Array();
+				for (var i = 0, len = ret.data.length; i < len; i++) {
+					dept.push(ret.data[i].dept_name);
+				};
+				var retdata = ret.data;
+				api.actionSheet({
+					title : '上报科室',
+					cancelTitle : '取消',
+					buttons : dept
+				}, function(ret, err) {
+					var index = ret.buttonIndex;
+					$("#keshi").html(retdata[parseInt(index) - 1].dept_name);
+					$("#keshi").attr('keshi', retdata[parseInt(index) - 1].dept_id);
+				});
+			});
+		}
+
+		function keshiAjax(callback) {
 			api.showProgress();
 			$xy.ajax(function(ret, err) {
 				api.hideProgress();
 				if (ret && ret.success) {
-					var dept = new Array();
-					for (var i = 0, len = ret.data.length; i < len; i++) {
-						dept.push(ret.data[i].dept_name);
-					};
-					var retdata = ret.data;
-					api.actionSheet({
-						title : '上报科室',
-						cancelTitle : '取消',
-						buttons : dept
-					}, function(ret, err) {
-						var index = ret.buttonIndex;
-						$("#keshi").html(retdata[parseInt(index) - 1].dept_name);
-						$("#keshi").attr('keshi', retdata[parseInt(index) - 1].dept_id);
-					});
+					callback(ret);
 				} else {
 					api.toast({
 						msg : ret.message
@@ -298,10 +319,11 @@
 			var problem_type = $("#shijian").attr('shijian');
 			var dept_id = $("#keshi").attr('keshi');
 			var is_synchro = $("input[type='radio']:checked").val();
-			var problem_lng = maplon;
-			var problem_lat = maplat;
+			//			var problem_lng = maplon;
+			//			var problem_lat = maplat;
 			var problem_text = $("#pet_text").val();
-			if (problem_type && dept_id && is_synchro && problem_lng && problem_lat && problem_text) {
+			var problem_location = $("#address").val();
+			if (problem_type && dept_id && is_synchro && problem_location && problem_text) {
 				api.showProgress({
 					title : '上传中'
 				});
@@ -319,6 +341,9 @@
 						});
 					} else {
 						api.hideProgress();
+						setTimeout(function() {
+							window.location.reload();
+						}, 500);
 					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
@@ -327,8 +352,7 @@
 						problem_type : problem_type,
 						dept_id : dept_id,
 						is_synchro : is_synchro,
-						problem_lng : problem_lng,
-						problem_lat : problem_lat,
+						problem_location : problem_location,
 						problem_text : problem_text
 					}
 				});
@@ -352,16 +376,19 @@
 			//			});
 			$xy.oldAjax(function(ret, err) {
 				api.hideProgress();
-				if (ret) {
+				if (ret && ret.success) {
 					console.log(JSON.stringify(ret));
-					//					api.toast({
-					//						msg : ret.message
-					//					});
+					api.toast({
+						msg : '图片上传成功！'
+					});
+					setTimeout(function() {
+						window.location.reload();
+					}, 500);
 					//ret.success ? callback(ret) : H.toast(ret.message);
 				} else {
-					//					api.toast({
-					//						msg : err.body
-					//					});
+					api.toast({
+						msg : err.body
+					});
 				}
 			}, window.ImgWebUrl, "post", {
 				values : {
