@@ -201,7 +201,7 @@
 						api.toast({
 							msg : ret.message
 						});
-					} else if (ret) {
+					} else if (ret && !ret.success) {
 						api.toast({
 							msg : ret.message
 						});

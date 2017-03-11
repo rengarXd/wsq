@@ -13,7 +13,7 @@
 		<header class="H-header b_header_bg" id="header">
 			<span tapmode="H-theme-font-color-444" onclick="closeToMain();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100"><i class="iconfont H-font-size-20 icon-tuichu" ></i><span class="H-padding-horizontal-left-5">退出</span></span>
 			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				普通市民
+				普通用户
 			</div>
 		</header>
 	</body>
@@ -22,6 +22,8 @@
 	<script type="text/javascript">
 		apiready = function() {
 			api.parseTapmode();
+			//双击退出
+			$xy.dblclickToCloseApp();
 			var header = $api.byId('header');
 			$api.fixStatusBar(header);
 			var headerPos = $api.offset(header);

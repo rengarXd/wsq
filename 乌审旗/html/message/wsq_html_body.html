@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>title</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css"/>
+		<style>
+			html, body {
+				background-color: white;
+			}
+			.xy_border {
+				border-bottom: 1px solid #f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="record_list">
+			<div class="H-position-absolute H-position-center-all" id="statuss">
+				<div class="H-font-size-14 H-text-align-center">
+					<i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i>
+					<div class="H-theme-font-color-999">
+						加载中
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="record_list_item">
+			<h2 class="H-text-align-center">{{ d[0].news_title }}</h2>
+			<div class="H-padding-horizontal-both-20 H-padding-vertical-bottom-5 H-font-size-12 H-theme-font-color-999">
+			{{# var strtime = d[0].edit_date }}
+			类别：{{ d[0].cont_type }} <span class="H-float-right">{{ $xy.jsDateDiff(strtime)}}</span>
+			</div>
+			<div class="xy_border H-margin-horizontal-both-20 H-border-style-solid"></div>
+			<div class="H-flexbox-horizontal H-theme-background-color-white ">
+			<div class="H-flex-item H-padding-20">
+			<div class="H-text-indent H-font-size-18 H-theme-font-color-666 H-margin-vertical-top-2">
+			<!--嘎鲁图汽车站，总建筑面积8600平方米, 2005年由鄂尔多斯市汽车运输集团有限公司自投资金建成，属自治区客运二级站。嘎鲁图汽车站日均旅客流量约为500人次，节假日高峰期可高达800人次，日进站客车（包括中转过路车）为125辆，始发班次为80余次，现运行线路68条，其中跨省线路11条，跨盟市12条，旗县际45条。-->
+			{{ d[0].news_cont }}
+			</div>
+			</div>
+			</div>
+			<div class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
+			{{# for(var i=0,len=d[0].imgurl.length;i<len;i++) { }}
+			<div onclick="openscan('{{ d[0].imgurl[i].attach_path }}')" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+			<img src="{{ d[0].imgurl[i].attach_path }}" class="H-width-100-percent H-display-block" >
+			</div>
+			{{# } }}
+			</div>
+			{{# if( d.length > 1 ) { }}
+			{{# for (var a = 1, bl= d.length-1;a<bl;a++) { }}
+			<h3 class="H-text-align-center">{{ d[a].news_title }}</h3>
+			<div class="H-flexbox-horizontal H-theme-background-color-white ">
+			<div class="H-flex-item H-padding-20">
+			<div class="H-text-indent H-font-size-18 H-theme-font-color-666 H-margin-vertical-top-2">
+			<!--嘎鲁图汽车站，总建筑面积8600平方米, 2005年由鄂尔多斯市汽车运输集团有限公司自投资金建成，属自治区客运二级站。嘎鲁图汽车站日均旅客流量约为500人次，节假日高峰期可高达800人次，日进站客车（包括中转过路车）为125辆，始发班次为80余次，现运行线路68条，其中跨省线路11条，跨盟市12条，旗县际45条。-->
+			{{ d[a].news_cont }}
+			</div>
+			</div>
+			</div>
+			<div class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
+			{{# for(var i=0,len=d[a].imgurl.length;i<len;i++) { }}
+			<div onclick="openscan('{{ d[a].imgurl[i].attach_path }}')" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+			<img src="{{ d[a].imgurl[i].attach_path }}" class="H-width-100-percent H-display-block" >
+			</div>
+			{{# } }}
+			</div>
+			{{# } }}
+			{{# } }}
+		</script>
+		<script type="text/javascript" src="../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../script/tools/laytpl.js"></script>
+		<script type="text/javascript" src="../../script/upImg.js"></script>
+		<script type="text/javascript">
+			var user = null, imageBrowser = null;
+			apiready = function() {
+				help_id = api.pageParam.id;
+				//引入图片预览模块
+				imageBrowser = api.require('imageBrowser');
+				api.getPrefs({
+					key : 'userinfo'
+				}, function(ret, err) {
+					if (ret && ret.value) {
+						user = eval('(' + ret.value + ')');
+						//api.showProgress();
+						$xy.ajax(function(ret, err) {
+							//api.hideProgress();
+							if (ret.success) {
+								console.log(JSON.stringify(ret));
+								if (ret.data.length == 0) {
+									//当没有订单时的处理
+									var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无数据</div></div></div>';
+									document.getElementById('record_list').innerHTML = htmls;
+								} else {
+									var tpl = document.getElementById('record_list_item').innerHTML;
+									//读取模版
+									//方式一：异步渲染（推荐）
+									laytpl(tpl).render(ret.data, function(render) {
+										//api.hideProgress();
+										document.getElementById('record_list').innerHTML = render;
+									});
+								}
+							} else if (ret && !ret.success) {
+								//api.hideProgress();
+								api.toast({
+									msg : ret.message
+								});
+							} else {
+								//api.hideProgress();
+								api.toast({
+									msg : err.body
+								});
+							}
+						}, 'selfacilitiesmx&funid=public_news&cont_type=' + help_id);
+					} else {
+					}
+				});
+			};
+			function openscan(url) {
+				//alert(url);
+				var arr = new Array();
+				arr.push(url);
+				//alert(arr);
+				img.openImageBrowser(arr);
+			}
+		</script>
+	</body>
+</html>

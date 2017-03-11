@@ -22,9 +22,9 @@
 					});
 				};
 				//初始化数据库
-				initDB();
+				//initDB();
 				//数据库操作
-				dblistener();
+				//dblistener();
 				//判断是否已经登录
 				api.getPrefs({
 					sync : false,
@@ -32,9 +32,8 @@
 				}, function(ret, err) {
 					if (ret && ret.value) {
 						//1.5、关闭当前页面跳转主页面
-						$xy.openWin('main', './html/main/index_head_1.html', false, api.pageParam, {
-							slidBackEnabled : false
-						});
+						var user = eval('(' + ret.value + ')');
+						turnMain(user);
 					} else {
 						//1.6、关闭当前页面跳转登陆页面
 						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
@@ -43,6 +42,23 @@
 					}
 				});
 			}
+			//跳转到主页
+			function turnMain(userinfo) {
+				//关闭本页
+				setTimeout(function() {
+					api.closeWin();
+				}, 300);
+				if (parseInt(userinfo[0].person_type) == 3) {
+					$xy.openWin('index_head_2', './html/main/index_head_2.html', false, api.pageParam, {
+						slidBackEnabled : false
+					});
+				} else {
+					$xy.openWin('index_head_1', './html/main/index_head_1.html', false, api.pageParam, {
+						slidBackEnabled : false
+					});
+				}
+			}
+
 			function dblistener() {
 				api.addEventListener({
 					name : 'datas'
