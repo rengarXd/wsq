@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>帮助正文</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<style>
+			.square {
+				width: 5px;
+				height: 5px;
+				background: #10a0d2;
+				margin-left: 10px;
+				margin-right: 10px;
+			}
+			.ziti {
+				color: #555555;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="record_list">
+			<div class="H-position-absolute H-position-center-all" id="statuss">
+				<div class="H-font-size-14 H-text-align-center">
+					<i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i>
+					<div class="H-theme-font-color-999">
+						加载中
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1">
+		<div class="square"></div>
+		<div class="H-text-show-row-1  H-font-size-16 H-padding-vertical-both-12 ziti">
+		欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app
+		</div>
+		</div>
+		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1">
+		<div class="square"></div>
+		<div class="H-text-show-row-1  H-font-size-16 H-padding-vertical-both-12 ziti">
+		欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app
+		</div>
+		</div>
+		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1">
+		<div class="square"></div>
+		<div class="H-text-show-row-1  H-font-size-16 H-padding-vertical-both-12 ziti">
+		欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app
+		</div>
+		</div>
+		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1">
+		<div class="square"></div>
+		<div class="H-text-show-row-1  H-font-size-16 H-padding-vertical-both-12 ziti">
+		欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app
+		</div>
+		</div>
+		<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1">
+		<div class="square"></div>
+		<div class="H-text-show-row-1  H-font-size-16 H-padding-vertical-both-12 ziti">
+		欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app欢迎使用app
+		</div>
+		</div>-->
+		<script type="text/html" id="record_list_item">
+			{{# for(var i = 0, len = d.length; i < len; i++) { }}
+			<div class="H-text-list  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active H-margin-vertical-bottom-1" tapmode="H-touch-active" onclick="openHelpCenterText('{{ d[i].id }}');">
+			<div class="square"></div>
+			<div class=" H-font-size-16 H-padding-vertical-both-12 xy_font_color H-padding-horizontal-right-20 ">
+			{{ d[i].title }}
+			</div>
+			</div>
+			{{# } }}
+		</script>
+		<script type="text/javascript" src="../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../script/tools/laytpl.js"></script>
+		<script type="text/javascript">
+			var datas = [{
+				title : '1、城镇建设基本情况',
+				id : '01'
+			}, {
+				title : '2、总规图',
+				id : '02',
+			}, {
+				title : '3、鸟瞰图',
+				id : '03',
+			}, {
+				title : '4、乌审旗公共事业管理',
+				id : '04'
+			}, {
+				title : '5、公厕、收集站',
+				id : '05'
+			},{
+				title : '6、自行车站点',
+				id : '06'
+			},{
+				title : '7、路灯',
+				id : '07'
+			},{
+				title : '8、避难所',
+				id : '08'
+			},{
+				title : '9、车站',
+				id : '09'
+			},{
+				title : '10、雨污管网',
+				id : '10'
+			},{
+				title : '11、公园广场',
+				id : '11'
+			}];
+			apiready = function() {
+				intPage();
+			};
+			function intPage() {
+				var tpl = document.getElementById('record_list_item').innerHTML;
+				//读取模版
+				//方式一：异步渲染（推荐）
+				laytpl(tpl).render(datas, function(render) {
+					api.hideProgress();
+					document.getElementById('record_list').innerHTML = render;
+				});
+			}
+
+			//换绑手机
+			function openChangePhone() {
+				var delay = 0;
+				if (api.systemType != 'ios')
+					delay = 100;
+				api.openWin({
+					name : 'change_phone_1_head',
+					url : '../setting/change_phone_1_head.html',
+					bounces : false,
+					delay : delay,
+				});
+			}
+
+			//			function _ajax() {
+			//				$xy.ajax(function(ret, err) {
+			//					//api.hideProgress();
+			//					if (ret && ret.success) {
+			//						//console.log(JSON.stringify(ret));
+			//						if (ret.data.length == 0) {
+			//							//当没有订单时的处理
+			//							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-webiconxiyiji H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无记录</div></div></div>';
+			//							document.getElementById('order_list').innerHTML = htmls;
+			//						} else {
+			//							console.log(JSON.stringify(ret));
+			//							var tpl = document.getElementById('record_list_item').innerHTML;
+			//							//读取模版
+			//							//方式一：异步渲染（推荐）
+			//							laytpl(tpl).render(ret.data, function(render) {
+			//								api.hideProgress();
+			//								document.getElementById('record_list').innerHTML = render;
+			//							});
+			//						}
+			//					} else {
+			//						//console.log(JSON.stringify(ret));
+			//						//$("#jiazai").html("暂无订单");
+			//						api.toast({
+			//							msg : ret.message
+			//						});
+			//					}
+			//				}, 'appHelpCenter&funid=wash_helpcenter');
+			//			}
+			function openHelpCenterText(help_id) {
+				var delay = 0;
+				if (api.systemType != 'ios')
+					delay = 100;
+				api.openWin({
+					name : 'wsq_html_head',
+					url : 'wsq_html_head.html',
+					pageParam : {
+						id : help_id
+					},
+					bounces : false,
+					delay : delay,
+				});
+			}
+		</script>
+	</body>
+</html>

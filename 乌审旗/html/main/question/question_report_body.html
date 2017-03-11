@@ -32,22 +32,27 @@
 			</div>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
-		<div tapmode onclick="keshiDOM();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+		<div id="xunchakeshi" tapmode onclick="keshiDOM();" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle H-touch-active">
 			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
 				上报科室<span id="keshi" class="H-padding-horizontal-left-12 H-theme-font-color-black"></span>
 			</div>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 		</div>
+		<div style="display: none;" id="shiminkeshi" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-theme-font-color-999 H-padding-horizontal-both-10 H-font-size-16 H-padding-vertical-both-12">
+				上报科室<span id="keshi" class="H-padding-horizontal-left-15 H-theme-font-color-black"></span>
+			</div>
+		</div>
 		<div class="H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after">
 			<span class="H-vertical-middle H-theme-font-color-999 H-padding-horizontal-left-10  H-font-size-16">选择位置</span>
-			<input id="address" type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="可填写具体地址">
+			<input id="address" type="text" class="H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-15" placeholder="可填写具体地址">
 			<span class="H-icon H-padding-horizontal-right-5 H-vertical-middle"><i tapmode="H-touch-active" onclick="map();" class="iconfont icon-dingwei H-theme-font-color-999 H-font-size-20 "></i></span>
 		</div>
 		<div class="H-text-list H-flexbox-horizontal H-theme-background-color-white  H-vertical-middle">
 			<div class="H-theme-font-color-999 H-font-size-16 H-padding-horizontal-both-10 H-padding-vertical-both-12">
 				同步事件
 			</div>
-			<div  class="H-flex-item H-padding-horizontal-left-15">
+			<div  class="H-flex-item H-padding-horizontal-left-12">
 				<input type="radio" name="v" value="1" checked="" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle">
 				<span class="H-margin-horizontal-left-8 H-margin-horizontal-right-20">是</span>
 				<input type="radio" name="v" value="0" class="H-radio H-vertical-align-middle H-font-size-18 H-theme-font-color1 H-border-radius-circle">
@@ -106,8 +111,22 @@
 						$("#shijian").attr('shijian', ret.data[ret.data.length - 1].value_data);
 					});
 					keshiAjax(function(ret) {
-						$("#keshi").html(ret.data[0].dept_name);
-						$("#keshi").attr('keshi', ret.data[0].dept_id);
+						console.log(JSON.stringify(userdata));
+						if (parseInt(userdata[0].person_type) == 3) {
+							$("#xunchakeshi").remove();
+							$("#shiminkeshi").show();
+							for (var i = 0, l = ret.data.length; i < l; i++) {
+								if (ret.data[i].dept_name == "市民组") {
+									$("#keshi").html(ret.data[i].dept_name);
+									$("#keshi").attr('keshi', ret.data[i].dept_id);
+									return;
+								}
+							}
+						} else {
+							$("#shiminkeshi").remove();
+							$("#keshi").html(ret.data[0].dept_name);
+							$("#keshi").attr('keshi', ret.data[0].dept_id);
+						}
 					});
 				}
 			});
@@ -307,7 +326,7 @@
 					callback(ret);
 				} else {
 					api.toast({
-						msg : ret.message
+						msg : err.msg
 					});
 				}
 			}, 'selDept&funid=sys_dept');
@@ -341,9 +360,10 @@
 						});
 					} else {
 						api.hideProgress();
+						$xy.openWin('history_report_head', '../history/history_report_head.html', false, api.pageParam);
 						setTimeout(function() {
-							window.location.reload();
-						}, 500);
+							api.closeWin();
+						}, 300);
 					}
 				}, 'addProblem&funid=report_problem', 'post', {
 					values : {
@@ -371,20 +391,21 @@
 		 @dataid 数据id（必填）（string）
 		 */
 		function uploadFile(dataSrc, dataid) {
-			//			api.showProgress({
-			//				title : '上传中..'
-			//			});
 			$xy.oldAjax(function(ret, err) {
 				api.hideProgress();
-				if (ret && ret.success) {
-					console.log(JSON.stringify(ret));
-					api.toast({
-						msg : '图片上传成功！'
-					});
+				//console.log(JSON.stringify(ret));
+				if (ret) {
 					setTimeout(function() {
-						window.location.reload();
+						api.closeWin();
 					}, 500);
-					//ret.success ? callback(ret) : H.toast(ret.message);
+					setTimeout(function() {
+						api.toast({
+							msg : '图片上传成功！'
+						});
+					}, 300);
+					setTimeout(function() {
+						$xy.openWin('history_report_head', '../history/history_report_head.html', false, api.pageParam);
+					}, 400);
 				} else {
 					api.toast({
 						msg : err.body
