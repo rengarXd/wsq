@@ -111,7 +111,7 @@
 						$("#shijian").attr('shijian', ret.data[ret.data.length - 1].value_data);
 					});
 					keshiAjax(function(ret) {
-						console.log(JSON.stringify(userdata));
+						//console.log(JSON.stringify(userdata));
 						if (parseInt(userdata[0].person_type) == 3) {
 							$("#xunchakeshi").remove();
 							$("#shiminkeshi").show();
