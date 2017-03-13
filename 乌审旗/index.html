@@ -33,7 +33,8 @@
 					if (ret && ret.value) {
 						//1.5、关闭当前页面跳转主页面
 						var user = eval('(' + ret.value + ')');
-						turnMain(user);
+						user_ajax(user);
+						//turnMain(user);
 					} else {
 						//1.6、关闭当前页面跳转登陆页面
 						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
@@ -92,6 +93,24 @@
 						});
 					}
 				});
+			}
+
+			//判断用户登录是否异常
+			function user_ajax(user) {
+				$xy.ajax(function(ret, err) {
+					//api.hideProgress();
+					if (ret.success) {
+						turnMain(user);
+					} else if (ret && !ret.success) {
+						api.toast({
+							msg : ret.message
+						});
+					} else {
+						api.toast({
+							msg : err.body
+						});
+					}
+				}, 'appuserinfo&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
 			}
 
 			//初始化DB

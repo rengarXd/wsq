@@ -4,17 +4,16 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>头部标题header</title>
+		<title>问题上报详情header</title>
 		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
-		<link rel="stylesheet" href="../../../css/style.css" />
 		<link rel="stylesheet" href="../../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../../css/style.css" />
 	</head>
 	<body class="H-flexbox-vertical">
 		<header class="H-header b_header_bg" id="header">
-			<span tapmode="" onclick="api.closeWin();" class="H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui H-font-size-22 H-vertical-middle"></i><label class="H-display-block H-vertical-middle H-font-size-15">返回</label></span>
-			<span tapmode="H-theme-font-color-444" onclick="uploadP();" class="H-font-size-15 H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100"><i class="iconfont H-font-size-22 icon-shangchuanyunduan" ></i>上报</span>
+			<span tapmode="H-theme-font-color-444" tapmode="" onclick="api.closeWin();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i> 返回</span>
 			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				问题上报
+				问题上报详情
 			</div>
 		</header>
 	</body>
@@ -27,25 +26,19 @@
 			var headerPos = $api.offset(header);
 			var body_h = $api.offset($api.dom('body')).h;
 			api.openFrame({
-				name : 'question_report_body',
-				url : 'question_report_body.html',
-				pageParam : api.pageParam,
+				name : 'history_detail_body',
+				url : 'history_detail_body.html',
 				bounces : false,
-				vScrollBarEnabled : false,
-				hScrollBarEnabled : false,
+				pageParam : api.pageParam,
 				rect : {
 					x : 0,
 					y : headerPos.h,
 					w : 'auto',
 					h : 'auto'
-				}
+				},
+				vScrollBarEnabled : false,
+				hScrollBarEnabled : false
 			})
 		};
-		function uploadP() {
-			api.execScript({
-				frameName : 'question_report_body',
-				script : 'uploadb();'
-			});
-		}
 	</script>
 </html>

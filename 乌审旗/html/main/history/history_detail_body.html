@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>body</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" href="../../../css/style.css" />
+	</head>
+	<body>
+		<div id="history_html">
+			<div class="H-position-absolute H-position-center-all" id="statuss">
+				<div class="H-font-size-14 H-text-align-center">
+					<i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i>
+					<div class="H-theme-font-color-999">
+						加载中
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="history_data">
+			<div class="H-padding-10">
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">事件类型：</span>{{ d[0].problem_type }}
+			</div>
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">上报科室：</span>{{ d[0].dept_name }}
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span class="address">{{ d[0].problem_location }}</span>
+			</div>
+			</div>
+			<div id="renyuanfenpei">
+			<div tapmode="H-touch-active" onclick="job('{{ d[0].problem_id }}');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color1 H-display-inline">人员分配：</span><span id="{{ d[0].problem_id }}">{{ d[0].send_user }}</span>
+			</div>
+			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
+			</div>
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color1">处理意见：</span>{{ d[0].deal_content }}
+			<!--<p class="H-font-size-12 H-theme-font-color-999">
+			{{ d[0].deal_time }}
+			</p>-->
+			</div>
+			</div>
+			{{# if(d[0].deal_result != "") { }}
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color4">反馈结果：</span>{{ d[0].deal_back }}
+			</div>
+			</div>
+			{{# } }}
+			</div>
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color-999">事件描述：</span>{{ d[0].problem_text }}
+			<div class="H-clear-both H-margin-vertical-top-25 H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5">
+			{{# for (var a = 0,bl = d[0].attach_path.length;a<bl;a++) { }}
+			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
+			<img src="http://117.158.216.74:8081/wshuanwei/{{ d[0].attach_path[a].tpurl }}" class="H-width-100-percent H-display-block">
+			</div>
+			{{# } }}
+			</div>
+			<p class="H-font-size-12 H-theme-font-color-999">
+			{{ d[0].problem_time }}
+			</p>
+			</div>
+			</div>
+			</div>
+		</script>
+	</body>
+	<script type="text/javascript" src="../../../script/wsq.js"></script>
+	<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
+	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			initPage();
+		};
+		// 初始化页面
+		function initPage() {
+			problem_id = api.pageParam.problem_id;
+			//alert(problem_id);
+			api.getPrefs({
+				sync : false,
+				key : 'userinfo'
+			}, function(ret, err) {
+				user = eval('(' + ret.value + ')');
+				$xy.ajax(function(ret, err) {
+					//api.refreshHeaderLoadDone();
+					if (ret && ret.success) {
+						//console.log(JSON.stringify(ret));
+						if (ret.data.length == 0) {
+							//当没有订单时的处理
+							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无记录</div></div></div>';
+							document.getElementById('history_html').innerHTML = htmls;
+						} else {
+							//console.log(JSON.stringify(ret));
+							retdata = ret.data;
+							var tpl = document.getElementById('history_data').innerHTML;
+							//读取模版
+							//方式一：异步渲染（推荐）
+							laytpl(tpl).render(retdata, function(render) {
+								document.getElementById('history_html').innerHTML = render;
+								//人员分配权限
+								if (parseInt(user[0].person_type) != 1) {
+									$("#renyuanfeipei").remove();
+								}
+							});
+						}
+					} else {
+						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">' + ret.message + '</div></div></div>';
+						document.getElementById('history_html').innerHTML = htmls;
+					}
+				}, 'sel_problemdetail&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&problem_id=' + problem_id);
+			});
+		}
+
+		//人员分配
+		function job(problem_id) {
+			$xy.openWin('region_header', 'region_header.html', true, {
+				problem_id : problem_id
+			});
+		}
+
+		function listener() {
+			api.addEventListener({
+				name : 'region'
+			}, function(ret, err) {
+				//alert(ret.value.problem_id);
+				$("#" + ret.value.problem_id).html(ret.value.send_user);
+				//upjober(ret.value.send_user, ret.value.send_userid, ret.value.problem_id);
+			});
+			api.addEventListener({
+				name : 'history_reload'
+			}, function(ret, err) {
+				location.reload();
+			});
+		}
+	</script>
+</html>
