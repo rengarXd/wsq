@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>body</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
+		<link rel="stylesheet" href="../../../css/style.css" />
+	</head>
+	<body>
+		<div class="H-flexbox-horizontal H-margin-vertical-both-10">
+			<textarea id="deal" class="H-theme-font-color-666 H-textbox H-vertical-align-middle H-vertical-middle H-font-size-16 H-flex-item H-box-sizing-border-box H-border-none H-outline-none H-padding-12" placeholder="请填写您的处理结果..."></textarea>
+		</div>
+		<div class=" H-margin-horizontal-both-20 H-padding-vertical-both-15">
+			<button tapmode="H-touch-active" onclick="upjober();" class="xy_confirm_btn H-margin-vertical-top-2 H-font-size-16 H-button H-padding-vertical-both-10 H-border-none H-width-100-percent   H-theme-font-color-white" tapmode="H-touch-active" onclick="_ajax();">
+				提&nbsp;&nbsp;&nbsp;交
+			</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../../script/wsq.js"></script>
+	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+	<script type="text/javascript">
+		apiready = function() {
+			initPage();
+		};
+		// 初始化页面
+		function initPage() {
+			problem_id = api.pageParam.data;
+			api.getPrefs({
+				key : 'userinfo'
+			}, function(ret, err) {
+				if (ret && ret.value) {
+					user = eval('(' + ret.value + ')');
+				} else {
+				}
+			});
+		}
+
+		function upjober() {
+			var deal = $("#deal").val();
+			api.showProgress({
+				title : '上传中..'
+			});
+			$xy.ajax(function(ret, err) {
+				api.hideProgress();
+				if (ret.success) {
+					//console.log(JSON.stringify(ret));
+					api.sendEvent({
+						name : 'work_reload'
+					});
+					api.toast({
+						msg : ret.message
+					});
+					setTimeout(function() {
+						api.closeToWin({
+							name : 'msg_head'
+						});
+					}, 300);
+				} else if (ret && !ret.success) {
+					api.toast({
+						msg : ret.message
+					});
+				} else {
+					api.toast({
+						msg : err.body
+					});
+				}
+			}, 'dealProblem&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&problem_id=' + problem_id + '&deal_result=' + deal);
+		}
+	</script>
+</html>

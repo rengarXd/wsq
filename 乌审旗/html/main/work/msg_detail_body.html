@@ -5,13 +5,13 @@
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
 		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
 		<title>消息详情body</title>
-		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
-		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
-		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
-		<link rel="stylesheet" type="text/css" href="../../css/animate/animate.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/animate/animate.min.css" />
 		<style>
 			html, body {
-				background-color: white;
+				background-color: #F0F0F0;
 			}
 			.xy_border {
 				border-bottom: 1px solid #d8d8d8;
@@ -22,7 +22,55 @@
 	</head>
 	<body>
 		<!--消息头显示与隐藏-->
-		<div id="message_html"></div>
+		<div id="message_html">
+		<div class="H-padding-vertical-both-5"></div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			处理人： <span id="order_condition">{{ d.deal_user }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			处理人意见：<span id="pay_num">{{ d.deal_content }}</span>元
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			派遣用户：<span id="pay_way">{{ d.send_user }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			状态：<span id="device_name">{{ d.problem_audit }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			事件类型：<span id="washloca_name">{{ d.problem_type }}</span>
+			</div>
+			</div>
+			<div class="H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color  H-padding-horizontal-left-15 H-font-size-14 H-padding-vertical-both-12">
+			处理时间：<span id="washloca_name">{{ d.deal_time }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			上报时间：<span id="reader_time">{{ d.problem_time }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			上报位置：<span id="order_id">{{ d.problem_location }}</span>
+			</div>
+			</div>
+			<div class="H-text-list H-flexbox-horizontal  H-border-vertical-bottom-after H-vertical-middle H-touch-active">
+			<div class="xy_font_color H-flex-item H-padding-horizontal-both-15 H-font-size-14 H-padding-vertical-both-12">
+			事件描述：<span id="order_id">{{ d.problem_text }}</span>
+			</div>
+			</div>
+		
+		</div>
 		<!--<div class="H-padding-vertical-top-15 H-text-align-center H-font-size-32">
 		消息详情
 		</div>
@@ -97,9 +145,9 @@
 			</div>
 		</script>
 	</body>
-	<script type="text/javascript" src="../../script/xy.js"></script>
-	<script type="text/javascript" src="../../script/zepto.min.js"></script>
-	<script type="text/javascript" src="../../script/tools/laytpl.js"></script>
+	<script type="text/javascript" src="../../../script/xy.js"></script>
+	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
 	<script type="text/javascript">
 		var news_id = null, problem_id = null;
 		apiready = function() {
@@ -142,7 +190,7 @@
 								msg : ret.message
 							});
 						}
-					}, 'sel_problemdetail&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&news_id=' + problem_id);
+					}, 'sel_problemdetail&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&problem_id=' + problem_id);
 				} else {
 					var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">请先登录</div></div></div>';
 					document.getElementById('message_html').innerHTML = htmls;

@@ -29,10 +29,10 @@
 	<body>
 		<!--消息头显示与隐藏-->
 		<!--<header class="H-header header_bg animated " style="display:none; width:100%;position: fixed;top:0;z-index: 1000;" id="header">
-			<span tapmode="H-theme-font-color-444" tapmode="" onclick="closeMsg();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
-			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				我的工作
-			</div>
+		<span tapmode="H-theme-font-color-444" tapmode="" onclick="closeMsg();" class="H-font-size-18 H-icon H-position-relative H-display-inline-block H-float-left H-vertical-middle H-theme-font-color-white H-padding-horizontal-left-5 H-z-index-100"><i class="iconfont icon-fanhui"></i>返回</span>
+		<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
+		我的工作
+		</div>
 		</header>-->
 		<!--<div id="pos" style="height: 44px;display:none;"></div>-->
 		<!--消息头显示与隐藏-->
@@ -60,7 +60,7 @@
 		<!--loading-->
 		<script type="text/html" id="history_data">
 			{{# for(var i=0,len=d.length;i<len;i++) { }}
-			<div tapmode onclick="openOrder('{{ d[i].problem_id }}');" class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
+			<div  class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
 			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
 			<span class="H-theme-font-color-999">事件类型：</span>{{ d[i].problem_type }}
@@ -69,14 +69,34 @@
 			<span class="H-theme-font-color-999">上报科室：</span>{{ d[i].dept_name }}
 			</div>
 			</div>
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-text-list H-flexbox-horizontal H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address"></span>
+			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span id="address">{{ d[i].problem_location }}</span>
 			</div>
 			</div>
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color1">处理意见：</span>{{ d[i].deal_content }}
+			</div>
+			</div>
+			{{# if(d[i].deal_content != "") { }}
+			<div tapmode onclick="openOrder('{{ d[i].problem_id }}','{{ d[i].deal_result }}');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class=" H-theme-font-color4">处理结果：</span><span id="{{ d[i].problem_id }}">{{ d[i].deal_result }}</span>
+			</div>
+			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
+			</div>
+			{{# } }}
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
 			<span class="H-theme-font-color-999">事件描述：</span>{{ d[i].problem_text }}
+			<div class="H-clear-both H-margin-vertical-top-25 H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5">
+			{{# for (var a = 0,bl = d[i].attach_path.length;a<bl;a++) { }}
+			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
+			<img src="http://117.158.216.74:8081/wshuanwei/{{ d[i].attach_path[a].tpurl }}" class="H-width-100-percent H-display-block">
+			</div>
+			{{# } }}
+			</div>
 			<p class="H-font-size-12 H-theme-font-color-999">
 			{{ d[i].add_date }}
 			</p>
@@ -92,7 +112,6 @@
 			var user = null, loadLock = false, page = 1, bMap = null;
 			apiready = function() {
 				bMap = api.require('bMap');
-				
 				intuser();
 				//下拉刷新
 				api.setRefreshHeaderInfo({
@@ -106,8 +125,12 @@
 					location.reload();
 				});
 				api.parseTapmode();
+				api.addEventListener({
+					name : 'work_reload'
+				}, function(ret, err) {
+					location.reload();
+				});
 			};
-
 			//初始化偏好值
 			function intuser() {
 				api.getPrefs({
@@ -133,7 +156,7 @@
 									laytpl(tpl).render(retdata, function(render) {
 										document.getElementById('history_html').innerHTML = render;
 										document.getElementById('record').innerHTML = retdata.length;
-										getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
+										//getAddress(retdata[0].problem_lng, retdata[0].problem_lat);
 									});
 								}
 							} else {
@@ -169,13 +192,14 @@
 			}
 
 			//查看详情更改状态
-			function openOrder(Param) {
+			function openOrder(Param, deal) {
+				//alert(deal);
 				var delay = 0;
 				if (api.systemType != 'ios')
 					delay = 100;
 				api.openWin({
-					name : 'msg_det_head',
-					url : 'msg_det_head.html',
+					name : 'msg_suggest_head',
+					url : 'msg_suggest_head.html',
 					pageParam : {
 						data : Param
 					},
@@ -184,69 +208,75 @@
 					slidBackEnabled : true,
 					vScrollBarEnabled : false
 				});
+				//				if (deal == "") {
+				//
+				//				} else {
+				//					api.toast({
+				//						msg : '您已填写过反馈结果'
+				//					});
+				//				}
 			}
 
 			//初始化页面渲染
-//			function initpage() {
-//				loadLock = true;
-//				$xy.ajax(function(ret, err) {
-//					//api.hideProgress();
-//					if (ret.success) {
-//						//console.log(JSON.stringify(ret));
-//						if (ret.data.length == 0) {
-//							//当没有订单时的处理
-//							api.refreshHeaderLoadDone();
-//							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录，轻触屏幕刷新</div></div></div>';
-//							document.getElementById('message_html').innerHTML = htmls;
-//							api.addEventListener({
-//								name : 'tap'
-//							}, function(ret, err) {
-//								location.reload();
-//							});
-//						} else {
-//							//console.log(JSON.stringify(ret));
-//							api.refreshHeaderLoadDone();
-//							var tpl = document.getElementById('message_data').innerHTML;
-//							//读取模版
-//							//方式一：异步渲染（推荐）
-//							laytpl(tpl).render(ret.data, function(render) {
-//								//api.hideProgress();
-//								//document.getElementById('message_html').innerHTML = render;
-//								api.removeEventListener({
-//									name : 'tap'
-//								});
-//								if (page == 1) {
-//									document.getElementById('message_html').innerHTML = render;
-//								} else {
-//									//向后渲染
-//									$("#message_html").append(render);
-//									$("#loading").hide();
-//								}
-//								datacount = parseInt(ret.message);
-//								initEventLinster();
-//								//懒加载
-//								if (parseInt(ret.message) == page) {
-//									loadLock = true;
-//								} else {
-//									page++;
-//									loadLock = false;
-//								}
-//							});
-//						}
-//					} else {
-//						api.refreshHeaderLoadDone();
-//						//console.log(JSON.stringify(ret));
-//						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">连接失败，轻触屏幕刷新</div></div></div>';
-//						document.getElementById('message_html').innerHTML = htmls;
-//						api.addEventListener({
-//							name : 'tap'
-//						}, function(ret, err) {
-//							location.reload();
-//						});
-//					}
-//				}, 'appUserNews&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&page=' + page);
-//			}
-
+			//			function initpage() {
+			//				loadLock = true;
+			//				$xy.ajax(function(ret, err) {
+			//					//api.hideProgress();
+			//					if (ret.success) {
+			//						//console.log(JSON.stringify(ret));
+			//						if (ret.data.length == 0) {
+			//							//当没有订单时的处理
+			//							api.refreshHeaderLoadDone();
+			//							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录，轻触屏幕刷新</div></div></div>';
+			//							document.getElementById('message_html').innerHTML = htmls;
+			//							api.addEventListener({
+			//								name : 'tap'
+			//							}, function(ret, err) {
+			//								location.reload();
+			//							});
+			//						} else {
+			//							//console.log(JSON.stringify(ret));
+			//							api.refreshHeaderLoadDone();
+			//							var tpl = document.getElementById('message_data').innerHTML;
+			//							//读取模版
+			//							//方式一：异步渲染（推荐）
+			//							laytpl(tpl).render(ret.data, function(render) {
+			//								//api.hideProgress();
+			//								//document.getElementById('message_html').innerHTML = render;
+			//								api.removeEventListener({
+			//									name : 'tap'
+			//								});
+			//								if (page == 1) {
+			//									document.getElementById('message_html').innerHTML = render;
+			//								} else {
+			//									//向后渲染
+			//									$("#message_html").append(render);
+			//									$("#loading").hide();
+			//								}
+			//								datacount = parseInt(ret.message);
+			//								initEventLinster();
+			//								//懒加载
+			//								if (parseInt(ret.message) == page) {
+			//									loadLock = true;
+			//								} else {
+			//									page++;
+			//									loadLock = false;
+			//								}
+			//							});
+			//						}
+			//					} else {
+			//						api.refreshHeaderLoadDone();
+			//						//console.log(JSON.stringify(ret));
+			//						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">连接失败，轻触屏幕刷新</div></div></div>';
+			//						document.getElementById('message_html').innerHTML = htmls;
+			//						api.addEventListener({
+			//							name : 'tap'
+			//						}, function(ret, err) {
+			//							location.reload();
+			//						});
+			//					}
+			//				}, 'appUserNews&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&page=' + page);
+			//			}
 			//懒加载事件监听
 			function initEventLinster() {
 				//数据行数大于初始页数
@@ -267,7 +297,6 @@
 					});
 				}
 			}
-
 
 			function loreload() {
 				location.reload();

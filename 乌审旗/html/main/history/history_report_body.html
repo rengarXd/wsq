@@ -8,6 +8,16 @@
 		<link rel="stylesheet" type="text/css" href="../../../css/Hui.css" />
 		<link rel="stylesheet" type="text/css" href="../../../css/style.css" />
 		<link rel="stylesheet" type="text/css" href="../../../css/fonts/iconfont.css" />
+		<style>
+			.chense {
+				color: #ff7200;
+			}
+			.xy_border {
+				border-bottom: 1px solid #f0f0f0;
+				margin-left: 20px;
+				margin-right: 20px;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="history_html">
@@ -19,89 +29,28 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="H-padding-horizontal-both-10 H-padding-vertical-both-5" >
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">事件类型：</span><span>街道保洁</span>
-			</div>
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">上报科室：</span><span>办公室</span>
-			</div>
-			</div>
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span>河南省国家大学科技园东区18号楼河</span>
-			</div>
-			</div>
-			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河
-			<p class="H-font-size-12 H-theme-font-color-999">
-			2017年1月17日9:40:22
-			</p>
-			</div>
-			</div>
-			</div>
-			<div class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">事件类型：</span><span>街道保洁</span>
-			</div>
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">上报科室：</span><span>办公室</span>
-			</div>
-			</div>
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span>河南省国家大学科技园东区18号楼河</span>
-			</div>
-			</div>
-			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河河南省国家大学科技园东区18号楼河
-			<p class="H-font-size-12 H-theme-font-color-999">
-			2017年1月17日9:40:22
-			</p>
-			</div>
-			</div>
-			</div>-->
 		</div>
 		<script type="text/html" id="history_data">
 			{{# for(var i=0,len=d.length;i<len;i++) { }}
-			<div class="H-padding-horizontal-both-10 H-padding-vertical-both-5">
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">事件类型：</span>{{ d[i].problem_type }}
-			</div>
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">上报科室：</span>{{ d[i].dept_name }}
-			</div>
-			</div>
-			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-999 H-display-inline">上报地址：</span><span class="address">{{ d[i].problem_location }}</span>
-			</div>
-			</div>
-			<div tapmode="H-touch-active" onclick="job('{{ d[i].problem_id }}');" class="renyuanfeipei H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class=" H-theme-font-color-666 H-display-inline">人员分配：</span><span id="{{ d[i].problem_id }}">{{ d[i].send_user }}</span>
-			</div>
-			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
-			</div>
-			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
-			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color-999">事件描述：</span>{{ d[i].problem_text }}
-			<div class="H-clear-both H-margin-vertical-top-25 H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5">
-			{{# for (var a = 0,bl = d[i].attach_path.length;a<bl;a++) { }}
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
-			<img src="http://117.158.216.74:8081/wshuanwei/{{ d[i].attach_path[a].tpurl }}" class="H-width-100-percent H-display-block">
-			</div>
-			{{# } }}
-			</div>
-			<p class="H-font-size-12 H-theme-font-color-999">
+			<div class="animated fadeIn H-text-align-center H-theme-font-color-999 H-font-size-12 H-margin-horizontal-both-12 H-padding-vertical-top-15 H-padding-vertical-bottom-5">
 			{{ d[i].add_date }}
-			</p>
 			</div>
+			<div tapmode onclick="opdetail('{{ d[i].problem_id }}');" class="animated fadeIn H-theme-background-color-white H-border-both-after H-border-radius-15 H-margin-horizontal-both-12 H-margin-vertical-bottom-8" tapmode="H-touch-active" onclick="openOrder('{{ d[i].news_id }}');">
+			<div class="H-channel-title H-flexbox-horizontal H-theme-background-color-white H-vertical-middle" >
+			<div style="background-color: #03aafe;" class="H-channel-line H-padding-vertical-top-15 H-padding-horizontal-left-3 H-margin-horizontal-left-8"></div>
+			<div class="H-channel-text H-theme-font-color4 H-flex-item H-font-size-15 H-theme-font-color-black H-padding-8 H-text-show-row-1">
+			事件类型：<span class="H-theme-font-color-999">{{ d[i].problem_type }}</span>
+			</div>
+			<div class="H-channel-text H-theme-font-color4 H-flex-item H-font-size-15 H-theme-font-color-black H-padding-8 H-text-show-row-1">
+			上报科室：<span class="H-theme-font-color-999">{{ d[i].dept_name }}</span>
+			</div>
+			</div>
+			<div class="H-theme-font-color-999 H-font-size-13 H-margin-horizontal-left-3" style="padding:0px 20px 10px 20px;">
+			上报地址：{{ d[i].problem_location }}
+			</div>
+			<div class="xy_border"></div>
+			<div class="H-theme-font-color-999 H-font-size-14" style="padding: 5px 0px 5px 25px">
+			查看详情
 			</div>
 			</div>
 			{{# } }}
@@ -117,7 +66,6 @@
 			};
 			// 初始化页面
 			function initPage() {
-				bMap = api.require('bMap');
 				//设置下拉刷新
 				$xy.setRefreshHeaderInfo(function() {
 					location.reload();
@@ -157,6 +105,12 @@
 				});
 			}
 
+			function opdetail(problem_id) {
+				$xy.openWin('history_detail_head', 'history_detail_head.html', false, {
+					problem_id : problem_id
+				});
+			}
+
 			//由经纬度获取地址信息
 			//			function getAddress(lon, lat) {
 			//				bMap.getNameFromCoords({
@@ -176,42 +130,6 @@
 			//					}
 			//				});
 			//			}
-			//人员分配
-			function job(problem_id) {
-				$xy.openWin('region_header', 'region_header.html', true, {
-					problem_id : problem_id
-				});
-			}
-
-			function listener() {
-				api.addEventListener({
-					name : 'region'
-				}, function(ret, err) {
-					//alert(ret.value.problem_id);
-					upjober(ret.value.send_user, ret.value.send_userid, ret.value.problem_id);
-				});
-			}
-
-			function upjober(send_user, sendid, problem_id) {
-				$xy.ajax(function(ret, err) {
-					//api.hideProgress();
-					if (ret.success) {
-						//console.log(JSON.stringify(ret));
-						$("#" + problem_id).html(send_user);
-						api.toast({
-							msg : ret.message
-						});
-					} else if (ret && !ret.success) {
-						api.toast({
-							msg : ret.message
-						});
-					} else {
-						api.toast({
-							msg : err.body
-						});
-					}
-				}, 'setSendUser&funid=report_problem&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid + '&send_userid=' + sendid + '&send_user=' + send_user + '&problem_id=' + retdata[0].problem_id);
-			}
 		</script>
 	</body>
 </html>

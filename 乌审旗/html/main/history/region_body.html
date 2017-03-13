@@ -93,15 +93,14 @@
 				$(obj).find('input').attr('checked', 'checked');
 				var xqnm = $(obj).find(".H-flex-item").html();
 				var xqdm = $(obj).find(".H-flex-item").attr("xqdm");
-				api.sendEvent({
-					name : 'region',
-					extra : {
-						send_userid : xqdm,
-						send_user : xqnm,
-						problem_id : problem_id
-					}
+				setTimeout(function() {
+					api.closeWin();
+				}, 300);
+				$xy.openWin('region_suggest_head', 'region_suggest_head.html', false, {
+					send_userid : xqdm,
+					send_user : xqnm,
+					problem_id : problem_id
 				});
-				api.closeWin();
 			}
 		</script>
 	</body>
