@@ -56,21 +56,23 @@
 				api.hideProgress();
 				if (ret.success) {
 					//console.log(JSON.stringify(ret));
-					api.sendEvent({
-						name : 'region',
-						extra : {
-							send_userid : send_userid,
-							send_user : send_user,
-							problem_id : problem_id
-						}
-					});
-					api.sendEvent({
-						name : 'history_reload'
-					});
+//					api.sendEvent({
+//						name : 'region',
+//						extra : {
+//							send_userid : send_userid,
+//							send_user : send_user,
+//							problem_id : problem_id
+//						}
+//					});
 					api.toast({
 						msg : ret.message
 					});
 					setTimeout(function() {
+						api.execScript({
+							name : 'history_detail_head',
+							frameName:'history_detail_body',
+							script : 'reload();'
+						});
 						api.closeToWin({
 							name : 'history_detail_head'
 						});

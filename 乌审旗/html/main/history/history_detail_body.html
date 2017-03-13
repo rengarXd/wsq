@@ -42,15 +42,14 @@
 			</div>
 			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
 			</div>
+			{{# if(d[0].deal_content != "") { }}
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
 			<span class="H-theme-font-color1">处理意见：</span>{{ d[0].deal_content }}
-			<!--<p class="H-font-size-12 H-theme-font-color-999">
-			{{ d[0].deal_time }}
-			</p>-->
 			</div>
 			</div>
-			{{# if(d[0].deal_result != "") { }}
+			{{# } }}
+			{{# if(d[0].deal_back != "") { }}
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
 			<span class="H-theme-font-color4">反馈结果：</span>{{ d[0].deal_back }}
@@ -63,7 +62,7 @@
 			<span class="H-theme-font-color-999">事件描述：</span>{{ d[0].problem_text }}
 			<div class="H-clear-both H-margin-vertical-top-25 H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5">
 			{{# for (var a = 0,bl = d[0].attach_path.length;a<bl;a++) { }}
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
+			<div onclick="openscan('http://117.158.216.74:8081/wshuanwei/{{ d[0].attach_path[a].tpurl }}')" class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
 			<img src="http://117.158.216.74:8081/wshuanwei/{{ d[0].attach_path[a].tpurl }}" class="H-width-100-percent H-display-block">
 			</div>
 			{{# } }}
@@ -79,8 +78,11 @@
 	<script type="text/javascript" src="../../../script/wsq.js"></script>
 	<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
 	<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+	<script type="text/javascript" src="../../../script/upImg.js"></script>
 	<script type="text/javascript">
 		apiready = function() {
+			//引入图片预览模块
+			imageBrowser = api.require('imageBrowser');
 			initPage();
 		};
 		// 初始化页面
@@ -137,11 +139,19 @@
 				$("#" + ret.value.problem_id).html(ret.value.send_user);
 				//upjober(ret.value.send_user, ret.value.send_userid, ret.value.problem_id);
 			});
-			api.addEventListener({
-				name : 'history_reload'
-			}, function(ret, err) {
-				location.reload();
-			});
+		}
+
+		function reload() {
+			//alert('刷新');
+			location.reload();
+		}
+
+		function openscan(url) {
+			//alert(url);
+			var arr = new Array();
+			arr.push(url);
+			//alert(arr);
+			img.openImageBrowser(arr);
 		}
 	</script>
 </html>
