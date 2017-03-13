@@ -92,7 +92,7 @@
 			<span class="H-theme-font-color-999">事件描述：</span>{{ d[i].problem_text }}
 			<div class="H-clear-both H-margin-vertical-top-25 H-width-100-percent H-display-table H-box-sizing-border-box H-padding-horizontal-left-5">
 			{{# for (var a = 0,bl = d[i].attach_path.length;a<bl;a++) { }}
-			<div class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
+			<div onclick="openscan('http://117.158.216.74:8081/wshuanwei/{{ d[i].attach_path[a].tpurl }}')" class="H-display-table-cell H-float-left  H-box-sizing-border-box H-width-avg-4 H-padding-horizontal-right-5 H-margin-vertical-bottom-5">
 			<img src="http://117.158.216.74:8081/wshuanwei/{{ d[i].attach_path[a].tpurl }}" class="H-width-100-percent H-display-block">
 			</div>
 			{{# } }}
@@ -107,11 +107,13 @@
 		</script>
 		<script type="text/javascript" src="../../../script/wsq.js"></script>
 		<script type="text/javascript" src="../../../script/zepto.min.js"></script>
+		<script type="text/javascript" src="../../../script/upImg.js"></script>
 		<script type="text/javascript" src="../../../script/tools/laytpl.js"></script>
 		<script type="text/javascript">
 			var user = null, loadLock = false, page = 1, bMap = null;
 			apiready = function() {
-				bMap = api.require('bMap');
+				//引入图片预览模块
+				imageBrowser = api.require('imageBrowser');
 				intuser();
 				//下拉刷新
 				api.setRefreshHeaderInfo({
@@ -208,75 +210,17 @@
 					slidBackEnabled : true,
 					vScrollBarEnabled : false
 				});
-				//				if (deal == "") {
-				//
-				//				} else {
-				//					api.toast({
-				//						msg : '您已填写过反馈结果'
-				//					});
-				//				}
 			}
 
-			//初始化页面渲染
-			//			function initpage() {
-			//				loadLock = true;
-			//				$xy.ajax(function(ret, err) {
-			//					//api.hideProgress();
-			//					if (ret.success) {
-			//						//console.log(JSON.stringify(ret));
-			//						if (ret.data.length == 0) {
-			//							//当没有订单时的处理
-			//							api.refreshHeaderLoadDone();
-			//							var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">暂无消息记录，轻触屏幕刷新</div></div></div>';
-			//							document.getElementById('message_html').innerHTML = htmls;
-			//							api.addEventListener({
-			//								name : 'tap'
-			//							}, function(ret, err) {
-			//								location.reload();
-			//							});
-			//						} else {
-			//							//console.log(JSON.stringify(ret));
-			//							api.refreshHeaderLoadDone();
-			//							var tpl = document.getElementById('message_data').innerHTML;
-			//							//读取模版
-			//							//方式一：异步渲染（推荐）
-			//							laytpl(tpl).render(ret.data, function(render) {
-			//								//api.hideProgress();
-			//								//document.getElementById('message_html').innerHTML = render;
-			//								api.removeEventListener({
-			//									name : 'tap'
-			//								});
-			//								if (page == 1) {
-			//									document.getElementById('message_html').innerHTML = render;
-			//								} else {
-			//									//向后渲染
-			//									$("#message_html").append(render);
-			//									$("#loading").hide();
-			//								}
-			//								datacount = parseInt(ret.message);
-			//								initEventLinster();
-			//								//懒加载
-			//								if (parseInt(ret.message) == page) {
-			//									loadLock = true;
-			//								} else {
-			//									page++;
-			//									loadLock = false;
-			//								}
-			//							});
-			//						}
-			//					} else {
-			//						api.refreshHeaderLoadDone();
-			//						//console.log(JSON.stringify(ret));
-			//						var htmls = '<div class="H-position-absolute H-position-center-all" id="statuss"><div class="H-font-size-14 H-text-align-center"><i class="iconfont icon-shebeidingwei H-font-size-32 H-theme-font-color-999"></i><div class="H-theme-font-color-999">连接失败，轻触屏幕刷新</div></div></div>';
-			//						document.getElementById('message_html').innerHTML = htmls;
-			//						api.addEventListener({
-			//							name : 'tap'
-			//						}, function(ret, err) {
-			//							location.reload();
-			//						});
-			//					}
-			//				}, 'appUserNews&funid=wash_user_new&wash_user_id=' + user[0].wash_user_id + '&uuid=' + user[0].uuid + '&page=' + page);
-			//			}
+			//图片预览
+			function openscan(url) {
+				//alert(url);
+				var arr = new Array();
+				arr.push(url);
+				//alert(arr);
+				img.openImageBrowser(arr);
+			}
+
 			//懒加载事件监听
 			function initEventLinster() {
 				//数据行数大于初始页数

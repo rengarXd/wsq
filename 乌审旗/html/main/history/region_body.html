@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<title>税区选择</title>
+		<title>分配人员选择</title>
 		<link href="../../../css/Hui.css" rel="stylesheet" type="text/css" />
 		<link href="../../../css/fonts/iconfont.css" rel="stylesheet" type="text/css" />
 		<style>
@@ -66,8 +66,10 @@
 			function _ajax(keyword) {
 				//搜索词判断
 				keyword ? keywords = keyword : keywords = "";
+				api.showProgress();
 				$xy.ajax(function(ret, err) {
 					api.refreshHeaderLoadDone();
+					api.hideProgress();
 					if (ret.success) {
 						console.log(JSON.stringify(ret));
 						var tpl = document.getElementById('fenqu_data').innerHTML;
@@ -77,7 +79,7 @@
 							api.hideProgress();
 							document.getElementById('diqu').innerHTML = render;
 						});
-					} else if (ret) {
+					} else if (ret && !ret.success) {
 						api.toast({
 							msg : ret.message
 						});
