@@ -4,9 +4,9 @@
  * 作者：徐达
  */
 ;! function(window) {
-	window.serverUrl = "http://117.158.216.74:8081/wshuanwei/fileAction.do?pagetype=grid&nousercheck=1&eventcode=";
-	window.ImgWebUrl = 'http://117.158.216.74:8081/wshuanwei/fileAction.do?';
-	window.iconUrl = 'http://117.158.216.74:8081/wshuanwei/'
+	window.serverUrl = "http://110.19.111.2:8072/wshuanwei/fileAction.do?pagetype=grid&nousercheck=1&eventcode=";
+	window.ImgWebUrl = 'http://110.19.111.2:8072/wshuanwei/fileAction.do?';
+	window.iconUrl = 'http://110.19.111.2:8072/wshuanwei/'
 	var u = {
 		DEFAULT_CONFIG : {
 			openWin_CONFIG : {
