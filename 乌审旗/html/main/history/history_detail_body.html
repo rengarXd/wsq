@@ -57,6 +57,13 @@
 			</div>
 			{{# } }}
 			</div>
+			{{# if(d[0].deal_result != "") { }}
+			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
+			<span class="H-theme-font-color4">处理结果：</span>{{ d[0].deal_result }}
+			</div>
+			</div>
+			{{# } }}
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
 			<span class="H-theme-font-color-999">事件描述：</span>{{ d[0].problem_text }}

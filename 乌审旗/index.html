@@ -105,9 +105,17 @@
 						api.toast({
 							msg : ret.message
 						});
+						//1.6、关闭当前页面跳转登陆页面
+						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
+							slidBackEnabled : false
+						});
 					} else {
 						api.toast({
 							msg : err.body
+						});
+						//1.6、关闭当前页面跳转登陆页面
+						$xy.openWin('login', './html/login/login.html', false, api.pageParam, {
+							slidBackEnabled : false
 						});
 					}
 				}, 'appuserinfo&funid=sys_user&user_id=' + user[0].user_id + '&uuid=' + user[0].uuid);
