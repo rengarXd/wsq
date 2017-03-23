@@ -17,6 +17,7 @@
   <preference name="smartUpdate" value="true"/>  
   <preference name="debug" value="false"/>  
   <preference name="statusBarAppearance" value="true"/>  
+  <preference name="iOS7StatusBarAppearance" value="true"/>  
   <permission name="readPhoneState"/>  
   <permission name="camera"/>  
   <permission name="record"/>  
