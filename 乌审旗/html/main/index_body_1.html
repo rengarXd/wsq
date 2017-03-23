@@ -140,6 +140,8 @@
 						document.getElementById('dept_name').innerHTML = ret.data[0].dept_name;
 						//姓名
 						document.getElementById('user_name').innerHTML = ret.data[0].user_name;
+						//头像
+						$("#nopic").attr('src', window.iconUrl + ret.data[0].attach_path);
 					}
 					console.log(JSON.stringify(ret));
 				} else if (ret && !ret.success) {
