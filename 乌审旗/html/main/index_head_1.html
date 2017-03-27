@@ -12,9 +12,7 @@
 	<body class="H-flexbox-vertical">
 		<header class="H-header b_header_bg" id="header">
 			<span tapmode="H-theme-font-color-444" onclick="closeToMain();" class="H-font-size-15 H-icon H-position-relative H-display-inline-block H-float-right H-vertical-middle H-theme-font-color-white H-padding-horizontal-right-10 H-z-index-100"><i class="iconfont H-font-size-18 icon-tuichu" ></i><span class="H-padding-horizontal-left-5">退出</span></span>
-			<div class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent">
-				巡查通
-			</div>
+			<div id="titles" class="H-header-title H-center-all H-font-size-18 H-text-show-row-1 H-theme-font-color-white H-position-absolute H-width-100-percent"></div>
 		</header>
 		<script type="text/javascript" src="../../script/api.js"></script>
 		<script type="text/javascript" src="../../script/wsq.js"></script>
@@ -23,6 +21,21 @@
 				api.parseTapmode();
 				//双击退出
 				$xy.dblclickToCloseApp();
+				var person_type = api.pageParam.person_type;
+				switch(parseInt(person_type)) {
+					case 1:
+						document.getElementById('titles').innerHTML = '管理人员';
+						break;
+					case 2:
+						document.getElementById('titles').innerHTML = '保洁人员';
+						break;
+					case 3:
+						document.getElementById('titles').innerHTML = '市民用户';
+						break;
+					case 9:
+						document.getElementById('titles').innerHTML = '车辆管理';
+						break;
+				}
 				var header = $api.byId('header');
 				$api.fixStatusBar(header);
 				var headerPos = $api.offset(header);
@@ -31,6 +44,7 @@
 					name : 'index_body_1',
 					url : 'index_body_1.html',
 					bounces : false,
+					pageParam : api.pageParam,
 					vScrollBarEnabled : false,
 					hScrollBarEnabled : false,
 					rect : {
