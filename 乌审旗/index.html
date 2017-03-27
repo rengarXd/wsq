@@ -43,63 +43,57 @@
 					}
 				});
 			}
+			
 			//跳转到主页
 			function turnMain(userinfo) {
 				//关闭本页
 				setTimeout(function() {
 					api.closeWin();
 				}, 300);
-				if (parseInt(userinfo[0].person_type) == 3) {
-					$xy.openWin('index_head_2', './html/main/index_head_2.html', false, api.pageParam, {
-						slidBackEnabled : false
-					});
-				} else {
-					$xy.openWin('index_head_1', './html/main/index_head_1.html', false, api.pageParam, {
-						slidBackEnabled : false
-					});
-				}
-			}
-
-			function dblistener() {
-				api.addEventListener({
-					name : 'datas'
-				}, function(ret, err) {
-					if (ret && ret.value) {
-						ret.value.status ? status = 1 : status = 0;
-						var data = db.executeSqlSync({
-							name : 'wsqDB',
-							sql : "INSERT INTO historylocation (Islate,Time,Class_name,Intime) VALUES('" + status + "','" + ret.value.timestamp + "','" + ret.value.class_name + "','" + ret.value.intime + "')"
-						});
-					} else {
-					}
-				});
-				api.addEventListener({
-					name : 'delet_datas'
-				}, function(ret, err) {
-					//console.log('delet_datas');
-					var dateret = db.selectSqlSync({
-						name : 'wsqDB',
-						sql : "SELECT * FROM historylocation"
-					});
-					//console.log(dateret.data.length);
-					if (dateret && dateret.data.length > 20) {
-						var data = db.executeSqlSync({
-							name : 'wsqDB',
-							sql : "DELETE FROM historylocation WHERE Id < '" + (dateret.data.length - 20) + "'"
-						});
-					} else {
-						api.toast({
-							msg : '记录小于10条无法删除'
-						});
-					}
+				$xy.openWin('index_head_1', 'html/main/index_head_1.html', false, {
+					person_type : parseInt(userinfo[0].person_type)
 				});
 			}
 
+			//			function dblistener() {
+			//				api.addEventListener({
+			//					name : 'datas'
+			//				}, function(ret, err) {
+			//					if (ret && ret.value) {
+			//						ret.value.status ? status = 1 : status = 0;
+			//						var data = db.executeSqlSync({
+			//							name : 'wsqDB',
+			//							sql : "INSERT INTO historylocation (Islate,Time,Class_name,Intime) VALUES('" + status + "','" + ret.value.timestamp + "','" + ret.value.class_name + "','" + ret.value.intime + "')"
+			//						});
+			//					} else {
+			//					}
+			//				});
+			//				api.addEventListener({
+			//					name : 'delet_datas'
+			//				}, function(ret, err) {
+			//					//console.log('delet_datas');
+			//					var dateret = db.selectSqlSync({
+			//						name : 'wsqDB',
+			//						sql : "SELECT * FROM historylocation"
+			//					});
+			//					//console.log(dateret.data.length);
+			//					if (dateret && dateret.data.length > 20) {
+			//						var data = db.executeSqlSync({
+			//							name : 'wsqDB',
+			//							sql : "DELETE FROM historylocation WHERE Id < '" + (dateret.data.length - 20) + "'"
+			//						});
+			//					} else {
+			//						api.toast({
+			//							msg : '记录小于10条无法删除'
+			//						});
+			//					}
+			//				});
+			//			}
 			//判断用户登录是否异常
 			function user_ajax(user) {
 				$xy.ajax(function(ret, err) {
 					//api.hideProgress();
-					if (ret.success) {
+					if (ret && ret.success) {
 						turnMain(user);
 					} else if (ret && !ret.success) {
 						api.toast({
