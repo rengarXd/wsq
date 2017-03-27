@@ -36,11 +36,12 @@
 			</div>
 			</div>
 			<div id="renyuanfenpei">
-			<div tapmode="H-touch-active" onclick="job('{{ d[0].problem_id }}');" class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
+			<!--tapmode="H-touch-active" onclick="job('{{ d[0].problem_id }}');"--> 
+			<div class="H-text-list H-flexbox-horizontal  H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
 			<div class="H-flex-item H-padding-horizontal-both-10 H-font-size-15 H-padding-vertical-both-12">
-			<span class="H-theme-font-color1 H-display-inline">人员分配：</span><span id="{{ d[0].problem_id }}">{{ d[0].send_user }}</span>
+			<span class="H-theme-font-color1 H-display-inline">派遣对象：</span><span id="{{ d[0].problem_id }}">{{ d[0].send_user }}</span>
 			</div>
-			<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>
+			<!--<span class="H-icon H-padding-horizontal-right-5 H-display-block"><i class="H-iconfont H-icon-arrow-right H-theme-font-color-ccc H-font-size-14 H-vertical-middle"></i></span>-->
 			</div>
 			{{# if(d[0].deal_content != "") { }}
 			<div class="H-flexbox-vertical H-theme-background-color-white H-border-vertical-bottom-after H-vertical-middle">
