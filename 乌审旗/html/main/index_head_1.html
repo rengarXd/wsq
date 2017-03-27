@@ -17,11 +17,12 @@
 		<script type="text/javascript" src="../../script/api.js"></script>
 		<script type="text/javascript" src="../../script/wsq.js"></script>
 		<script type="text/javascript">
+			var person_type = null;
 			apiready = function() {
 				api.parseTapmode();
 				//双击退出
 				$xy.dblclickToCloseApp();
-				var person_type = api.pageParam.person_type;
+				person_type = api.pageParam.person_type;
 				switch(parseInt(person_type)) {
 					case 1:
 						document.getElementById('titles').innerHTML = '管理人员';
@@ -64,13 +65,25 @@
 					if (ret.buttonIndex == 1) {
 						var ajpush = api.require('ajpush');
 						ajpush.removeListener();
+						//移除定位上报
+						if (parseInt(person_type) != 3) {
+							api.setPrefs({
+								key : 'serviceModule',
+								value : true
+							});
+							var serviceModule = api.require('serviceModule');
+							serviceModule.stopLocation();
+						}
 						api.removePrefs({
 							key : 'userinfo'
 						});
-						$xy.openWin('login', '../login/login.html', false, api.pageParam);
+						api.closeFrame({
+							name : 'index_body_1'
+						});
 						//关闭本页
+						api.closeWin();
 						setTimeout(function() {
-							api.closeWin();
+							$xy.openWin('login', '../login/login.html', false, api.pageParam);
 						}, 100);
 					}
 				});
