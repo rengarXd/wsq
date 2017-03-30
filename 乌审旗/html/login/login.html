@@ -141,8 +141,10 @@
 						//注册设备
 						registID(retInfo);
 					}
-					//进入主界面
-					turnMain(retInfo);
+					setTimeout(function() {
+						//进入主界面
+						turnMain(retInfo);
+					}, 100);
 				} else {
 					api.toast({
 						msg : ret.message
@@ -155,7 +157,7 @@
 			//关闭本页
 			setTimeout(function() {
 				api.closeWin();
-			}, 300);
+			}, 500);
 			$xy.openWin('index_head_1', '../main/index_head_1.html', false, {
 				person_type : parseInt(userinfo[0].person_type)
 			});

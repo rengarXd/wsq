@@ -46,10 +46,6 @@
 			
 			//跳转到主页
 			function turnMain(userinfo) {
-				//关闭本页
-				setTimeout(function() {
-					api.closeWin();
-				}, 300);
 				$xy.openWin('index_head_1', 'html/main/index_head_1.html', false, {
 					person_type : parseInt(userinfo[0].person_type)
 				});
