@@ -130,16 +130,6 @@
 		apiready = function() {
 			api.parseTapmode();
 			person_type = api.pageParam.person_type;
-			var ajpush = api.require('ajpush');
-			ajpush.init(function(ret) {
-//				ajpush.setListener(function(ret) {
-//					alert(JSON.stringify(ret));
-//					var id = ret.id;
-//					var title = ret.title;
-//					var content = ret.content;
-//					var extra = ret.extra;
-//				});
-			});
 			//console.log(person_type);
 			switch(parseInt(person_type)) {
 				case 1:
@@ -160,6 +150,7 @@
 					init();
 					break;
 			};
+			intjpush();
 		};
 		function init() {
 			if (api.systemType == "ios") {
@@ -173,7 +164,7 @@
 				}, function(ret, err) {
 					if (ret && ret.value) {
 						user = eval('(' + ret.value + ')');
-						console.log(JSON.stringify(user));
+						//console.log(JSON.stringify(user));
 						userinfoshow();
 						serviceModule = api.require('serviceModule');
 						serviceModule.initLocation({
@@ -198,6 +189,39 @@
 			}
 		}
 
+		//初始化极光推送
+		function intjpush() {
+			jpush = api.require('ajpush');
+			jpush.init(function(ret) {
+				//				jpush.setListener(function(ret) {
+				//					alert(JSON.stringify(ret));
+				//					var id = ret.id;
+				//					var title = ret.title;
+				//					var content = ret.content;
+				//					var extra = ret.extra;
+				//				});
+			});
+			api.addEventListener({
+				name : 'appintent'
+			}, function(ret, err) {
+				if (ret && ret.appParam.ajpush) {
+					var ajpush = ret.appParam.ajpush;
+					var jsonStr = JSON.parse(ajpush.extra);
+					//					var type = jsonStr.type;
+					//					var id = jsonStr.txt;
+					api.openWin({
+						name : 'history_report_head',
+						url : './history/history_report_head.html',
+						bounces : false,
+						vScrollBarEnabled : false,
+						pageParam : {
+							problem_id : jsonStr.problem_id
+						}
+					});
+				}
+			});
+		}
+
 		//初始化市民
 		function initshimin() {
 			api.getPrefs({
@@ -214,8 +238,9 @@
 
 		//查询用户信息
 		function userinfoshow() {
+			api.showProgress();
 			$xy.ajax(function(ret, err) {
-				//api.hideProgress();
+				api.hideProgress();
 				if (ret && ret.success) {
 					//头像
 					$("#nopic").attr('src', window.iconUrl + ret.data[0].attach_path);
