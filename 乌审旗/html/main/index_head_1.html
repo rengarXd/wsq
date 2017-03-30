@@ -54,7 +54,12 @@
 						w : 'auto',
 						h : 'auto'
 					}
-				})
+				});
+				//				api.addEventListener({
+				//					name : 'noticeclicked'
+				//				}, function(ret, err) {
+				//					alert(ret.value);
+				//				});
 			};
 			function closeToMain() {
 				api.confirm({
@@ -77,27 +82,18 @@
 						api.removePrefs({
 							key : 'userinfo'
 						});
-						api.closeFrame({
-							name : 'index_body_1'
-						});
-						//关闭本页
-						api.closeWin();
 						setTimeout(function() {
-							$xy.openWin('login', '../login/login.html', false, api.pageParam);
-						}, 100);
+							//alert('关闭');
+							api.closeWin();
+							//							$xy.openWin('login', '../login/login.html', false, api.pageParam);
+						}, 1000);
+						api.openWin({
+							name : 'login',
+							url : '../login/login.html',
+							bounces : false
+						});
 					}
 				});
-				//			api.closeWidget({
-				//				id : 'A6939088270619',
-				//				retData : {
-				//					name : 'closeWidget'
-				//				},
-				//				animation : {
-				//					type : 'flip',
-				//					subType : 'from_bottom',
-				//					duration : 500
-				//				}
-				//			});
 			}
 		</script>
 	</body>

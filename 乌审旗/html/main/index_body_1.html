@@ -130,6 +130,16 @@
 		apiready = function() {
 			api.parseTapmode();
 			person_type = api.pageParam.person_type;
+			var ajpush = api.require('ajpush');
+			ajpush.init(function(ret) {
+//				ajpush.setListener(function(ret) {
+//					alert(JSON.stringify(ret));
+//					var id = ret.id;
+//					var title = ret.title;
+//					var content = ret.content;
+//					var extra = ret.extra;
+//				});
+			});
 			//console.log(person_type);
 			switch(parseInt(person_type)) {
 				case 1:
@@ -149,7 +159,7 @@
 					$("#guanlibaojie").remove();
 					init();
 					break;
-			}
+			};
 		};
 		function init() {
 			if (api.systemType == "ios") {
@@ -163,6 +173,7 @@
 				}, function(ret, err) {
 					if (ret && ret.value) {
 						user = eval('(' + ret.value + ')');
+						console.log(JSON.stringify(user));
 						userinfoshow();
 						serviceModule = api.require('serviceModule');
 						serviceModule.initLocation({
@@ -177,8 +188,8 @@
 							if (ret && ret.value) {
 								serviceModule.startLocation();
 								api.removePrefs({
-	                                key:'serviceModule'
-                                });
+									key : 'serviceModule'
+								});
 							}
 						});
 					} else {
@@ -194,6 +205,7 @@
 			}, function(ret, err) {
 				if (ret && ret.value) {
 					user = eval('(' + ret.value + ')');
+					console.log(JSON.stringify(user));
 					userinfoshow();
 				} else {
 				}
