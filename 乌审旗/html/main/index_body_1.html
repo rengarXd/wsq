@@ -166,27 +166,87 @@
 						user = eval('(' + ret.value + ')');
 						//console.log(JSON.stringify(user));
 						userinfoshow();
-						serviceModule = api.require('serviceModule');
-						serviceModule.initLocation({
-							"url" : "http://110.19.111.2:8072/wshuanwei/fileAction.do?eventcode=report_location&funid=gps_wzsb&pagetype=grid&nousercheck=1&",
-							"uid" : user[0].user_id,
-							"token" : user[0].uuid
-						});
-						api.getPrefs({
-							sync : false,
-							key : 'serviceModule'
-						}, function(ret, err) {
-							if (ret && ret.value) {
-								serviceModule.startLocation();
-								api.removePrefs({
-									key : 'serviceModule'
-								});
-							}
-						});
+						openMap();
 					} else {
 					}
 				});
 			}
+		}
+
+		//打开地图
+		function openMap() {
+			var mySettingInfo = api.require('mySettingInfo');
+			var bMap = api.require('bMap');
+			//获取定位是否开启，及当前 app 获取的定位权限
+			bMap.getLocationServices(function(ret, err) {
+				//              console.log(JSON.stringify(ret));
+				if (ret.enable) {
+					if ('ios' == api.systemType) {
+						switch(ret.authorizationStatus) {
+							case "denied":
+								api.confirm({
+									title : '温馨提示',
+									msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+									buttons : ['确定', '取消']
+								}, function(ret, err) {
+									var index = ret.buttonIndex;
+									switch(index) {
+										case 1:
+											//ios中未开启GPS
+											api.openApp({
+												iosUrl : 'app-settings:',
+												androidPkg : ''
+											}, function(ret, err) {
+												//coding...
+											});
+											break;
+									}
+								});
+								break;
+						}
+					}
+					//                    console.log(JSON.stringify(ret));
+				} else {
+					api.confirm({
+						title : '温馨提示',
+						msg : '检测到您的GPS功能未开启或对本应用设置了禁用GPS，点击确定去开启以提高位置的准确性',
+						buttons : ['确定', '取消']
+					}, function(ret, err) {
+						var index = ret.buttonIndex;
+						switch(index) {
+							case 1:
+								var mySettingInfo = api.require('mySettingInfo');
+								mySettingInfo.settingInt({
+									'index' : 2
+								}, function(ret, err) {
+									alert(JSON.stringify(ret));
+								});
+								break;
+						}
+					});
+				}
+			});
+			service();
+		}
+
+		function service() {
+			serviceModule = api.require('serviceModule');
+			serviceModule.initLocation({
+				"url" : "http://110.19.111.2:8072/wshuanwei/fileAction.do?eventcode=report_location&funid=gps_wzsb&pagetype=grid&nousercheck=1&",
+				"uid" : user[0].user_id,
+				"token" : user[0].uuid
+			});
+			api.getPrefs({
+				sync : false,
+				key : 'serviceModule'
+			}, function(ret, err) {
+				if (ret && ret.value) {
+					serviceModule.startLocation();
+					api.removePrefs({
+						key : 'serviceModule'
+					});
+				}
+			});
 		}
 
 		//初始化极光推送
@@ -207,17 +267,21 @@
 				if (ret && ret.appParam.ajpush) {
 					var ajpush = ret.appParam.ajpush;
 					var jsonStr = JSON.parse(ajpush.extra);
-					//					var type = jsonStr.type;
-					//					var id = jsonStr.txt;
-					api.openWin({
-						name : 'history_report_head',
-						url : './history/history_report_head.html',
-						bounces : false,
-						vScrollBarEnabled : false,
-						pageParam : {
-							problem_id : jsonStr.problem_id
-						}
-					});
+					if (jsonStr.problem_id == "1") {
+						api.openWin({
+							name : 'msg_head',
+							url : './work/msg_head.html',
+							bounces : false,
+							vScrollBarEnabled : false
+						});
+					} else if(jsonStr.problem_id == "2") {
+						api.openWin({
+							name : 'history_report_head',
+							url : './history/history_report_head.html',
+							bounces : false,
+							vScrollBarEnabled : false
+						});
+					}
 				}
 			});
 		}
