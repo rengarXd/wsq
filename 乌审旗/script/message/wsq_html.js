@@ -64,11 +64,11 @@ apiready = function() {
 			openscan : function(url) {
 				//引入图片预览模块
 				imageBrowser = api.require('imageBrowser');
-				alert(url);
-				//						var arr = new Array();
-				//						arr.push(url);
-				//						//alert(arr);
-				//						img.openImageBrowser(arr);
+				//alert(url);
+				var arr = new Array();
+				arr.push(url);
+				//alert(arr);
+				img.openImageBrowser(arr);
 			}
 		}
 	});
