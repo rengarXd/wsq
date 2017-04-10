@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
-					<div v-for="item in imgurl" v-on:click="openscan(img.attach_path)" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+					<div v-for="item in imgurl" v-on:click="openscan(item.attach_path)" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
 						<img v-bind:src="item.attach_path" class="H-width-100-percent H-display-block" >
 					</div>
 				</div>
@@ -54,7 +54,7 @@
 						</div>
 					</div>
 					<div v-if="item.imgurl.length>0" v-for="img in item.imgurl"  class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
-						<div v-on:click="openscan('img.attach_path')" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+						<div v-on:click="openscan(img.attach_path)" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
 							<img v-bind:src="img.attach_path" class="H-width-100-percent H-display-block" >
 						</div>
 					</div>
