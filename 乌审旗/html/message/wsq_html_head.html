@@ -25,8 +25,8 @@
 			var headerPos = $api.offset(header);
 			var body_h = $api.offset($api.dom('body')).h;
 			api.openFrame({
-				name : 'wsq_html_body',
-				url : 'wsq_html_body.html',
+				name : 'wsq_vue',
+				url : 'wsq_vue.html',
 				bounces : false,
 				rect : {
 					x : 0,
@@ -34,10 +34,14 @@
 					w : 'auto',
 					h : 'auto'
 				},
-				pageParam:api.pageParam,
+				pageParam : api.pageParam,
 				vScrollBarEnabled : false,
-				hScrollBarEnabled : false
-			})
+				hScrollBarEnabled : false,
+				progress : {
+					type : "page", //加载进度效果类型，默认值为 default，取值范围为 default|page，default 等同于 showProgress 参数效果；为 page 时，进度效果为仿浏览器类型，固定在页面的顶部
+					color : "#45C01A" //type 为 page 时进度条的颜色，默认值为 #45C01A，支持#FFF，#FFFFFF，rgb(255,255,255)，rgba(255,255,255,1.0)等格式
+				}
+			});
 		};
 	</script>
 </html>

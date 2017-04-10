@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>body</title>
+		<link rel="stylesheet" type="text/css" href="../../css/Hui.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css"/>
+		<style>
+			html, body {
+				background-color: white;
+			}
+			.xy_border {
+				border-bottom: 1px solid #f0f0f0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="record_list">
+			<div class="H-position-absolute H-position-center-all" v-show="statuss" id="statuss">
+				<div class="H-font-size-14 H-text-align-center">
+					<i class="iconfont icon-dingwei H-font-size-32 H-theme-font-color-999"></i>
+					<div class="H-theme-font-color-999">
+						加载中
+					</div>
+				</div>
+			</div>
+			<div v-show="text">
+				<h2 class="H-text-align-center" v-html="news_title"></h2>
+				<div class="H-padding-horizontal-both-20 H-padding-vertical-bottom-5 H-font-size-12 H-theme-font-color-999">
+					类别：<span v-text="cont_type"></span><span class="H-float-right">{{$xy.jsDateDiff(edit_date)}}</span>
+				</div>
+				<div class="xy_border H-margin-horizontal-both-20 H-border-style-solid"></div>
+				<div class="H-flexbox-horizontal H-theme-background-color-white ">
+					<div class="H-flex-item H-padding-20">
+						<div v-html="news_cont" class="H-text-indent H-font-size-18 H-theme-font-color-666 H-margin-vertical-top-2">
+							<!--嘎鲁图汽车站，总建筑面积8600平方米, 2005年由鄂尔多斯市汽车运输集团有限公司自投资金建成，属自治区客运二级站。嘎鲁图汽车站日均旅客流量约为500人次，节假日高峰期可高达800人次，日进站客车（包括中转过路车）为125辆，始发班次为80余次，现运行线路68条，其中跨省线路11条，跨盟市12条，旗县际45条。-->
+						</div>
+					</div>
+				</div>
+				<div class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
+					<div v-for="item in imgurl" v-on:click="openscan(img.attach_path)" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+						<img v-bind:src="item.attach_path" class="H-width-100-percent H-display-block" >
+					</div>
+				</div>
+				<div v-for="item in productList" v-if="productList.length>1">
+					<h3 class="H-text-align-center" v-text="item.news_title"></h3>
+					<div class="H-flexbox-horizontal H-theme-background-color-white ">
+						<div class="H-flex-item H-padding-20">
+							<div v-text="item.news_cont" class="H-text-indent H-font-size-18 H-theme-font-color-666 H-margin-vertical-top-2">
+								<!--嘎鲁图汽车站，总建筑面积8600平方米, 2005年由鄂尔多斯市汽车运输集团有限公司自投资金建成，属自治区客运二级站。嘎鲁图汽车站日均旅客流量约为500人次，节假日高峰期可高达800人次，日进站客车（包括中转过路车）为125辆，始发班次为80余次，现运行线路68条，其中跨省线路11条，跨盟市12条，旗县际45条。-->
+							</div>
+						</div>
+					</div>
+					<div v-if="item.imgurl.length>0" v-for="img in item.imgurl"  class="H-clear-both H-width-100-percent H-padding-horizontal-both-20 H-display-table H-box-sizing-border-box">
+						<div v-on:click="openscan('img.attach_path')" class="H-float-left H-box-sizing-border-box H-width-avg-1 H-display-table-cell H-margin-vertical-bottom-10">
+							<img v-bind:src="img.attach_path" class="H-width-100-percent H-display-block" >
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../script/vue.min.js"></script>
+		<script type="text/javascript" src="../../script/wsq.js"></script>
+		<script type="text/javascript" src="../../script/upImg.js"></script>
+		<script type="text/javascript" src="../../script/message/wsq_html.js"></script>
+	</body>
+</html>
